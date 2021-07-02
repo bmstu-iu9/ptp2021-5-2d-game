@@ -6,14 +6,11 @@ export {BaseEntity}
  * Provides some basic logic: movement, bouncing,
  * destruction, and simple sprite rendering. */
 class BaseEntity {
-    constructor(posX, posY, dx, dy, width, height, sprite) {
-        this.posX = posX;
-        this.posY = posY;
-        this.dx = dx;
-        this.dy = dy;
-        this.width = width;
-        this.height = height;
-        this.sprite = sprite;
+    constructor(body, dx = 0, dy = 0, sprite = null) {
+        this.body = body
+        this.dx = dx
+        this.dy = dy
+        this.sprite = sprite || game.assets["dummy"]
         this.state = game.constants.STATE_ACTIVE
     }
 
@@ -25,20 +22,9 @@ class BaseEntity {
     /** Contains entity's movement logic.
      * This method should change dx and dy for specific movement patterns. */
     calculateMovement() {
-        if (this.posX + this.dx < 0 || this.posX + this.dx > game.viewport.width) {
+        if (this.body.posX + this.dx < 0 || this.body.posX + this.dx > game.viewport.width) {
             this.dx = -this.dx
         }
-        if (this.posY + this.dy < 0 || this.posY + this.dy > game.viewport.height) {
-            this.destroy()
-        }
-    }
-
-    get centerX() {
-        return this.posX + this.width / 2
-    }
-
-    get centerY() {
-        return this.posY + this.height / 2
     }
 
     /** Updates entity's inner state.
@@ -46,9 +32,26 @@ class BaseEntity {
     update() {
         this.preUpdate();
 
+        // Here movement goes
         this.calculateMovement()
-        this.posX += this.dx;
-        this.posY += this.dy;
+        // TODO: Think about correcting for time elapsed (* game.timeElapsed / 16)
+        let dx = this.dx, //
+            dy = this.dy;
+
+        if (this.body.posX + dx < 0 ||
+            this.body.posY + dy < 0 ||
+            this.body.posX + dx > game.viewport.width ||
+            this.body.posY + dy > game.viewport.height) {
+            this.destroy()
+        }
+
+        this.body.posX += dx;
+        this.body.posY += dy;
+    }
+
+    /** Renders entity on canvas. */
+    render(ctx) {
+        ctx.drawImage(this.sprite, this.body.posX, this.body.posY, this.body.width, this.body.height)
     }
 
     /** Changes entity's state to "destroyed".
@@ -58,10 +61,4 @@ class BaseEntity {
     destroy() {
         this.state = game.constants.STATE_DESTROYED
     }
-
-    /** Renders entity on canvas. */
-    render(ctx) {
-        ctx.drawImage(this.sprite, this.posX, this.posY, this.width, this.height)
-    }
-
 }

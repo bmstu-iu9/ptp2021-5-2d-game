@@ -1,6 +1,7 @@
 import {game} from "../game.js";
 import {BaseEntity} from "../entities/base_entity.js";
 import {Bullet} from "../entities/bullet.js";
+import {Body} from "../physics/body.js"
 
 export {
     Player
@@ -9,16 +10,21 @@ export {
 /** Represents, well, player */
 class Player extends BaseEntity {
     constructor() {
-        super(300, 300, 0, 0, game.constants.playerDim, game.constants.playerDim, game.assets["playerSprite"]);
+        super(new Body(300, 300, game.constants.playerDim, game.constants.playerDim), 0, 0,
+            game.assets["playerSprite"]
+        )
         this.health = 100;
         this.fireState = 0;
+        this.shieldSprite = game.assets["playerShield"]
+        this.shieldAddSize = 10;
+        this.dShieldSize = 0.2;
     }
 
     preUpdate() {
         this.fireState++;
         if (this.fireState === game.constants.playerFramesPerBullet) {
             this.fireState = 0
-            game.entites.push(new Bullet(this.centerX - game.constants.bulletWidth / 2, this.posY, false))
+            game.entities.push(new Bullet(this.body.centerX - game.constants.bulletWidth / 2, this.body.posY, false))
         }
     }
 
@@ -42,20 +48,26 @@ class Player extends BaseEntity {
         this.dy *= game.constants.playerVelocity
 
         // Check bounds
-        if (this.posX + this.dx < 0 || this.posX + this.width + this.dx > game.viewport.width) {
+        if (this.body.posX + this.dx < 0 || this.body.posX + this.body.width + this.dx > game.viewport.width) {
             this.dx = 0;
         }
-        if (this.posY + this.dy < 0 || this.posY + this.height + this.dy > game.viewport.height) {
+        if (this.body.posY + this.dy < 0 || this.body.posY + this.body.height + this.dy > game.viewport.height) {
             this.dy = 0;
         }
     }
 
     render(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.posX + 25, this.posY + 25, 30, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'rgba(112,213,229,0.5)';
-        ctx.fill();
-        ctx.drawImage(this.sprite, this.posX, this.posY, 50, 50)
+        // Render shield
+        ctx.drawImage(this.shieldSprite, this.body.posX - this.shieldAddSize / 2,
+            this.body.posY - this.shieldAddSize / 2,
+            this.body.width + this.shieldAddSize, this.body.height + this.shieldAddSize)
+        this.shieldAddSize += this.dShieldSize
+        if (this.shieldAddSize > 17 || this.shieldAddSize < 10) {
+            this.dShieldSize = -this.dShieldSize;
+        }
+
+        // Render ship
+        ctx.drawImage(this.sprite, this.body.posX, this.body.posY, this.body.width, this.body.height)
     }
 
 }
