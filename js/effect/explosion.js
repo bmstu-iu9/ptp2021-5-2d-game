@@ -1,4 +1,4 @@
-import {BaseEffect} from "./base_effect";
+import {BaseEffect} from "./base_effect.js";
 
 export {ExplosionEffect}
 
