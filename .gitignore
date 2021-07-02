@@ -102,3 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+/.idea/.gitignore
+/.idea/jsLibraryMappings.xml
+/.idea/modules.xml
+/.idea/ptp2021-5-2d-game.iml
+/.idea/vcs.xml
