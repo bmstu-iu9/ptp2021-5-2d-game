@@ -8,7 +8,12 @@ export const
     playerFramesPerBullet = 10,
     playerDim = 50; // player width == player height
 
+/** Possible entity states */
+export const
+    STATE_ACTIVE = 0,
+    STATE_DESTROYED = 13;
+
 /** Other constants */
 export const
-    bulletWidth = 3,
-    bulletHeight = 10;
+    bulletWidth = 30,
+    bulletHeight = 40;

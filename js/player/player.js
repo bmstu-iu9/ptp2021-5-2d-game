@@ -1,5 +1,6 @@
 import {game} from "../game.js";
 import {BaseEntity} from "../entities/base_entity.js";
+import {Bullet} from "../entities/bullet.js";
 
 export {
     Player
@@ -8,10 +9,17 @@ export {
 /** Represents, well, player */
 class Player extends BaseEntity {
     constructor() {
-        super(300, 300, 0,0 , game.constants.playerDim, game.constants.playerDim);
+        super(300, 300, 0, 0, game.constants.playerDim, game.constants.playerDim, game.assets["playerSprite"]);
         this.health = 100;
-        this.shipImg = new Image(50, 50)
-        this.shipImg.src = 'assets/img/player.png'
+        this.fireState = 0;
+    }
+
+    preUpdate() {
+        this.fireState++;
+        if (this.fireState === game.constants.playerFramesPerBullet) {
+            this.fireState = 0
+            game.entites.push(new Bullet(this.centerX - game.constants.bulletWidth / 2, this.posY, false))
+        }
     }
 
     calculateMovement() {
@@ -27,10 +35,6 @@ class Player extends BaseEntity {
         }
         if (game.isPressed.up && this.dy > -game.constants.playerMaxSpeed) {
             this.dy -= game.constants.playerAcceleration
-        }
-
-        if (game.isPressed.right && game.isPressed.down){
-            console.log(this.centerX)
         }
 
         // Apply velocity
@@ -51,7 +55,7 @@ class Player extends BaseEntity {
         ctx.arc(this.posX + 25, this.posY + 25, 30, 0, 2 * Math.PI, false);
         ctx.fillStyle = 'rgba(112,213,229,0.5)';
         ctx.fill();
-        ctx.drawImage(this.shipImg, this.posX, this.posY, 50, 50)
+        ctx.drawImage(this.sprite, this.posX, this.posY, 50, 50)
     }
 
 }

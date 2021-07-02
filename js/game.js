@@ -2,6 +2,7 @@ import {BaseEnemy} from "./entities/base_enemy.js";
 import {Player} from "./player/player.js";
 import {configureKeyWatchers} from "./player/keyboard_control.js";
 import * as constants from "./gameConstants.js";
+import {loadAssets} from "./assetManager.js";
 
 class Game {
     constructor() {
@@ -22,14 +23,23 @@ class Game {
         this.bgImg.src = 'assets/img/bg.jpg';
 
         this.entites = []
+        this.assets = {}
 
         return this
     }
 
-    /** Starts game */
-    run() {
+    /** Prepares game for running, loads assets.
+     * No entity should be created before the loading is complete!
+     * Should be used to start the game.*/
+    load() {
         configureKeyWatchers()
-        window.requestAnimationFrame(this.gameLoop)
+        this.assets = loadAssets(game.run)
+    }
+
+    /** Starts the game.
+     * Should not be called directly. */
+    run() {
+        window.requestAnimationFrame(game.gameLoop)
     }
 
     /** Main loop */
@@ -41,8 +51,16 @@ class Game {
 
     /** Updates every entity in the game */
     update() {
-        for (let ent of this.entites) {
-            ent.update()
+        for (let i = 0; i < this.entites.length; i++) {
+            this.entites[i].update()
+
+            if (this.entites[i] instanceof Player) {
+                // check collision
+            }
+
+            if (this.entites[i].state === game.constants.STATE_DESTROYED) {
+                this.entites.splice(i, 1)
+            }
         }
     }
 
@@ -56,7 +74,9 @@ class Game {
 }
 
 export const game = new Game();
-game.entites.push(new BaseEnemy(400, 200, 4, 0, 20, 20))
+game.load()
+game.entites.push(new BaseEnemy(100, 100, 5, 0, 50, 55))
+game.entites.push(new BaseEnemy(200, 200, 4, 0, 50, 55))
+game.entites.push(new BaseEnemy(300, 300, 3, 0, 50, 55))
 game.entites.push(new Player())
-game.run()
 
