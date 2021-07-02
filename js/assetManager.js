@@ -3,7 +3,10 @@ export {loadAssets}
 let assets = [
     ["playerSprite", "img/player.png"],
     ["baseEnemy", "img/baseEnemy.png"],
-    ["playerBullet", "img/playerBullet.png"]
+    ["playerBullet", "img/playerBullet.png"],
+    ["playerShield", "img/shield.png"],
+    ["dummy", "img/dummy.png"],
+    ["explosionOrange", "effects/explosion_orange.png"],
 ]
 
 /** Loads all game assets.

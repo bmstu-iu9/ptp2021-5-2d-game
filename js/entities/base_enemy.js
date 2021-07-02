@@ -6,8 +6,8 @@ export {
 }
 
 class BaseEnemy extends BaseEntity {
-    constructor(posX, posY, dx, dy, width, height) {
-        super(posX, posY, dx, dy, width, height, game.assets["baseEnemy"]);
+    constructor(body, dx, dy, sprite) {
+        super(body, dx, dy, game.assets["baseEnemy"]);
     }
 
 }
