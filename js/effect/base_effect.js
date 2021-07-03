@@ -1,10 +1,11 @@
-import {game} from "../game.js";
+import {STATE_ACTIVE, STATE_DESTROYED} from "../game_constants.js";
 
 export {BaseEffect}
 
-/** Base class for all effects.
+/**Base class for all effects.
  * @param body Body representing effect's position and dimensions. Will be copied!
- * @param sprite a series of 100x100 textures packed in a single image */
+ * @param sprite a series of 100x100 textures packed in a single image
+ */
 class BaseEffect {
     constructor(body, sprite) {
         // Copy body => every object has its unique body
@@ -14,14 +15,14 @@ class BaseEffect {
         this.sprite = sprite
         this.texturesInRow = this.sprite.width / 100
         this.texturesInCol = this.sprite.height / 100
-        this.state = game.constants.STATE_ACTIVE
+        this.state = STATE_ACTIVE
         this.frame = 0
     }
 
     update() {
         this.frame++
         if (this.frame > this.texturesInRow * this.texturesInCol) {
-            this.state = game.constants.STATE_DESTROYED
+            this.state = STATE_DESTROYED
         }
     }
 

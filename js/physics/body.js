@@ -7,14 +7,17 @@ export {
  * @param posY position on Y axis
  * @param width width of the collider and sprite
  * @param height height of the collider and sprite
- * @param canCollide if body will be checked for collisions; default: true*/
+ * @param canCollide if body will be checked for collisions; default: true
+ * @param rotation in radians
+ */
 class Body {
-    constructor(posX, posY, width, height, canCollide = true) {
+    constructor(posX, posY, width, height, canCollide = true, rotation = 0) {
         this.posX = posX
         this.posY = posY
         this.width = width
         this.height = height
         this.canCollide = canCollide
+        this.rotation = rotation
     }
 
     get centerX() {
@@ -43,5 +46,9 @@ class Body {
             this.posX + this.width > other.posX &&
             this.posY < other.posY + other.height &&
             this.posY + this.height > other.posY
+    }
+
+    distanceBetween(other) {
+        return Math.sqrt((other.posX - this.posX) ** 2 + (other.posY - this.posY) ** 2)
     }
 }

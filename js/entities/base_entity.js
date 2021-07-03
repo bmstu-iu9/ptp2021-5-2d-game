@@ -1,4 +1,5 @@
 import {game} from "../game.js";
+import {STATE_ACTIVE, STATE_DESTROYED} from "../game_constants.js";
 
 export {BaseEntity}
 
@@ -16,7 +17,7 @@ class BaseEntity {
         this.dx = dx
         this.dy = dy
         this.sprite = sprite || game.assets["dummy"]
-        this.state = game.constants.STATE_ACTIVE
+        this.state = STATE_ACTIVE
     }
 
     /** This function is executed before <update> code.
@@ -24,8 +25,10 @@ class BaseEntity {
     preUpdate() {
     }
 
-    /** Contains entity's movement logic.
-     * This method should change dx and dy for specific movement patterns. */
+    /**Contains entity's movement logic.
+     * Override this method to change dx and dy
+     * for specific movement patterns.
+     */
     calculateMovement() {
         if (this.body.posX + this.dx < 0 || this.body.posX + this.dx > game.viewport.width) {
             this.dx = -this.dx
@@ -54,19 +57,35 @@ class BaseEntity {
         this.body.posY += dy;
     }
 
-    /** Renders entity on canvas. */
-    render(ctx) {
+    /** Performs drawing of the entity by default. If you want custom
+     * rendering, override this method.
+     * @param ctx canvas context passed by render()
+     */
+    draw(ctx) {
         ctx.drawImage(this.sprite, this.body.posX, this.body.posY, this.body.width, this.body.height)
     }
 
-    /** Changes entity's state to "destroyed".
+    /**Renders entity on canvas.
+     * You should not override this method.
+     * Modify draw() instead.
+     * @param ctx canvas context passed by engine
+     */
+    render(ctx) {
+
+        // Rotate the canvas according to the body.rotation, draw and then restore the canvas.
+        ctx.save()
+        ctx.translate(this.body.centerX, this.body.centerY)
+        ctx.rotate(this.body.rotation)
+        ctx.translate(-this.body.centerX, -this.body.centerY)
+        this.draw(ctx)
+        ctx.restore()
+    }
+
+    /**Changes entity's state to "destroyed".
      * Engine will render destruction animation if present
      * and then remove object from game.
      * You should not override this method. */
     destroy() {
-        this.state = game.constants.STATE_DESTROYED
-    }
-
-    onCollision(other) {
+        this.state = STATE_DESTROYED
     }
 }

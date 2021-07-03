@@ -1,11 +1,12 @@
 import {BaseEnemy} from "./entities/base_enemy.js";
 import {Player} from "./player/player.js";
 import {configureKeyWatchers} from "./player/keyboard_control.js";
-import * as constants from "./game_constants.js";
 import {loadAssets} from "./asset_manager.js";
 import {Body} from "./physics/body.js";
 import {ExplosionEffect} from "./effect/explosion.js";
 import {testCollision} from "./physics/collisions.js";
+import {ShootingEnemy} from "./entities/shooting_enemy.js";
+import {STATE_DESTROYED} from "./game_constants.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -14,6 +15,7 @@ function rnd(min, max) {
 class Game {
     lastTimestamp
     timeElapsed
+    player
 
     constructor() {
         // Create canvas and extract its context
@@ -25,10 +27,7 @@ class Game {
 
         this.context = this.viewport.getContext('2d');
 
-        this.constants = constants;
-
         // Load background
-        // TODO: Use sprite manager to load background and sprites
         this.bgImg = new Image()
         this.bgImg.src = 'assets/img/bg.jpg';
 
@@ -84,7 +83,7 @@ class Game {
         this.processCollisions()
 
         for (let i = 0; i < this.gameObjects.length; i++) {
-            if (this.gameObjects[i].state === game.constants.STATE_DESTROYED) {
+            if (this.gameObjects[i].state === STATE_DESTROYED) {
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.gameObjects.push(new ExplosionEffect(this.gameObjects[i].body, this.assets["explosionOrange"]))
                 }
@@ -93,9 +92,13 @@ class Game {
         }
 
         // TODO: SPAWNER DEBUG ONLY
-        if (rnd(0, 100) > 97) {
+        if (rnd(0, 100) > 98) {
             this.gameObjects.push(new BaseEnemy(new Body(rnd(1, this.viewport.width - 50), 0, 50, 55),
                 0, rnd(1, 4), null, 15))
+        }
+        if (rnd(0, 200) > 198) {
+            this.gameObjects.push(new ShootingEnemy(new Body(rnd(1, this.viewport.width - 50), 100, 50, 55),
+                rnd(1, 4), 0, null, 15))
         }
     }
 
@@ -113,5 +116,7 @@ class Game {
 
 export const game = new Game();
 game.load()
-game.gameObjects.push(new Player())
+let player = new Player()
+game.gameObjects.push(player)
+game.player = player
 

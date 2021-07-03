@@ -10,6 +10,8 @@ let assets = [
     ["playerShield", "img/shield.png"],
     ["dummy", "img/dummy.png"],
     ["explosionOrange", "effects/explosion_orange.png"],
+    ["enemyBullet", "img/enemy_bullet.png"],
+    ["enemyRocket", "img/enemy_rocket.png"]
 ]
 
 /** Loads all game assets.
