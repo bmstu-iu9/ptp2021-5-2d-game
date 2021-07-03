@@ -5,6 +5,7 @@ import * as constants from "./game_constants.js";
 import {loadAssets} from "./asset_manager.js";
 import {Body} from "./physics/body.js";
 import {ExplosionEffect} from "./effect/explosion.js";
+import {testCollision} from "./physics/collisions.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -31,7 +32,7 @@ class Game {
         this.bgImg = new Image()
         this.bgImg.src = 'assets/img/bg.jpg';
 
-        this.entities = []
+        this.gameObjects = []
         this.assets = {}
 
         return this
@@ -59,32 +60,40 @@ class Game {
         window.requestAnimationFrame(game.gameLoop)
     }
 
+    processCollisions() {
+        for (let i = 0; i < this.gameObjects.length; i++) {
+            for (let j = i + 1; j < this.gameObjects.length; j++) {
+                if (this.gameObjects[i].body.collidesWith(this.gameObjects[j].body)) {
+                    testCollision(this.gameObjects[i], this.gameObjects[j])
+                }
+            }
+        }
+    }
+
     /** Updates every entity in the game */
     update(ts) {
         this.timeElapsed = ts - this.lastTimestamp;
         this.lastTimestamp = ts
 
-        for (let i = 0; i < this.entities.length; i++) {
-            this.entities[i].update()
+        for (let i = 0; i < this.gameObjects.length; i++) {
+            this.gameObjects[i].update()
+        }
 
-            if (this.entities[i] instanceof Player) {
-                let ent = this.entities[i]
-                for (let other of this.entities) {
-                    if (other instanceof BaseEnemy && ent.body.collidesWith(other.body)) {
-                        this.entities.push(new ExplosionEffect(other.body, this.assets["explosionOrange"]))
-                        other.destroy()
-                    }
+        this.processCollisions()
+
+        for (let i = 0; i < this.gameObjects.length; i++) {
+            if (this.gameObjects[i].state === game.constants.STATE_DESTROYED) {
+                if (this.gameObjects[i] instanceof BaseEnemy) {
+                    this.gameObjects.push(new ExplosionEffect(this.gameObjects[i].body, this.assets["explosionOrange"]))
                 }
-            }
-
-            if (this.entities[i].state === game.constants.STATE_DESTROYED) {
-                this.entities.splice(i, 1)
+                this.gameObjects.splice(i, 1)
             }
         }
 
         // TODO: SPAWNER DEBUG ONLY
         if (rnd(0, 100) > 97) {
-            this.entities.push(new BaseEnemy(new Body(rnd(1, this.viewport.width - 50), 0, 50, 55), 0, rnd(1, 4)))
+            this.gameObjects.push(new BaseEnemy(new Body(rnd(1, this.viewport.width - 50), 0, 50, 55),
+                0, rnd(1, 4), null, 20))
         }
     }
 
@@ -93,8 +102,8 @@ class Game {
         // Draw background
         this.context.drawImage(this.bgImg, 0, 0, this.viewport.width, this.viewport.height)
 
-        // Render all entities
-        for (let ent of this.entities) {
+        // Render all gameObjects
+        for (let ent of this.gameObjects) {
             ent.render(this.context)
         }
     }
@@ -102,5 +111,5 @@ class Game {
 
 export const game = new Game();
 game.load()
-game.entities.push(new Player())
+game.gameObjects.push(new Player())
 

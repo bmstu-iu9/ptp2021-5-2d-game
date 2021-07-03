@@ -10,7 +10,7 @@ let assets = [
 ]
 
 /** Loads all game assets.
- * When every asset is loaded, executes callback() */
+ * When every asset is loaded, executes collisionCallback() */
 function loadAssets(callback) {
     let aName, aSrc,
         result = {},

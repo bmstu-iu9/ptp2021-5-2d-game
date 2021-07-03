@@ -20,11 +20,19 @@ class Player extends BaseEntity {
         this.dShieldSize = 0.2;
     }
 
+    receiveDamage(amount) {
+        this.health -= amount
+        if (this.health <= 0) {
+            this.destroy()
+        }
+    }
+
     preUpdate() {
         this.fireState++;
         if (this.fireState === game.constants.PLAYER_FRAMES_PER_BULLET) {
             this.fireState = 0
-            game.entities.push(new Bullet(this.body.centerX - game.constants.BULLET_WIDTH / 2, this.body.posY, false))
+            game.gameObjects.push(new Bullet(this.body.centerX - game.constants.BULLET_WIDTH / 2, this.body.posY, false,
+                game.constants.PLAYER_BULLET_DAMAGE))
         }
     }
 
