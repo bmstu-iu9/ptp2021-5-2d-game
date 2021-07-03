@@ -18,7 +18,7 @@ class BaseEffect {
 
     update() {
         this.frame++
-        if (this.frame > this.sprite.width * this.sprite.height / 10000) {
+        if (this.frame > this.texturesInRow * this.texturesInCol) {
             this.state = game.constants.STATE_DESTROYED
         }
     }

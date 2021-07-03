@@ -4,7 +4,12 @@ export {BaseEntity}
 
 /** Base class for every entity in the game.
  * Provides some basic logic: movement, bouncing,
- * destruction, and simple sprite rendering. */
+ * destruction, and simple sprite rendering.
+ *
+ * @param body <Body> representing entity's physical properties
+ * @param dx constant oX speed
+ * @param dy constant oY speed
+ * @param sprite sprite to be rendered. If no specified then default will be used */
 class BaseEntity {
     constructor(body, dx = 0, dy = 0, sprite = null) {
         this.body = body
@@ -60,5 +65,8 @@ class BaseEntity {
      * You should not override this method. */
     destroy() {
         this.state = game.constants.STATE_DESTROYED
+    }
+
+    onCollision(other) {
     }
 }
