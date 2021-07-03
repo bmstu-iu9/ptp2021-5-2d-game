@@ -7,7 +7,6 @@ let assets = [
     ["playerShield", "img/shield.png"],
     ["dummy", "img/dummy.png"],
     ["explosionOrange", "effects/explosion_orange.png"],
-    ["playerShot", "sounds/player_shot.mp3"]
 ]
 
 /** Loads all game assets.
@@ -17,7 +16,11 @@ function loadAssets(callback) {
         result = {},
         count = assets.length,
         onSingleAssetLoad = function () {
-            if (--count === 0) callback(result);
+            console.log(count - 1)
+            if (--count === 0) {
+                console.log(count + " assets loaded!")
+                callback(result);
+            }
         };
     console.log("Loading assets...")
 
@@ -28,6 +31,5 @@ function loadAssets(callback) {
         result[aName].src = "./assets/" + aSrc;
     }
 
-    console.log(count + " assets loaded!")
     return result
 }
