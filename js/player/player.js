@@ -10,7 +10,7 @@ export {
 /** Represents, well, player */
 class Player extends BaseEntity {
     constructor() {
-        super(new Body(300, 300, game.constants.playerDim, game.constants.playerDim), 0, 0,
+        super(new Body(300, 300, game.constants.PLAYER_DIM, game.constants.PLAYER_DIM), 0, 0,
             game.assets["playerSprite"]
         )
         this.health = 100;
@@ -22,30 +22,30 @@ class Player extends BaseEntity {
 
     preUpdate() {
         this.fireState++;
-        if (this.fireState === game.constants.playerFramesPerBullet) {
+        if (this.fireState === game.constants.PLAYER_FRAMES_PER_BULLET) {
             this.fireState = 0
-            game.entities.push(new Bullet(this.body.centerX - game.constants.bulletWidth / 2, this.body.posY, false))
+            game.entities.push(new Bullet(this.body.centerX - game.constants.BULLET_WIDTH / 2, this.body.posY, false))
         }
     }
 
     calculateMovement() {
         // Calculate coordinates change
-        if (game.isPressed.left && this.dx > -game.constants.playerMaxSpeed) {
-            this.dx -= game.constants.playerAcceleration
+        if (game.isPressed.left && this.dx > -game.constants.PLAYER_MAX_SPEED) {
+            this.dx -= game.constants.PLAYER_ACCELERATION
         }
-        if (game.isPressed.right && this.dx < game.constants.playerMaxSpeed) {
-            this.dx += game.constants.playerAcceleration
+        if (game.isPressed.right && this.dx < game.constants.PLAYER_MAX_SPEED) {
+            this.dx += game.constants.PLAYER_ACCELERATION
         }
-        if (game.isPressed.down && this.dy < game.constants.playerMaxSpeed) {
-            this.dy += game.constants.playerAcceleration
+        if (game.isPressed.down && this.dy < game.constants.PLAYER_MAX_SPEED) {
+            this.dy += game.constants.PLAYER_ACCELERATION
         }
-        if (game.isPressed.up && this.dy > -game.constants.playerMaxSpeed) {
-            this.dy -= game.constants.playerAcceleration
+        if (game.isPressed.up && this.dy > -game.constants.PLAYER_MAX_SPEED) {
+            this.dy -= game.constants.PLAYER_ACCELERATION
         }
 
         // Apply velocity
-        this.dx *= game.constants.playerVelocity
-        this.dy *= game.constants.playerVelocity
+        this.dx *= game.constants.PLAYER_VELOCITY
+        this.dy *= game.constants.PLAYER_VELOCITY
 
         // Check bounds
         if (this.body.posX + this.dx < 0 || this.body.posX + this.body.width + this.dx > game.viewport.width) {

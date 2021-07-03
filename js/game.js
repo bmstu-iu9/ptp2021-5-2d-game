@@ -1,8 +1,8 @@
 import {BaseEnemy} from "./entities/base_enemy.js";
 import {Player} from "./player/player.js";
 import {configureKeyWatchers} from "./player/keyboard_control.js";
-import * as constants from "./gameConstants.js";
-import {loadAssets} from "./assetManager.js";
+import * as constants from "./game_constants.js";
+import {loadAssets} from "./asset_manager.js";
 import {Body} from "./physics/body.js";
 import {ExplosionEffect} from "./effect/explosion.js";
 
