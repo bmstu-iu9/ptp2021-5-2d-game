@@ -3,12 +3,14 @@ import {game} from "../game.js";
 export {BaseEffect}
 
 /** Base class for all effects.
- * @param body Body representing effect's position and dimensions
+ * @param body Body representing effect's position and dimensions. Will be copied!
  * @param sprite a series of 100x100 textures packed in a single image */
 class BaseEffect {
     constructor(body, sprite) {
         // Copy body => every object has its unique body
         this.body = Object.assign(Object.create(Object.getPrototypeOf(body)), body)
+        this.body.canCollide = false
+
         this.sprite = sprite
         this.texturesInRow = this.sprite.width / 100
         this.texturesInCol = this.sprite.height / 100

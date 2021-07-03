@@ -62,6 +62,8 @@ class Game {
 
     processCollisions() {
         for (let i = 0; i < this.gameObjects.length; i++) {
+            if (!this.gameObjects[i].body.canCollide) continue
+
             for (let j = i + 1; j < this.gameObjects.length; j++) {
                 if (this.gameObjects[i].body.collidesWith(this.gameObjects[j].body)) {
                     testCollision(this.gameObjects[i], this.gameObjects[j])
@@ -93,7 +95,7 @@ class Game {
         // TODO: SPAWNER DEBUG ONLY
         if (rnd(0, 100) > 97) {
             this.gameObjects.push(new BaseEnemy(new Body(rnd(1, this.viewport.width - 50), 0, 50, 55),
-                0, rnd(1, 4), null, 20))
+                0, rnd(1, 4), null, 15))
         }
     }
 

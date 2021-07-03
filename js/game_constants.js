@@ -15,7 +15,11 @@ export const
     STATE_ACTIVE = 0,
     STATE_DESTROYED = 13;
 
-/** Other constants */
+/** World */
+export const
+    BACKGROUND_SPEED = 2;
+
+/** Bullets */
 export const
     BULLET_WIDTH = 30,
     BULLET_HEIGHT = 40;
