@@ -10,8 +10,10 @@ export const
     PLAYER_BULLET_DAMAGE = 5,
     PLAYER_BASE_COLLISION_DAMAGE = 10,
     PLAYER_DIM = 50, // player width == player height
-    PLAYER_BULLET_WIDTH = 30,
-    PLAYER_BULLET_HEIGHT = 40,
+    PLAYER_BULLET_W = 40,
+    PLAYER_BULLET_H = 30,
+    MULTI_BULLET_W = 40,
+    MULTU_BULLET_H = 30,
     PLAYER_BULLET_SPEED = 10;
 
 /**Possible entity states */

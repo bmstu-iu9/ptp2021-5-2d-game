@@ -17,4 +17,9 @@ class BaseBullet extends BaseEntity {
         super(body, sprite)
         this.damage = damage
     }
+
+    update() {
+        super.update();
+        this.body.rotation = this.body.speed.angle
+    }
 }

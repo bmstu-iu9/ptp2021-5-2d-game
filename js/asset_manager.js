@@ -7,6 +7,7 @@ let assets = [
     ["player_ship", "img/player.png"],
     ["enemy_ship", "img/base_enemy.png"],
     ["player_regular_bullet", "img/player_bullet.png"],
+    ["player_multi_bullet", "img/player_multi_bullet.png"],
     ["player_shield", "img/shield.png"],
     ["dummy", "img/dummy.png"],
     ["explosion_orange", "effects/explosion_orange.png"],
