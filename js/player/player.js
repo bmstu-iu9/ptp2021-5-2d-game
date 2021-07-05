@@ -1,21 +1,42 @@
 import {game} from "../game.js";
 import {BaseEntity} from "../entities/base_entity.js";
-import {Bullet} from "../entities/bullet.js";
 import {Body} from "../physics/body.js"
+import {PlayerBullet} from "../entities/player_bullets.js";
+import {
+    MULTI_BULLET_W,
+    MULTU_BULLET_H,
+    PLAYER_BULLET_H,
+    PLAYER_BULLET_SPEED,
+    PLAYER_BULLET_W,
+    PLAYER_DIM,
+    PLAYER_FRAMES_PER_BULLET,
+    PLAYER_HEALTH,
+    PLAYER_MAX_SPEED,
+    PLAYER_VELOCITY
+} from "../game_constants.js";
+import {Point} from "../math/point.js";
+import {Vector} from "../math/vector.js";
 
 export {
     Player
 }
 
-/** Represents, well, player */
+const WEAPON_TYPE_REGULAR = 0,
+    WEAPON_TYPE_MULTI = 1,
+    WEAPON_TYPE_LASER = 2;
+
+/**Represents, well, player
+ *
+ */
 class Player extends BaseEntity {
     constructor() {
-        super(new Body(300, 300, game.constants.PLAYER_DIM, game.constants.PLAYER_DIM), 0, 0,
-            game.assets["playerSprite"]
-        )
-        this.health = 100;
+        let initialPos = new Point((game.viewport.width - PLAYER_DIM) / 2, (game.viewport.height - PLAYER_DIM) / 2)
+        super(new Body(initialPos, PLAYER_DIM, PLAYER_DIM), game.assets["player_ship"])
+        this.health = PLAYER_HEALTH;
         this.fireState = 0;
-        this.shieldSprite = game.assets["playerShield"]
+        this.weaponType = WEAPON_TYPE_MULTI
+        this.upgradedShotsRemaining = 30
+        this.shieldSprite = game.assets["player_shield"]
         this.shieldAddSize = 10;
         this.dShieldSize = 0.2;
     }
@@ -27,47 +48,68 @@ class Player extends BaseEntity {
         }
     }
 
-    preUpdate() {
-        this.fireState++;
-        if (this.fireState === game.constants.PLAYER_FRAMES_PER_BULLET) {
-            this.fireState = 0
-            game.gameObjects.push(new Bullet(this.body.centerX - game.constants.BULLET_WIDTH / 2, this.body.posY, false,
-                game.constants.PLAYER_BULLET_DAMAGE))
+    fire() {
+        if (this.fireState++ !== PLAYER_FRAMES_PER_BULLET)
+            return
+
+        // If it's time to fire, create bullets
+        let bullets = []
+        switch (this.weaponType) {
+            case WEAPON_TYPE_REGULAR:
+                let bulletBody = new Body(new Point(this.body.centerX - PLAYER_BULLET_W / 2, this.body.pos.y),
+                    PLAYER_BULLET_W, PLAYER_BULLET_H, new Vector(0, -PLAYER_BULLET_SPEED))
+                bullets.push(new PlayerBullet(bulletBody, game.assets["player_regular_bullet"]));
+
+                break
+
+            case WEAPON_TYPE_MULTI:
+                for (let i = 0; i < 6; i++) {
+                    let bx = this.body.centerX - MULTU_BULLET_H * 1.5 + MULTU_BULLET_H / 3 * i,
+                        by = this.body.pos.y - MULTI_BULLET_W / 3 * (2.5 - Math.abs(i - 2.5))
+
+                    let bulletBody = new Body(new Point(bx, by), MULTI_BULLET_W, MULTU_BULLET_H,
+                        new Vector((-2.5 + i) * 0.5, -PLAYER_BULLET_SPEED))
+
+                    bullets.push(new PlayerBullet(bulletBody, game.assets["player_multi_bullet"], 5))
+                }
+
+                if (this.upgradedShotsRemaining-- <= 0)
+                    this.weaponType = WEAPON_TYPE_REGULAR
+
+                break
         }
+
+        // Spawn bullets in game
+        for (let b of bullets) {
+            game.gameObjects.push(b)
+        }
+        this.fireState = 0
+    }
+
+    preUpdate() {
+        this.fire()
     }
 
     calculateMovement() {
         // Calculate coordinates change
-        if (game.isPressed.left && this.dx > -game.constants.PLAYER_MAX_SPEED) {
-            this.dx -= game.constants.PLAYER_ACCELERATION
-        }
-        if (game.isPressed.right && this.dx < game.constants.PLAYER_MAX_SPEED) {
-            this.dx += game.constants.PLAYER_ACCELERATION
-        }
-        if (game.isPressed.down && this.dy < game.constants.PLAYER_MAX_SPEED) {
-            this.dy += game.constants.PLAYER_ACCELERATION
-        }
-        if (game.isPressed.up && this.dy > -game.constants.PLAYER_MAX_SPEED) {
-            this.dy -= game.constants.PLAYER_ACCELERATION
-        }
+        let acceleration = new Vector(game.isPressed.right - game.isPressed.left,
+            game.isPressed.down - game.isPressed.up)
 
-        // Apply velocity
-        this.dx *= game.constants.PLAYER_VELOCITY
-        this.dy *= game.constants.PLAYER_VELOCITY
+        acceleration.length = PLAYER_MAX_SPEED
+        this.body.speed.lerp(acceleration, PLAYER_VELOCITY).limit(PLAYER_MAX_SPEED)
 
-        // Check bounds
-        if (this.body.posX + this.dx < 0 || this.body.posX + this.body.width + this.dx > game.viewport.width) {
-            this.dx = 0;
-        }
-        if (this.body.posY + this.dy < 0 || this.body.posY + this.body.height + this.dy > game.viewport.height) {
-            this.dy = 0;
+        let newPos = this.body.pos.clone().moveBy(this.body.speed)
+        if (newPos.x < 0 || newPos.y < 0 || newPos.x + PLAYER_DIM > game.playArea.width || newPos.y + PLAYER_DIM > game.playArea.height) {
+            this.body.speed.x = this.body.speed.y = 0
         }
     }
 
     render(ctx) {
+        // As player does not rotate throughout game, we 100% don't need to render rotation.
+        // It's a bad idea to override this method in other classes.
         // Render shield
-        ctx.drawImage(this.shieldSprite, this.body.posX - this.shieldAddSize / 2,
-            this.body.posY - this.shieldAddSize / 2,
+        ctx.drawImage(this.shieldSprite, this.body.pos.x - this.shieldAddSize / 2,
+            this.body.pos.y - this.shieldAddSize / 2,
             this.body.width + this.shieldAddSize, this.body.height + this.shieldAddSize)
         this.shieldAddSize += this.dShieldSize
         if (this.shieldAddSize > 17 || this.shieldAddSize < 10) {
@@ -75,7 +117,7 @@ class Player extends BaseEntity {
         }
 
         // Render ship
-        ctx.drawImage(this.sprite, this.body.posX, this.body.posY, this.body.width, this.body.height)
+        ctx.drawImage(this.sprite, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
     }
 
 }
