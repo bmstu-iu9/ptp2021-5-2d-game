@@ -1,52 +1,61 @@
 import {BaseBullet} from "./base_bullet.js";
-import {ENEMY_CHASING_BULLET_SPEED, STATE_DESTROYED} from "../game_constants.js";
+import {ENEMY_HAUNTING_BULLET_SPEED, STATE_DESTROYED} from "../game_constants.js";
 import {game} from "../game.js";
 import {Body} from "../physics/body.js";
+import {Vector} from "../math/vector.js";
 
-export {EnemyBullet, EnemyChasingBullet}
+export {EnemyBullet, EnemyHauntingBullet}
 
-/** Base class for enemy's bullet.
- * Every bullet fired by the enemy should be <EnemyBullet>'s child.
- * @param body <Body> representing physical position of the bullet
- * @param dx initial speed along X-axis
- * @param dy initial speed along Y-axis
- * @param sprite sprite to render
- * @param damage damage on hit*/
+/**Base class for enemy's bullet.
+ *
+ */
 class EnemyBullet extends BaseBullet {
-    constructor(body, dx, dy, sprite, damage) {
-        super(body, dx, dy, sprite)
+    /**
+     *
+     * @param body Body representing physical position and properties
+     * @param sprite sprite to render
+     * @param damage damage on hit
+     */
+    constructor(body, sprite, damage) {
+        super(body, sprite)
         this.damage = damage
     }
 }
 
-class EnemyChasingBullet extends EnemyBullet {
-    constructor(posX, posY) {
-        super(new Body(posX, posY, 50, 20), 0, 0, game.assets["enemyRocket"], 15)
-        this.lifetime = 1000
-        console.log("chasing bullet created")
+/**Bullet that haunts the player.
+ * Will destroy itself after 1000 frames.
+ */
+class EnemyHauntingBullet extends EnemyBullet {
+    /**
+     *
+     * @param pos Point representing position
+     */
+    constructor(pos) {
+        super(new Body(pos, 50, 20, null), game.assets["enemyRocket"], 15)
+        this.lifetimeRemaining = 300
     }
 
     preUpdate() {
-        this.lifetime--
-        if (this.lifetime < 0) {
+        this.lifetimeRemaining--
+        if (this.lifetimeRemaining < 0) {
             this.destroy()
         }
     }
 
     calculateMovement() {
-        let diffX = game.player.body.posX - this.body.posX,
-            diffY = game.player.body.posY - this.body.posY
+        let diffX = game.player.body.pos.x - this.body.pos.x,
+            diffY = game.player.body.pos.y - this.body.pos.y
 
-        let targetAngle = Math.atan2(diffY, diffX);
-        let deltaAngle = targetAngle - this.body.rotation
-        this.body.rotation += deltaAngle
+        let targetSpeed = new Vector(diffX, diffY)
+        targetSpeed.length = ENEMY_HAUNTING_BULLET_SPEED
 
-        this.dx = ENEMY_CHASING_BULLET_SPEED * Math.cos(this.body.rotation)
-        this.dy = ENEMY_CHASING_BULLET_SPEED * Math.sin(this.body.rotation)
+        this.body.speed.lerp(targetSpeed, 0.065)
+        this.body.speed.length = ENEMY_HAUNTING_BULLET_SPEED
+
+        this.body.rotation = this.body.speed.angle
     }
 
     destroy() {
         this.state = STATE_DESTROYED
-        console.log("chasing bullet dead")
     }
 }

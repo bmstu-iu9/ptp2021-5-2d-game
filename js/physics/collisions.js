@@ -4,7 +4,7 @@ import {PLAYER_BASE_COLLISION_DAMAGE} from "../game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet} from "../entities/player_bullets.js";
 
-export function testCollision(obj1, obj2) {
+export function applyCollisionRules(obj1, obj2) {
     for (let rule of collisionRules) {
         if (rule.checkAndRun(obj1, obj2)) {
             break
@@ -12,20 +12,28 @@ export function testCollision(obj1, obj2) {
     }
 }
 
-/** Collision rule defines how game objects react to collisions.
- * @param pred1 function to choose the first object of rule
- * @param pred2 function to choose the second object of rule
- * @param collisionCallback function which takes actions if objects match
- * the predicate*/
+/**Collision rule defines how game objects react to collisions.
+ *
+ */
 class CollisionRule {
+    /**
+     *
+     * @param pred1 function to choose the first object of rule
+     * @param pred2 function to choose the second object of rule
+     * @param callback function which takes actions if objects match the rule
+     */
     constructor(pred1, pred2, callback) {
         this.pred1 = pred1
         this.pred2 = pred2
         this.collisionCallback = callback
     }
 
-    /** Checks if passed objects match the predicates.
-     *  If match, performs callback and returns true, returns false otherwise */
+    /**Checks if passed objects match the predicates. If true, runs the collision callback.
+     *
+     * @param obj1 first gameObject
+     * @param obj2 second gameObject
+     * @returns {boolean} if objects match the rule or not
+     */
     checkAndRun(obj1, obj2) {
         let passedTest = false
 

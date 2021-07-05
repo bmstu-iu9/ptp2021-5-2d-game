@@ -11,17 +11,18 @@ let assets = [
     ["dummy", "img/dummy.png"],
     ["explosionOrange", "effects/explosion_orange.png"],
     ["enemyBullet", "img/enemy_bullet.png"],
-    ["enemyRocket", "img/enemy_rocket.png"]
+    ["enemyRocket", "img/enemy_rocket.png"],
+    ["explosionPurple", "effects/explosion_purple.png"]
 ]
 
-/** Loads all game assets.
- * When every asset is loaded, executes collisionCallback() */
+/**Loads all game assets.
+ * When every asset is loaded, executes callback()
+ */
 function loadAssets(callback) {
     let aName, aSrc,
         result = {},
         count = assets.length,
         onSingleAssetLoad = function () {
-            console.log(count - 1)
             if (--count === 0) {
                 console.log(assets.length + " assets loaded!")
                 callback(result);
@@ -43,10 +44,20 @@ function loadAssets(callback) {
     return result
 }
 
+/**Determine if given filename holds an image.
+ *
+ * @param fName filename to check
+ * @returns {boolean} result of check
+ */
 function isImage(fName) {
     return imageExtensions.includes(fName.split('.').pop())
 }
 
+/**Determine if given filename holds a sound.
+ *
+ * @param fName filename to check
+ * @returns {boolean} result of check
+ */
 function isSound(fName) {
     return soundExtensions.includes(fName.split('.').pop())
 }

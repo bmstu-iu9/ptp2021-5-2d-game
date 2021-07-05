@@ -1,54 +1,70 @@
+import {Vector} from "../math/vector.js";
+
 export {
     Body
 }
 
-/** Class representing physical position and properties of game object
- * @param posX position on X axis
- * @param posY position on Y axis
- * @param width width of the collider and sprite
- * @param height height of the collider and sprite
- * @param canCollide if body will be checked for collisions; default: true
- * @param rotation in radians
+/**Class representing physical pos and properties of game object.
+ *
  */
 class Body {
-    constructor(posX, posY, width, height, canCollide = true, rotation = 0) {
-        this.posX = posX
-        this.posY = posY
+    /**
+     * @param pos {Point}
+     * @param width {number}
+     * @param height {number}
+     * @param speed {Vector}
+     * @param canCollide {boolean}
+     * @param rotation {number}
+     */
+    constructor(pos, width, height, speed = null, canCollide = true, rotation = 0) {
+        this.pos = pos
         this.width = width
         this.height = height
+        this.speed = speed || new Vector()
         this.canCollide = canCollide
         this.rotation = rotation
     }
 
+    /**Returns X of the center
+     *
+     * @returns {number}
+     */
     get centerX() {
-        return this.posX + this.width / 2
+        return this.pos.x + this.width / 2
     }
 
+    /**Returns Y of the center
+     *
+     * @returns {number}
+     */
     get centerY() {
-        return this.posY + this.height / 2
+        return this.pos.y + this.height / 2
     }
 
-    /** Multiplies both width and height by the <factor> while
-     * keeping the center at the same point.*/
+    /**Scales this Body by given factor. Keeps the center at the same point.
+     *
+     * @param factor value by which to scale
+     */
     scale(factor) {
-        // Calculate new corner position so the center don't move
+        // Calculate new corner pos so the center don't move
         let diffX = Math.floor(this.width * (factor - 1) / 2),
             diffY = Math.floor(this.height * (factor - 1) / 2)
-        this.posX -= diffX
-        this.posY -= diffY
+        this.pos.x -= diffX
+        this.pos.y -= diffY
 
         this.width *= factor
         this.height *= factor
     }
 
+    /**Checks if this Body intersects with other Body.
+     *
+     * @param other Body to check intersection with
+     * @returns {boolean} if two bodies collide or not
+     */
     collidesWith(other) {
-        return this.posX < other.posX + other.width &&
-            this.posX + this.width > other.posX &&
-            this.posY < other.posY + other.height &&
-            this.posY + this.height > other.posY
-    }
-
-    distanceBetween(other) {
-        return Math.sqrt((other.posX - this.posX) ** 2 + (other.posY - this.posY) ** 2)
+        return this.pos.x < other.pos.x + other.width &&
+            this.pos.x + this.width > other.pos.x &&
+            this.pos.y < other.pos.y + other.height &&
+            this.pos.y + this.height > other.pos.y
     }
 }

@@ -7,16 +7,20 @@ import {
     PLAYER_BULLET_SPEED,
     PLAYER_BULLET_WIDTH
 } from "../game_constants.js";
+import {Vector} from "../math/vector.js";
 
 export {PlayerBullet}
 
-/** Base class for player's bullet.
- * Every bullet fired by the player should be <PlayerBullet>'s child.
- * @param posX bullet's position along X-axis
- * @param posY bullet's position along Y-axis*/
+/**Base class for player's bullet.
+ * Every bullet fired by the player should be PlayerBullet's child.
+ */
 class PlayerBullet extends BaseBullet {
-    constructor(posX, posY) {
-        super(new Body(posX, posY, PLAYER_BULLET_WIDTH, PLAYER_BULLET_HEIGHT),
-            0, -PLAYER_BULLET_SPEED, game.assets["playerBullet"], PLAYER_BULLET_DAMAGE)
+    /**
+     *
+     * @param pos Point representing position
+     */
+    constructor(pos) {
+        super(new Body(pos, PLAYER_BULLET_WIDTH, PLAYER_BULLET_HEIGHT, new Vector(0, -PLAYER_BULLET_SPEED)),
+            game.assets["playerBullet"], PLAYER_BULLET_DAMAGE)
     }
 }

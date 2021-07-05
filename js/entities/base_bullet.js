@@ -4,16 +4,17 @@ export {
     BaseBullet
 }
 
-/** Base class for every bullet.
- * @param body <Body> representing physical position
- * @param dx speed along X-axis
- * @param dy speed along Y-axis
- * @param sprite sprite to render
- * @param damage damage on hit
+/**Base class for every bullet.
+ *
  */
 class BaseBullet extends BaseEntity {
-    constructor(body, dx, dy, sprite, damage) {
-        super(body, dx, dy, sprite)
+    /**
+     * @param body Body representing physical pos
+     * @param sprite sprite to render
+     * @param damage damage on hit
+     */
+    constructor(body, sprite, damage) {
+        super(body, sprite)
         this.damage = damage
     }
 }

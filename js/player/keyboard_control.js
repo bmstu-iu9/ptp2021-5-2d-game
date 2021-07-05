@@ -1,8 +1,9 @@
-/** Hooks "keydown" and "keyup" events so that engine always knows which
- * key is currently pressed. */
 import {game} from "../game.js";
+
 export {configureKeyWatchers}
 
+/**Hooks "keydown" and "keyup" events so that engine always knows which
+ * key is currently pressed*/
 function configureKeyWatchers() {
     game.isPressed = {};
 

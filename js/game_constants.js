@@ -1,11 +1,11 @@
-/** This file holds all game balance settings. */
+/**This file holds all game balance settings. */
 
-/** Player constants */
+/**Player constants */
 export const
     PLAYER_HEALTH = 100,
     PLAYER_ACCELERATION = 1,
     PLAYER_MAX_SPEED = 7,
-    PLAYER_VELOCITY = 0.93,
+    PLAYER_VELOCITY = 0.07,
     PLAYER_FRAMES_PER_BULLET = 10,
     PLAYER_BULLET_DAMAGE = 5,
     PLAYER_BASE_COLLISION_DAMAGE = 10,
@@ -14,18 +14,18 @@ export const
     PLAYER_BULLET_HEIGHT = 40,
     PLAYER_BULLET_SPEED = 10;
 
-/** Possible entity states */
+/**Possible entity states */
 export const
     STATE_ACTIVE = 0,
     STATE_UNDER_FIRE = 1,
     STATE_DESTROYED = 13;
 
-/** World */
+/**World */
 export const
     BACKGROUND_SPEED = 2;
 
-/** Enemies */
+/**Enemies */
 export const
     ENEMY1_FIRE_RATE = 150,
-    ENEMY_CHASING_BULLET_SPEED = 4,
-    ENEMY_CHASING_BULLET_VELOCITY = 0.9;
+    ENEMY_HAUNTING_BULLET_SPEED = 4,
+    ENEMY_HAUNTING_BULLET_VELOCITY = 0.9;
