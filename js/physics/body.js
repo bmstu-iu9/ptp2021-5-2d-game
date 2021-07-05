@@ -41,6 +41,10 @@ class Body {
         return this.pos.y + this.height / 2
     }
 
+    clone() {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    }
+
     /**Scales this Body by given factor. Keeps the center at the same point.
      *
      * @param factor value by which to scale

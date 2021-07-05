@@ -21,6 +21,6 @@ class PlayerBullet extends BaseBullet {
      */
     constructor(pos) {
         super(new Body(pos, PLAYER_BULLET_WIDTH, PLAYER_BULLET_HEIGHT, new Vector(0, -PLAYER_BULLET_SPEED)),
-            game.assets["playerBullet"], PLAYER_BULLET_DAMAGE)
+            game.assets["player_regular_bullet"], PLAYER_BULLET_DAMAGE)
     }
 }

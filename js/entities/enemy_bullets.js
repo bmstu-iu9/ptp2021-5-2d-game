@@ -31,7 +31,7 @@ class EnemyHauntingBullet extends EnemyBullet {
      * @param pos Point representing position
      */
     constructor(pos) {
-        super(new Body(pos, 50, 20, null), game.assets["enemyRocket"], 15)
+        super(new Body(pos, 50, 20, null), game.assets["enemy_haunting_bullet"], 15)
         this.lifetimeRemaining = 300
     }
 

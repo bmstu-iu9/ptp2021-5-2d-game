@@ -8,7 +8,7 @@ export {ShootingEnemy}
 
 class ShootingEnemy extends BaseEnemy {
     constructor(body, sprite, health, damage = 0) {
-        super(body, game.assets["baseEnemy"], health, damage);
+        super(body, game.assets["enemy_ship"], health, damage);
         this.fireState = 0
     }
 

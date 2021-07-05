@@ -4,15 +4,15 @@ const imageExtensions = ["png", "jpg"]
 const soundExtensions = ["mp3", "wav"]
 
 let assets = [
-    ["playerSprite", "img/player.png"],
-    ["baseEnemy", "img/base_enemy.png"],
-    ["playerBullet", "img/player_bullet.png"],
-    ["playerShield", "img/shield.png"],
+    ["player_ship", "img/player.png"],
+    ["enemy_ship", "img/base_enemy.png"],
+    ["player_regular_bullet", "img/player_bullet.png"],
+    ["player_shield", "img/shield.png"],
     ["dummy", "img/dummy.png"],
-    ["explosionOrange", "effects/explosion_orange.png"],
-    ["enemyBullet", "img/enemy_bullet.png"],
-    ["enemyRocket", "img/enemy_rocket.png"],
-    ["explosionPurple", "effects/explosion_purple.png"]
+    ["explosion_orange", "effects/explosion_orange.png"],
+    ["explosion_purple", "effects/explosion_purple.png"],
+    ["enemy_regular_bullet", "img/enemy_bullet.png"],
+    ["enemy_haunting_bullet", "img/enemy_rocket.png"],
 ]
 
 /**Loads all game assets.

@@ -17,7 +17,7 @@ class BaseEnemy extends BaseEntity {
      * @param damage bullet's damage
      */
     constructor(body, sprite, health, damage = 0) {
-        super(body, game.assets["baseEnemy"]);
+        super(body, game.assets["enemy_ship"]);
         this.health = health
         this.damage = damage
     }

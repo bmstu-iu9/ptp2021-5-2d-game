@@ -101,9 +101,11 @@ class Game {
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i].state === STATE_DESTROYED) {
                 if (this.gameObjects[i] instanceof BaseEnemy) {
-                    this.gameObjects.push(new ExplosionEffect(this.gameObjects[i].body, this.assets["explosionOrange"]))
+                    this.gameObjects.push(
+                        new ExplosionEffect(this.gameObjects[i].body, this.assets["explosion_orange"]))
                 } else if (this.gameObjects[i] instanceof EnemyHauntingBullet) {
-                    this.gameObjects.push(new ExplosionEffect(this.gameObjects[i].body, this.assets["explosionPurple"]))
+                    this.gameObjects.push(
+                        new ExplosionEffect(this.gameObjects[i].body, this.assets["explosion_purple"]))
                 }
                 this.gameObjects.splice(i, 1)
             }
@@ -141,4 +143,3 @@ game.load()
 let player = new Player()
 game.gameObjects.push(player)
 game.player = player
-

@@ -23,10 +23,10 @@ export {
 class Player extends BaseEntity {
     constructor() {
         let initialPos = new Point((game.viewport.width - PLAYER_DIM) / 2, (game.viewport.height - PLAYER_DIM) / 2)
-        super(new Body(initialPos, PLAYER_DIM, PLAYER_DIM), game.assets["playerSprite"])
+        super(new Body(initialPos, PLAYER_DIM, PLAYER_DIM), game.assets["player_ship"])
         this.health = PLAYER_HEALTH;
         this.fireState = 0;
-        this.shieldSprite = game.assets["playerShield"]
+        this.shieldSprite = game.assets["player_shield"]
         this.shieldAddSize = 10;
         this.dShieldSize = 0.2;
     }
