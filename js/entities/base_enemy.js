@@ -1,5 +1,4 @@
 import {BaseEntity} from "./base_entity.js";
-import {game} from "../core/game.js";
 
 export {
     BaseEnemy
@@ -17,7 +16,7 @@ class BaseEnemy extends BaseEntity {
      * @param damage bullet's damage
      */
     constructor(body, sprite, health, damage = 0) {
-        super(body, game.assets["enemy_ship"])
+        super(body, sprite)
         this.health = health
         this.damage = damage
     }
