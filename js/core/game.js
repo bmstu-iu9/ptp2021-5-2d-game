@@ -1,15 +1,15 @@
-import {BaseEnemy} from "./entities/base_enemy.js";
-import {Player} from "./player/player.js";
-import {configureKeyWatchers} from "./player/keyboard_control.js";
+import {BaseEnemy} from "../entities/base_enemy.js";
+import {Player} from "../player/player.js";
+import {configureKeyWatchers} from "../player/keyboard_control.js";
 import {loadAssets} from "./asset_manager.js";
-import {Body} from "./physics/body.js";
-import {ExplosionEffect} from "./effects/explosion.js";
-import {applyCollisionRules} from "./physics/collisions.js";
-import {ShootingEnemy} from "./entities/shooting_enemy.js";
+import {Body} from "../physics/body.js";
+import {ExplosionEffect} from "../effects/explosion.js";
+import {applyCollisionRules} from "../physics/collisions.js";
+import {ShootingEnemy} from "../entities/shooting_enemy.js";
 import {STATE_DESTROYED} from "./game_constants.js";
-import {Vector} from "./math/vector.js";
-import {Point} from "./math/point.js";
-import {EnemyHauntingBullet} from "./entities/enemy_bullets.js";
+import {Vector} from "../math/vector.js";
+import {Point} from "../math/point.js";
+import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;

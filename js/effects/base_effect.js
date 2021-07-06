@@ -1,4 +1,4 @@
-import {STATE_DESTROYED} from "../game_constants.js";
+import {STATE_DESTROYED} from "../core/game_constants.js";
 import {BaseEntity} from "../entities/base_entity.js";
 
 export {BaseEffect}

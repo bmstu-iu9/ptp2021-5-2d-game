@@ -1,6 +1,6 @@
 import {BaseEnemy} from "./base_enemy.js";
-import {game} from "../game.js";
-import {ENEMY1_FIRE_RATE} from "../game_constants.js";
+import {game} from "../core/game.js";
+import {ENEMY1_FIRE_RATE} from "../core/game_constants.js";
 import {EnemyHauntingBullet} from "./enemy_bullets.js";
 import {Point} from "../math/point.js";
 

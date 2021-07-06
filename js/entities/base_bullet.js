@@ -5,7 +5,7 @@ export {
 }
 
 /**Base class for every bullet.
- *
+ * Body's rotation always equals to the speed Vector angle.
  */
 class BaseBullet extends BaseEntity {
     /**
@@ -20,6 +20,6 @@ class BaseBullet extends BaseEntity {
 
     update() {
         super.update();
-        this.body.rotation = this.body.speed.angle
+        this.body.rotation = this.body.speed.angle // set rotation according to speed vector angle
     }
 }

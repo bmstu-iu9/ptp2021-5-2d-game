@@ -1,6 +1,6 @@
 import {Player} from "../player/player.js";
 import {BaseEnemy} from "../entities/base_enemy.js";
-import {PLAYER_BASE_COLLISION_DAMAGE} from "../game_constants.js";
+import {PLAYER_BASE_COLLISION_DAMAGE} from "../core/game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet} from "../entities/player_bullets.js";
 

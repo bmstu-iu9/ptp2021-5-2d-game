@@ -1,4 +1,4 @@
-import {game} from "../game.js";
+import {game} from "../core/game.js";
 
 export {configureKeyWatchers}
 

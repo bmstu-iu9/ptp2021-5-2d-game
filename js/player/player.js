@@ -1,4 +1,4 @@
-import {game} from "../game.js";
+import {game} from "../core/game.js";
 import {BaseEntity} from "../entities/base_entity.js";
 import {Body} from "../physics/body.js"
 import {PlayerBullet} from "../entities/player_bullets.js";
@@ -13,7 +13,7 @@ import {
     PLAYER_HEALTH,
     PLAYER_MAX_SPEED,
     PLAYER_VELOCITY
-} from "../game_constants.js";
+} from "../core/game_constants.js";
 import {Point} from "../math/point.js";
 import {Vector} from "../math/vector.js";
 
@@ -68,7 +68,7 @@ class Player extends BaseEntity {
                         by = this.body.pos.y - MULTI_BULLET_W / 3 * (2.5 - Math.abs(i - 2.5))
 
                     let bulletBody = new Body(new Point(bx, by), MULTI_BULLET_W, MULTU_BULLET_H,
-                        new Vector((-2.5 + i) * 0.5, -PLAYER_BULLET_SPEED))
+                        new Vector((-2.5 + i) * 0.3, -PLAYER_BULLET_SPEED))
 
                     bullets.push(new PlayerBullet(bulletBody, game.assets["player_multi_bullet"], 5))
                 }
