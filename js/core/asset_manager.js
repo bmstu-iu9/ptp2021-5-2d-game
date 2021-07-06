@@ -6,7 +6,7 @@ const imageExtensions = ["png", "jpg"],
 // Assets to be loaded in format: [NAME, FILEPATH]
 const ASSETS_LIST = [
     ["player_ship", "img/player.png"],
-    ["enemy_ship", "img/base_enemy.png"], ["player_regular_bullet", "img/player_bullet.png"],
+    ["enemy_ship", "img/enemy_ship.png"], ["player_regular_bullet", "img/player_bullet.png"],
     ["player_multi_bullet", "img/player_multi_bullet.png"], ["player_shield", "img/shield.png"],
     ["dummy", "img/dummy.png"], ["explosion_orange", "effects/explosion_orange.png"],
     ["explosion_purple", "effects/explosion_purple.png"], ["enemy_regular_bullet", "img/enemy_bullet.png"],

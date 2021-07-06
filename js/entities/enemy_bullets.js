@@ -51,8 +51,6 @@ class EnemyHauntingBullet extends EnemyBullet {
 
         this.body.speed.lerp(targetSpeed, 0.065)
         this.body.speed.length = ENEMY_HAUNTING_BULLET_SPEED
-
-        this.body.rotation = this.body.speed.angle
     }
 
     destroy() {
