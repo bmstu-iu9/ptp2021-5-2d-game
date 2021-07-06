@@ -35,6 +35,12 @@ class Game {
         this.bgImg = new Image()
         this.bgImg.src = 'assets/img/bg.jpg';
 
+        //Load HPbar images
+        this.hpImg = new Image()
+        this.hpbackImg = new Image
+        this.hpImg.src = 'assets/img/hpbar.png';
+        this.hpbackImg.src = 'assets/img/hpback.png';
+
         this.gameObjects = []
         this.assets = {}
 
@@ -130,6 +136,10 @@ class Game {
     render() {
         // Draw background
         this.context.drawImage(this.bgImg, 0, 0, this.viewport.width, this.viewport.height)
+
+        //Draw HPbar
+        this.context.drawImage(this.hpbackImg, 60, 30, 242, 41)
+        this.context.drawImage(this.hpImg, 68, 40,228 * (this.player.health <= 0 ? 0 : this.player.health / 100), 20)
 
         // Render all gameObjects
         for (let ent of this.gameObjects) {
