@@ -113,12 +113,12 @@ class Game {
 
         // TODO: SPAWNER DEBUG ONLY
         if (rnd(0, 100) > 98) {
-            let pos = new Point(rnd(1, this.viewport.width - 50)),
+            let pos   = new Point(rnd(1, this.viewport.width - 50)),
                 speed = new Vector(0, rnd(1, 4));
             this.gameObjects.push(new BaseEnemy(new Body(pos, 50, 55, speed), null, 15))
         }
         if (rnd(0, 200) > 198) {
-            let pos = new Point(rnd(1, this.viewport.width - 50), 100),
+            let pos   = new Point(rnd(1, this.viewport.width - 50), 100),
                 speed = new Vector(rnd(1, 4), 0)
             this.gameObjects.push(new ShootingEnemy(new Body(pos, 50, 55, speed), null, 15))
         }

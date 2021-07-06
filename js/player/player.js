@@ -22,8 +22,8 @@ export {
 }
 
 const WEAPON_TYPE_REGULAR = 0,
-    WEAPON_TYPE_MULTI = 1,
-    WEAPON_TYPE_LASER = 2;
+      WEAPON_TYPE_MULTI   = 1,
+      WEAPON_TYPE_LASER   = 2;
 
 /**Represents, well, player
  *
@@ -57,7 +57,7 @@ class Player extends BaseEntity {
         switch (this.weaponType) {
             case WEAPON_TYPE_REGULAR:
                 let bulletBody = new Body(new Point(this.body.centerX - PLAYER_BULLET_W / 2, this.body.pos.y),
-                    PLAYER_BULLET_W, PLAYER_BULLET_H, new Vector(0, -PLAYER_BULLET_SPEED))
+                                          PLAYER_BULLET_W, PLAYER_BULLET_H, new Vector(0, -PLAYER_BULLET_SPEED))
                 bullets.push(new PlayerBullet(bulletBody, game.assets["player_regular_bullet"]));
 
                 break
@@ -68,7 +68,7 @@ class Player extends BaseEntity {
                         by = this.body.pos.y - MULTI_BULLET_W / 3 * (2.5 - Math.abs(i - 2.5))
 
                     let bulletBody = new Body(new Point(bx, by), MULTI_BULLET_W, MULTU_BULLET_H,
-                        new Vector((-2.5 + i) * 0.3, -PLAYER_BULLET_SPEED))
+                                              new Vector((-2.5 + i) * 0.3, -PLAYER_BULLET_SPEED))
 
                     bullets.push(new PlayerBullet(bulletBody, game.assets["player_multi_bullet"], 5))
                 }
@@ -93,7 +93,7 @@ class Player extends BaseEntity {
     calculateMovement() {
         // Calculate coordinates change
         let acceleration = new Vector(game.isPressed.right - game.isPressed.left,
-            game.isPressed.down - game.isPressed.up)
+                                      game.isPressed.down - game.isPressed.up)
 
         acceleration.length = PLAYER_MAX_SPEED
         this.body.speed.lerp(acceleration, PLAYER_VELOCITY).limit(PLAYER_MAX_SPEED)
@@ -109,8 +109,8 @@ class Player extends BaseEntity {
         // It's a bad idea to override this method in other classes.
         // Render shield
         ctx.drawImage(this.shieldSprite, this.body.pos.x - this.shieldAddSize / 2,
-            this.body.pos.y - this.shieldAddSize / 2,
-            this.body.width + this.shieldAddSize, this.body.height + this.shieldAddSize)
+                      this.body.pos.y - this.shieldAddSize / 2,
+                      this.body.width + this.shieldAddSize, this.body.height + this.shieldAddSize)
         this.shieldAddSize += this.dShieldSize
         if (this.shieldAddSize > 17 || this.shieldAddSize < 10) {
             this.dShieldSize = -this.dShieldSize;

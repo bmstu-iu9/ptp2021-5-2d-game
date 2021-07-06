@@ -32,6 +32,6 @@ class BaseEffect extends BaseEntity {
         let cellX = this.nextFrame % this.texturesInCol * 100,
             cellY = Math.floor(this.nextFrame / this.texturesInRow) * 100
         ctx.drawImage(this.sprite, cellX, cellY, 100,
-            100, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
+                      100, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
     }
 }

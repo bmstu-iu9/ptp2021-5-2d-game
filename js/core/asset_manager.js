@@ -1,18 +1,15 @@
 export {loadAssets}
 
-const imageExtensions = ["png", "jpg"]
-const soundExtensions = ["mp3", "wav"]
+const imageExtensions = ["png", "jpg"],
+      soundExtensions = ["mp3", "wav"]
 
-let assets = [
+// Assets to be loaded in format: [NAME, FILEPATH]
+const ASSETS_LIST = [
     ["player_ship", "img/player.png"],
-    ["enemy_ship", "img/base_enemy.png"],
-    ["player_regular_bullet", "img/player_bullet.png"],
-    ["player_multi_bullet", "img/player_multi_bullet.png"],
-    ["player_shield", "img/shield.png"],
-    ["dummy", "img/dummy.png"],
-    ["explosion_orange", "effects/explosion_orange.png"],
-    ["explosion_purple", "effects/explosion_purple.png"],
-    ["enemy_regular_bullet", "img/enemy_bullet.png"],
+    ["enemy_ship", "img/base_enemy.png"], ["player_regular_bullet", "img/player_bullet.png"],
+    ["player_multi_bullet", "img/player_multi_bullet.png"], ["player_shield", "img/shield.png"],
+    ["dummy", "img/dummy.png"], ["explosion_orange", "effects/explosion_orange.png"],
+    ["explosion_purple", "effects/explosion_purple.png"], ["enemy_regular_bullet", "img/enemy_bullet.png"],
     ["enemy_haunting_bullet", "img/enemy_rocket.png"],
 ]
 
@@ -20,19 +17,16 @@ let assets = [
  * When every asset is loaded, executes callback()
  */
 function loadAssets(callback) {
-    let aName, aSrc,
-        result = {},
-        count = assets.length,
-        onSingleAssetLoad = function () {
-            if (--count === 0) {
-                console.log(assets.length + " assets loaded!")
-                callback(result);
-            }
-        };
+    let aName, aSrc, result = {}, count = ASSETS_LIST.length, onSingleAssetLoad = function () {
+        if (--count === 0) {
+            console.log(ASSETS_LIST.length + " assets loaded!")
+            callback(result);
+        }
+    };
     console.log("Loading assets...")
 
-    for (let i = 0; i < assets.length; i++) {
-        [aName, aSrc] = assets[i]
+    for (let i = 0; i < ASSETS_LIST.length; i++) {
+        [aName, aSrc] = ASSETS_LIST[i]
         if (isImage(aSrc)) {
             result[aName] = new Image();
         } else if (isSound(aSrc)) {
