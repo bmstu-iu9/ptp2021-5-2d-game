@@ -1,4 +1,4 @@
-import {STATE_DESTROYED} from "../game_constants.js";
+import {STATE_DESTROYED} from "../core/game_constants.js";
 import {BaseEntity} from "../entities/base_entity.js";
 
 export {BaseEffect}
@@ -32,6 +32,6 @@ class BaseEffect extends BaseEntity {
         let cellX = this.nextFrame % this.texturesInCol * 100,
             cellY = Math.floor(this.nextFrame / this.texturesInRow) * 100
         ctx.drawImage(this.sprite, cellX, cellY, 100,
-            100, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
+                      100, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
     }
 }

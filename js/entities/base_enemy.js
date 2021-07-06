@@ -1,5 +1,5 @@
 import {BaseEntity} from "./base_entity.js";
-import {game} from "../game.js";
+import {game} from "../core/game.js";
 
 export {
     BaseEnemy

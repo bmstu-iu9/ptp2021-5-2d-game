@@ -1,5 +1,5 @@
-import {game} from "../game.js";
-import {STATE_ACTIVE, STATE_DESTROYED} from "../game_constants.js";
+import {game} from "../core/game.js";
+import {STATE_ACTIVE, STATE_DESTROYED} from "../core/game_constants.js";
 
 export {BaseEntity}
 
@@ -19,7 +19,7 @@ class BaseEntity {
         this.state = STATE_ACTIVE
     }
 
-    /**This method is executed before <update> code.
+    /**This method is executed before update() code.
      * Put your code here, not in BaseEntity.update */
     preUpdate() {
     }
@@ -39,7 +39,6 @@ class BaseEntity {
      * You should not override this method. */
     update() {
         this.preUpdate();
-
         // Here movement goes
         this.calculateMovement()
         // TODO: Think about correcting for time elapsed (* game.timeElapsed)

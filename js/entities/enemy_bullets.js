@@ -1,6 +1,6 @@
 import {BaseBullet} from "./base_bullet.js";
-import {ENEMY_HAUNTING_BULLET_SPEED, STATE_DESTROYED} from "../game_constants.js";
-import {game} from "../game.js";
+import {ENEMY_HAUNTING_BULLET_SPEED, STATE_DESTROYED} from "../core/game_constants.js";
+import {game} from "../core/game.js";
 import {Body} from "../physics/body.js";
 import {Vector} from "../math/vector.js";
 
