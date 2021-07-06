@@ -30,7 +30,7 @@ const WEAPON_TYPE_REGULAR = 0,
  */
 class Player extends BaseEntity {
     constructor() {
-        let initialPos = new Point((game.viewport.width - PLAYER_DIM) / 2, (game.viewport.height - PLAYER_DIM) / 2)
+        let initialPos = new Point((game.playArea.width - PLAYER_DIM) / 2, (game.playArea.height - PLAYER_DIM) / 2)
         super(new Body(initialPos, PLAYER_DIM, PLAYER_DIM), game.assets["player_ship"])
         this.health = PLAYER_HEALTH;
         this.fireState = 0;
@@ -38,6 +38,7 @@ class Player extends BaseEntity {
         this.upgradedShotsRemaining = 30
         this.shieldSprite = game.assets["player_shield"]
         this.shieldAddSize = 10;
+        this.shieldRotation = 0;
         this.dShieldSize = 0.2;
     }
 
@@ -105,19 +106,17 @@ class Player extends BaseEntity {
     }
 
     render(ctx) {
-        // As player does not rotate throughout game, we 100% don't need to render rotation.
-        // It's a bad idea to override this method in other classes.
-        // Render shield
+        // Render ship
+        ctx.drawImage(this.sprite, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height);
+
         ctx.drawImage(this.shieldSprite, this.body.pos.x - this.shieldAddSize / 2,
                       this.body.pos.y - this.shieldAddSize / 2,
                       this.body.width + this.shieldAddSize, this.body.height + this.shieldAddSize)
         this.shieldAddSize += this.dShieldSize
+        this.shieldRotation++
         if (this.shieldAddSize > 17 || this.shieldAddSize < 10) {
             this.dShieldSize = -this.dShieldSize;
         }
-
-        // Render ship
-        ctx.drawImage(this.sprite, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
     }
 
 }
