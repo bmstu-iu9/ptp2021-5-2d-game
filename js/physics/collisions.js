@@ -54,21 +54,15 @@ class CollisionRule {
 }
 
 const collisionRules = [
-    new CollisionRule(isPlayer, isEnemyBullet, function (player, bullet) {
-        player.receiveDamage(bullet.damage)
-        bullet.destroy()
-    }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
         player.receiveDamage(enemy.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
         enemy.destroy()
     }),
-    new CollisionRule(isPlayerBullet, isEnemy, function (bullet, enemy) {
-        enemy.receiveDamage(bullet.damage)
-        bullet.destroy()
+    new CollisionRule(isPlayerBullet, isEnemy, function (myBullet, enemy) {
+        myBullet.hit(enemy)
     }),
-    new CollisionRule(isEnemyBullet, isPlayer, function (bullet, player) {
-        player.receiveDamage(bullet.damage)
-        bullet.destroy()
+    new CollisionRule(isEnemyBullet, isPlayer, function (enemyBullet, player) {
+        enemyBullet.hit(player)
     })
 ]
 

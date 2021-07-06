@@ -18,6 +18,22 @@ class BaseBullet extends BaseEntity {
         this.damage = damage
     }
 
+    /**Hits the target with specified damage.
+     * Bullet is destroyed after hit.
+     * Should be called by CollisionRule.
+     *
+     * @param target gameObject to be hit
+     */
+    hit(target) {
+        if ("receiveDamage" in target) {
+            target.receiveDamage(this.damage)
+        } else {
+            target.destroy()
+        }
+
+        this.destroy()
+    }
+
     update() {
         super.update();
         this.body.rotation = this.body.speed.angle // set rotation according to speed vector angle
