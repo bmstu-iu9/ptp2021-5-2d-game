@@ -6,14 +6,20 @@ import {Body} from "../physics/body.js";
 import {ExplosionEffect} from "../effects/explosion.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {STATE_DESTROYED} from "./game_constants.js";
+import {PLAYER_HEALTH, STATE_DESTROYED} from "./game_constants.js";
 import {Vector} from "../math/vector.js";
 import {Point} from "../math/point.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
+import {EventManager} from "./event_manager.js";
+import {switchToMenu} from "./page.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+const GAME_STATE_LOADING = 0,
+      GAME_STATE_MENU    = 1,
+      GAME_STATE_RUNNING = 2;
 
 class Game {
     lastTimestamp
@@ -32,29 +38,54 @@ class Game {
         //
         this.playArea = new Body(new Point(0, 0), window.innerWidth, window.innerHeight)
 
-
         // Load background
         this.bgImg = new Image()
         this.bgImg.src = 'assets/img/bg.jpg';
 
         this.gameObjects = []
         this.assets = {}
+        this.eventManager = new EventManager()
+        this.state = GAME_STATE_LOADING
 
         return this
     }
 
-    /**Prepares game for run, loads assets.
+    /**Prepares game for start, loads assets.
      * No entity should be created before the loading is complete!
-     * Should be used to start the game.*/
+     */
     load() {
         configureKeyWatchers()
-        this.assets = loadAssets(game.run)
+        game.assets = loadAssets(game.onLoaded)
+    }
+
+    /**Callback for load().
+     * Shows the game menu.
+     */
+    onLoaded() {
+        game.state = GAME_STATE_MENU
+        switchToMenu()
+    }
+
+    /**Reset the game & switch to main menu.
+     * Replaces gameover() for now.
+     */
+    reset() {
+        this.gameObjects = []
+        this.state = GAME_STATE_MENU
+        switchToMenu()
     }
 
     /**Starts the game.
-     * Should be called by load(). */
-    run() {
+     *
+     */
+    start() {
         game.lastTimestamp = Date.now()
+
+        game.player = new Player()
+        game.gameObjects.push(game.player)
+
+        game.state = GAME_STATE_RUNNING
+
         window.requestAnimationFrame(game.gameLoop)
     }
 
@@ -63,6 +94,9 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     gameLoop(ts) {
+        if (game.state !== GAME_STATE_RUNNING)
+            return
+
         game.update(ts);
         game.render()
         window.requestAnimationFrame(game.gameLoop)
@@ -133,15 +167,15 @@ class Game {
         // Draw background
         this.context.drawImage(this.bgImg, 0, 0, this.playArea.width, this.playArea.height)
 
+        //Draw HP-bar
+        this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
+        let barW = 260 * (this.player.health <= 0 ? 0 : this.player.health / PLAYER_HEALTH)
+        this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
+
         // Render all gameObjects
         for (let ent of this.gameObjects) {
             ent.render(this.context)
         }
-
-        //Draw HP-bar
-        this.context.drawImage(this.assets["player_hp_bar_back"], 15, 15, 242, 41)
-        this.context.drawImage(this.assets["player_hp_bar"], 23, 25,
-                               228 * (this.player.health <= 0 ? 0 : this.player.health / 100), 20)
     }
 
     onResize() {

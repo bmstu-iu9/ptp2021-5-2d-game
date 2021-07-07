@@ -4,18 +4,22 @@ const POSSIBLE_EVENTS = [
 
 export class EventManager {
     constructor() {
-        this.eventStore = new Map()
+        this.eventStore = []
         for (let eventName of POSSIBLE_EVENTS) {
-            this.eventStore.set(eventName, [])
+            this.eventStore[eventName] = []
         }
     }
 
     addListener(eventName, fn) {
-        this.eventStore.get(eventName).push(fn)
+        if (!(eventName in this.eventStore)) {
+            throw "No such event: " + eventName
+        }
+
+        this.eventStore[eventName].push(fn)
     }
 
     emit(eventName, sender, params) {
-        if (!this.eventStore.has(eventName)) {
+        if (!(eventName in this.eventStore)) {
             throw "No such event: " + eventName
         }
 

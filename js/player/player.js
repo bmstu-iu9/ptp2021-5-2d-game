@@ -12,7 +12,8 @@ import {
     PLAYER_FRAMES_PER_BULLET,
     PLAYER_HEALTH,
     PLAYER_MAX_SPEED,
-    PLAYER_VELOCITY
+    PLAYER_VELOCITY,
+    STATE_DESTROYED
 } from "../core/game_constants.js";
 import {Point} from "../math/point.js";
 import {Vector} from "../math/vector.js";
@@ -117,6 +118,11 @@ class Player extends BaseEntity {
         if (this.shieldAddSize > 17 || this.shieldAddSize < 10) {
             this.dShieldSize = -this.dShieldSize;
         }
+    }
+
+    destroy() {
+        this.state = STATE_DESTROYED
+        game.reset()
     }
 
 }
