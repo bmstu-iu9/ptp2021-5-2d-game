@@ -1,9 +1,6 @@
 import {game} from "./game.js";
-import {CONTROLS} from "./enums.js";
 
-let settings = {
-    controls: CONTROLS.ARROWS
-}
+let settings = {}
 
 export function switchPage(id) {
     let currentPage = $('.page.active')
@@ -34,16 +31,14 @@ export function switchToMenu() {
 
 function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\\/+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
 function setCookie(name, value, options = {}) {
-
     options = {
         path: '/',
-        // при необходимости добавьте другие значения по умолчанию
         ...options
     };
 
@@ -65,8 +60,6 @@ function setCookie(name, value, options = {}) {
 }
 
 export function saveSettings() {
-    settings.controls = $('#controls-select').prop("value") === "wasd" ? CONTROLS.WASD : CONTROLS.ARROWS
-
     setCookie("gameSettings", JSON.stringify(settings))
 }
 
@@ -75,12 +68,7 @@ function loadSettings() {
     if (savedSettings !== undefined)
         settings = JSON.parse(savedSettings)
 
-    $('#controls-select').prop("value", settings.controls)
+    // Change settings' elements here
 }
-
-$(document).ready(function () {
-    loadSettings()
-    $('select').niceSelect()
-})
 
 
