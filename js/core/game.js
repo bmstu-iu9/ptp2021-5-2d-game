@@ -19,8 +19,8 @@ function rnd(min, max) {
 }
 
 const GAME_STATE_LOADING = 0,
-      GAME_STATE_MENU    = 1,
-      GAME_STATE_RUNNING = 2;
+    GAME_STATE_MENU = 1,
+    GAME_STATE_RUNNING = 2;
 
 class Game {
     lastTimestamp
@@ -45,6 +45,7 @@ class Game {
 
         this.gameObjects = []
         this.assets = {}
+        this.isPressed = {}
         this.eventManager = new EventManager()
         this.state = GAME_STATE_LOADING
 
@@ -150,17 +151,17 @@ class Game {
 
         // TODO: SPAWNER DEBUG ONLY
         if (rnd(0, 100) > 98) {
-            let pos   = new Point(rnd(1, this.playArea.width - 50)),
+            let pos = new Point(rnd(1, this.playArea.width - 50)),
                 speed = new Vector(0, rnd(1, 4));
             this.gameObjects.push(new BaseEnemy(new Body(pos, 50, 55, speed), game.assets["enemy_ship"], 15))
         }
         if (rnd(0, 200) > 198) {
-            let pos   = new Point(rnd(1, this.playArea.width - 50), 100),
+            let pos = new Point(rnd(1, this.playArea.width - 50), 100),
                 speed = new Vector(rnd(1, 4), 0)
             this.gameObjects.push(new ShootingEnemy(new Body(pos, 50, 55, speed), game.assets["enemy_ship"], 25))
         }
         if (rnd(0, 1000) > 998) {
-            let pos   = new Point(rnd(1, this.playArea.width - 50)),
+            let pos = new Point(rnd(1, this.playArea.width - 50)),
                 speed = new Vector(0, 2);
             this.gameObjects.push(new BaseBooster(new Body(pos, 40, 45, speed), game.assets["heal_orb"], "heal_boost"))
         }
@@ -197,7 +198,4 @@ class Game {
 
 export const game = new Game();
 game.load()
-let player = new Player()
-game.gameObjects.push(player)
-game.player = player
 window.addEventListener('resize', game.onResize)

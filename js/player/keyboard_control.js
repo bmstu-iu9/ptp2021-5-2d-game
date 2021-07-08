@@ -4,80 +4,64 @@ export {configureKeyWatchers}
 
 /**Hooks "keydown" and "keyup" events so that engine always knows which
  * key is currently pressed*/
-function configureKeyWatchers(wasd) {
-    game.isPressed = {};
+function configureKeyWatchers() {
+    let moveLeft = false,
+        moveUp = false,
+        moveRight = false,
+        moveDown = false;
 
-    let left = false, right = false, up = false, down = false;
-    let left_key = 37, right_key = 39, up_key = 38, down_key = 40;
-    if (wasd){ // check transfer control on wasd
-        left_key = 65; right_key = 68; up_key = 87; down_key = 83;
-    }
-    // Set up `onkeydown` event handler.
     document.onkeydown = function (ev) {
-        if (ev.keyCode === right_key) {
-            right = true;
-        }
-        if (ev.keyCode === left_key) {
-            left = true;
-        }
-        if (ev.keyCode === up_key) {
-            up = true;
-        }
-        if (ev.keyCode === down_key) {
-            down = true;
+        switch (ev.key) {
+            case 'a':
+            case 'ArrowLeft':
+                moveLeft = true
+                break
+            case 'w':
+            case 'ArrowUp':
+                moveUp = true
+                break
+            case 'd':
+            case 'ArrowRight':
+                moveRight = true
+                break
+            case 's':
+            case 'ArrowDown':
+                moveDown = true
+                break
         }
     };
 
-    // Set up `onkeyup` event handler.
     document.onkeyup = function (ev) {
-        if (ev.keyCode === right_key) {
-            right = false;
-        }
-        if (ev.keyCode === left_key) {
-            left = false;
-        }
-        if (ev.keyCode === up_key) {
-            up = false;
-        }
-        if (ev.keyCode === down_key) {
-            down = false;
+        switch (ev.key) {
+            case 'a':
+            case 'ArrowLeft':
+                moveLeft = false
+                break
+            case 'w':
+            case 'ArrowUp':
+                moveUp = false
+                break
+            case 'd':
+            case 'ArrowRight':
+                moveRight = false
+                break
+            case 's':
+            case 'ArrowDown':
+                moveDown = false
+                break
         }
     };
 
-    // Define getters for each key
-    // * Not strictly necessary. Could just return
-    // * an object literal of methods, the syntactic
-    // * sugar of `defineProperty` is just so much sweeter :)
-    Object.defineProperty(game.isPressed, 'left', {
-        get: function () {
-            return left;
-        },
-        configurable: true,
-        enumerable: true
-    });
-
-    Object.defineProperty(game.isPressed, 'right', {
-        get: function () {
-            return right;
-        },
-        configurable: true,
-        enumerable: true
-    });
-
-    Object.defineProperty(game.isPressed, 'up', {
-        get: function () {
-            return up;
-        },
-        configurable: true,
-        enumerable: true
-    });
-
-    Object.defineProperty(game.isPressed, 'down', {
-        get: function () {
-            return down;
-        },
-        configurable: true,
-        enumerable: true
-    });
-
+    Object.defineProperty(game.isPressed, 'moveLeft', {
+        get: () => {return moveLeft}
+    })
+    Object.defineProperty(game.isPressed, 'moveUp', {
+        get: () => {return moveUp}
+    })
+    Object.defineProperty(game.isPressed, 'moveRight', {
+        get: () => {return moveRight}
+    })
+    Object.defineProperty(game.isPressed, 'moveDown', {
+        get: () => {return moveDown}
+    })
 }
