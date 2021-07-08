@@ -4,39 +4,42 @@ export {configureKeyWatchers}
 
 /**Hooks "keydown" and "keyup" events so that engine always knows which
  * key is currently pressed*/
-function configureKeyWatchers() {
+function configureKeyWatchers(wasd) {
     game.isPressed = {};
 
     let left = false, right = false, up = false, down = false;
-
+    let left_key = 37, right_key = 39, up_key = 38, down_key = 40;
+    if (wasd){ // check transfer control on wasd
+        left_key = 65; right_key = 68; up_key = 87; down_key = 83;
+    }
     // Set up `onkeydown` event handler.
     document.onkeydown = function (ev) {
-        if (ev.keyCode === 39) {
+        if (ev.keyCode === right_key) {
             right = true;
         }
-        if (ev.keyCode === 37) {
+        if (ev.keyCode === left_key) {
             left = true;
         }
-        if (ev.keyCode === 38) {
+        if (ev.keyCode === up_key) {
             up = true;
         }
-        if (ev.keyCode === 40) {
+        if (ev.keyCode === down_key) {
             down = true;
         }
     };
 
     // Set up `onkeyup` event handler.
     document.onkeyup = function (ev) {
-        if (ev.keyCode === 39) {
+        if (ev.keyCode === right_key) {
             right = false;
         }
-        if (ev.keyCode === 37) {
+        if (ev.keyCode === left_key) {
             left = false;
         }
-        if (ev.keyCode === 38) {
+        if (ev.keyCode === up_key) {
             up = false;
         }
-        if (ev.keyCode === 40) {
+        if (ev.keyCode === down_key) {
             down = false;
         }
     };

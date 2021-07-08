@@ -3,6 +3,7 @@ import {BaseEnemy} from "../entities/base_enemy.js";
 import {PLAYER_BASE_COLLISION_DAMAGE} from "../core/game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet} from "../entities/player_bullets.js";
+import {Boosters} from "../entities/boosters.js";
 
 export function applyCollisionRules(obj1, obj2) {
     for (let rule of collisionRules) {
@@ -63,6 +64,9 @@ const collisionRules = [
     }),
     new CollisionRule(isEnemyBullet, isPlayer, function (enemyBullet, player) {
         enemyBullet.hit(player)
+    }),
+    new CollisionRule(isBooster, isPlayer, function (boost) {
+        boost.destroy()
     })
 ]
 
@@ -80,4 +84,7 @@ function isEnemy(x) {
 
 function isPlayer(x) {
     return x instanceof Player
+}
+function  isBooster(x){
+    return x instanceof Boosters
 }

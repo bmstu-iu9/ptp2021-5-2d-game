@@ -12,6 +12,7 @@ import {Point} from "../math/point.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {EventManager} from "./event_manager.js";
 import {switchToMenu} from "./page.js";
+import {Boosters} from "../entities/boosters.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -157,6 +158,11 @@ class Game {
             let pos   = new Point(rnd(1, this.playArea.width - 50), 100),
                 speed = new Vector(rnd(1, 4), 0)
             this.gameObjects.push(new ShootingEnemy(new Body(pos, 50, 55, speed), game.assets["enemy_ship"], 25))
+        }
+        if (rnd(0, 1000) > 998) {
+            let pos   = new Point(rnd(1, this.playArea.width - 50)),
+                speed = new Vector(0, 2);
+            this.gameObjects.push(new Boosters(new Body(pos, 40, 45, speed), game.assets["heal_orb"], "heal_orb"))
         }
     }
 
