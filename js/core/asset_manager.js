@@ -17,7 +17,8 @@ const ASSETS_LIST = [
     ["enemy_haunting_bullet", "img/enemy_rocket.png"],
     ["player_hp_bar", "img/player_hp_bar.png"],
     ["player_hp_bar_back", "img/player_hp_bar_back.png"],
-    ["player_hp_bar_text_back", "img/player_hp_bar_text_back.png"]
+    ["player_hp_bar_text_back", "img/player_hp_bar_text_back.png"],
+    ["heal_orb", "img/heal_orb.png"],
 ]
 
 /**Loads all game assets.

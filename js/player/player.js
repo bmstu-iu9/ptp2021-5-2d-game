@@ -95,8 +95,8 @@ class Player extends BaseEntity {
 
     calculateMovement() {
         // Calculate coordinates change
-        let acceleration = new Vector(game.isPressed.right - game.isPressed.left,
-                                      game.isPressed.down - game.isPressed.up)
+        let acceleration = new Vector(game.isPressed.moveRight - game.isPressed.moveLeft,
+            game.isPressed.moveDown - game.isPressed.moveUp)
 
         acceleration.length = PLAYER_MAX_SPEED
         this.body.speed.lerp(acceleration, PLAYER_VELOCITY).limit(PLAYER_MAX_SPEED)
