@@ -167,15 +167,20 @@ class Game {
         // Draw background
         this.context.drawImage(this.bgImg, 0, 0, this.playArea.width, this.playArea.height)
 
-        //Draw HP-bar
-        this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
-        let barW = 260 * (this.player.health <= 0 ? 0 : this.player.health / PLAYER_HEALTH)
-        this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
-
         // Render all gameObjects
         for (let ent of this.gameObjects) {
             ent.render(this.context)
         }
+
+        //Draw HP-bar
+        this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
+        let barVal = new Vector(this.player.healthbar)
+        this.player.healthbar = this.player.health <= 0 ? 0 :
+                                barVal.lerp(new Vector(this.player.health/PLAYER_HEALTH), 0.2).x
+
+        let barW = 260 * this.player.healthbar
+        this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
+
     }
 
     onResize() {
