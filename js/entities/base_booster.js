@@ -14,8 +14,8 @@ class BaseBooster extends BaseEntity {
      * @param sprite sprite to be rendered\
      */
     //Switch cases in collision rules is the only difference between boosters (except for sprites and boosterType)
-    constructor(body, sprite, booseterType) {
+    constructor(body, sprite, boosterType) {
         super(body, sprite)
-        this.booseterType = booseterType
+        this.boosterType = boosterType
     }
 }
