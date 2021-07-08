@@ -12,15 +12,13 @@ import {Point} from "../math/point.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {EventManager} from "./event_manager.js";
 import {switchToMenu} from "./page.js";
+import {GAME_STATE} from "./enums.js";
 import {BaseBooster} from "../entities/base_booster.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const GAME_STATE_LOADING = 0,
-    GAME_STATE_MENU = 1,
-    GAME_STATE_RUNNING = 2;
 
 class Game {
     lastTimestamp
@@ -47,7 +45,7 @@ class Game {
         this.assets = {}
         this.isPressed = {}
         this.eventManager = new EventManager()
-        this.state = GAME_STATE_LOADING
+        this.state = GAME_STATE.LOADING
 
         return this
     }
@@ -64,7 +62,7 @@ class Game {
      * Shows the game menu.
      */
     onLoaded() {
-        game.state = GAME_STATE_MENU
+        game.state = GAME_STATE.MENU
         switchToMenu()
     }
 
@@ -73,7 +71,7 @@ class Game {
      */
     reset() {
         this.gameObjects = []
-        this.state = GAME_STATE_MENU
+        this.state = GAME_STATE.MENU
         switchToMenu()
     }
 
@@ -86,7 +84,7 @@ class Game {
         game.player = new Player()
         game.gameObjects.push(game.player)
 
-        game.state = GAME_STATE_RUNNING
+        game.state = GAME_STATE.RUNNING
 
         window.requestAnimationFrame(game.gameLoop)
     }
@@ -96,7 +94,7 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     gameLoop(ts) {
-        if (game.state !== GAME_STATE_RUNNING)
+        if (game.state !== GAME_STATE.RUNNING)
             return
 
         game.update(ts);

@@ -24,8 +24,6 @@ html, body {
 }
 
 .page {
-    width: 40%;
-    height: 30%;
     min-width: 600px;
     padding: 30px 30px 50px;
     margin: 0 auto;
@@ -37,28 +35,26 @@ html, body {
 
 .page > .page-item {
     width: 50%;
-    height: 50px;
     margin: 10px auto;
+    border-radius: 10px;
 
     position: relative;
     right: 0;
 
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.75);
     text-align: center;
     font-size: 30px;
-    background-size: 1px 300%;
     -webkit-transition: 0.5s;
     transition: 0.5s;
+    cursor: pointer;
     color: orange;
     font-family: shadows into light;
-    cursor: pointer;
 }
 
-.page > .page-item:hover {
-    background: rgba(255, 255, 255, 0.5);
+.button:hover {
+    background: rgba(100, 100, 100, 0.5);
     color: white;
-    -webkit-transform: rotate(-1deg);
-    transform: rotate(-2deg);
+    transform: scale(1.1);
 }
 
 .page > .page-item > p {
@@ -71,11 +67,44 @@ html, body {
     display: block;
 }
 
-.slide-right {
-    right: -150% !important;
+#settings-container {
+    display: flex;
+    flex-flow: column;
 }
 
-.slide-in {
-    position: relative !important;
-    right: 0 !important;
+#settings-container > .settings-option {
+    display: flex;
+    flex-flow: row;
+
+    padding: 10px;
 }
+
+#settings-container > .settings-option > p {
+    width: 30%;
+    min-width: 150px;
+    font-size: 20px;
+}
+
+#settings-container > .settings-option > .option-el {
+    margin: auto;
+    width: 70%;
+}
+
+.page-title {
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.button.back {
+    margin: auto 10px;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+}
+
+#credits-container {
+    display: flex;
+    flex-direction: column;
+}
+
