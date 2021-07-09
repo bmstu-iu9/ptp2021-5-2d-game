@@ -1,4 +1,5 @@
 import {game} from "../core/game.js";
+import {WEAPON_TYPE} from "../core/enums.js";
 
 export {configureKeyWatchers}
 
@@ -27,6 +28,22 @@ function configureKeyWatchers() {
             case 'KeyS':
             case 'ArrowDown':
                 moveDown = true
+                break
+            // Here the cheats go
+            case 'F1':
+                ev.preventDefault()
+                game.player.heal(100)
+
+                break
+            case 'F2':
+                ev.preventDefault()
+                game.player.changeWeapon(WEAPON_TYPE.MULTI)
+
+                break
+            case 'F3':
+                ev.preventDefault()
+                game.player.changeWeapon(WEAPON_TYPE.LASER)
+
                 break
         }
     };

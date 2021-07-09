@@ -19,6 +19,7 @@ const ASSETS_LIST = [
     ["player_hp_bar_back", "img/player_hp_bar_back.png"],
     ["player_hp_bar_text_back", "img/player_hp_bar_text_back.png"],
     ["heal_orb", "img/heal_orb.png"],
+    ["player_laser", "img/player_laser.png"]
 ]
 
 /**Loads all game assets.

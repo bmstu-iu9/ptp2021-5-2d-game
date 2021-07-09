@@ -27,12 +27,9 @@ class BaseEntity {
     /**Contains entity's movement logic.
      * Override this method to change dx and dy
      * for specific movement patterns.
-     * Default: bounce off horizontal walls.*/
+     */
     calculateMovement() {
-        let newPos = this.body.pos.clone().moveBy(this.body.speed)
-        if (newPos.x < 0 || newPos.x + this.body.width > game.playArea.width) {
-            this.body.speed.x = -this.body.speed.x
-        }
+
     }
 
     /**Updates entity's inner state.
