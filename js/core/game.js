@@ -6,7 +6,7 @@ import {Body} from "../physics/body.js";
 import {ExplosionEffect} from "../effects/explosion.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {PLAYER_HEALTH, STATE_DESTROYED} from "./game_constants.js";
+import {STATE_DESTROYED} from "./game_constants.js";
 import {Vector} from "../math/vector.js";
 import {Point} from "../math/point.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
@@ -185,8 +185,7 @@ class Game {
         let barW = 260 * this.player.health / 100,
             diff = barW - this.lastHBarWidth
         if (diff !== 0) {
-            let smooth_coeff = 0.3
-            barW = this.lastHBarWidth + diff * smooth_coeff;
+            barW = this.lastHBarWidth + diff * 0.1;
             this.lastHBarWidth = barW
         }
 
