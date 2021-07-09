@@ -34,7 +34,7 @@ class Player extends BaseEntity {
         let initialPos = new Point((game.playArea.width - PLAYER_DIM) / 2, (game.playArea.height - PLAYER_DIM) / 2)
         super(new Body(initialPos, PLAYER_DIM, PLAYER_DIM), game.assets["player_ship"])
         this.health = PLAYER_HEALTH;
-        this.healthbar = 1;
+        this.healthbar = 1.0;
         this.fireState = 0;
         this.weaponType = WEAPON_TYPE_MULTI
         this.upgradedShotsRemaining = 30

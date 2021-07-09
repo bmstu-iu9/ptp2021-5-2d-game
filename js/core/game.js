@@ -179,9 +179,9 @@ class Game {
 
         //Draw HP-bar
         this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
-        let barVal = new Vector(this.player.healthbar)
-        this.player.healthbar = this.player.health <= 0 ? 0 :
-                                barVal.lerp(new Vector(this.player.health/PLAYER_HEALTH), 0.2).x
+
+        let smooth_coeff = 0.3
+        this.player.healthbar += smooth_coeff*(this.player.health/PLAYER_HEALTH - this.player.healthbar)
 
         let barW = 260 * this.player.healthbar
         this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
