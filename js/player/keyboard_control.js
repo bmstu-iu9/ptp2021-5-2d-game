@@ -11,20 +11,20 @@ function configureKeyWatchers() {
         moveDown = false;
 
     document.onkeydown = function (ev) {
-        switch (ev.key) {
-            case 'a':
+        switch (ev.code) {
+            case 'KeyA':
             case 'ArrowLeft':
                 moveLeft = true
                 break
-            case 'w':
+            case 'KeyW':
             case 'ArrowUp':
                 moveUp = true
                 break
-            case 'd':
+            case 'KeyD':
             case 'ArrowRight':
                 moveRight = true
                 break
-            case 's':
+            case 'KeyS':
             case 'ArrowDown':
                 moveDown = true
                 break
@@ -32,20 +32,20 @@ function configureKeyWatchers() {
     };
 
     document.onkeyup = function (ev) {
-        switch (ev.key) {
-            case 'a':
+        switch (ev.code) {
+            case 'KeyA':
             case 'ArrowLeft':
                 moveLeft = false
                 break
-            case 'w':
+            case 'KeyW':
             case 'ArrowUp':
                 moveUp = false
                 break
-            case 'd':
+            case 'KeyD':
             case 'ArrowRight':
                 moveRight = false
                 break
-            case 's':
+            case 'KeyS':
             case 'ArrowDown':
                 moveDown = false
                 break
