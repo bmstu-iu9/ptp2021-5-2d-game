@@ -6,7 +6,7 @@ import {Body} from "../physics/body.js";
 import {ExplosionEffect} from "../effects/explosion.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {PLAYER_HEALTH, STATE_DESTROYED} from "./game_constants.js";
+import {STATE_DESTROYED} from "./game_constants.js";
 import {Vector} from "../math/vector.js";
 import {Point} from "../math/point.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
@@ -46,6 +46,8 @@ class Game {
         this.isPressed = {}
         this.eventManager = new EventManager()
         this.state = GAME_STATE.LOADING
+
+        this.lastHBarWidth = 260
 
         return this
     }
@@ -172,15 +174,23 @@ class Game {
         // Draw background
         this.context.drawImage(this.bgImg, 0, 0, this.playArea.width, this.playArea.height)
 
-        //Draw HP-bar
-        this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
-        let barW = 260 * (this.player.health <= 0 ? 0 : this.player.health / PLAYER_HEALTH)
-        this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
-
         // Render all gameObjects
         for (let ent of this.gameObjects) {
             ent.render(this.context)
         }
+
+        //Draw HP-bar
+        this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
+
+        let barW = 260 * this.player.health / 100,
+            diff = barW - this.lastHBarWidth
+        if (diff !== 0) {
+            barW = this.lastHBarWidth + diff * 0.1;
+            this.lastHBarWidth = barW
+        }
+
+        this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
+
     }
 
     onResize() {
