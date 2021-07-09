@@ -47,6 +47,8 @@ class Game {
         this.eventManager = new EventManager()
         this.state = GAME_STATE.LOADING
 
+        this.lastHBarWidth = 260
+
         return this
     }
 
@@ -180,10 +182,14 @@ class Game {
         //Draw HP-bar
         this.context.drawImage(game.assets["player_hp_bar_back"], 20, 20, 274, 36)
 
-        let smooth_coeff = 0.3
-        this.player.healthbar += smooth_coeff*(this.player.health/PLAYER_HEALTH - this.player.healthbar)
+        let barW = 260 * this.player.health / 100,
+            diff = barW - this.lastHBarWidth
+        if (diff !== 0) {
+            let smooth_coeff = 0.3
+            barW = this.lastHBarWidth + diff * smooth_coeff;
+            this.lastHBarWidth = barW
+        }
 
-        let barW = 260 * this.player.healthbar
         this.context.drawImage(game.assets["player_hp_bar"], 0, 0, barW, 20, 27, 28, barW, 20)
 
     }
