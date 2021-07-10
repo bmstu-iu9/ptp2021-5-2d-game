@@ -12,6 +12,13 @@ class ShootingEnemy extends BaseEnemy {
         this.fireState = 0
     }
 
+    calculateMovement() {
+        let newPos = this.body.pos.clone().moveBy(this.body.speed)
+        if (newPos.x < 0 || newPos.x + this.body.width > game.playArea.width) {
+            this.body.speed.x = -this.body.speed.x
+        }
+    }
+
     preUpdate() {
         this.fireState++;
         if (this.fireState === ENEMY1_FIRE_RATE) {

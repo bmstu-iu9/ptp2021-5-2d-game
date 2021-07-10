@@ -8,4 +8,9 @@ export const
         LOADING: 0,
         MENU: 1,
         RUNNING: 2
+    }),
+    WEAPON_TYPE = Object.freeze({
+        REGULAR: 0,
+        MULTI: 1,
+        LASER: 2,
     })
