@@ -1,67 +1,117 @@
-export {loadAssets}
+import SpriteSheet from "../textures/sprite_sheet.js";
+import SingleImage from "../textures/single_image.js";
+
+export {AssetManager}
 
 const imageExtensions = ["png", "jpg"],
-      soundExtensions = ["mp3", "wav"]
+    soundExtensions = ["mp3", "wav"]
 
-// Assets to be loaded in format: [NAME, FILEPATH]
+const ASSET_TYPE = Object.freeze({
+    IMAGE: 0,
+    SOUND: 1,
+})
+
+/**
+ * For SingleImage use: [FILENAME]
+ * For SpriteSheet use: [FILENAME, CELL_WIDTH, CELL_HEIGHT]
+ * @type {string[][]}
+ */
 const ASSETS_LIST = [
-    ["player_ship", "img/player.png"],
-    ["enemy_ship", "img/enemy_ship.png"],
-    ["player_regular_bullet", "img/player_bullet.png"],
-    ["player_multi_bullet", "img/player_multi_bullet.png"],
-    ["player_shield", "img/shield.png"],
-    ["dummy", "img/dummy.png"],
-    ["explosion_orange", "effects/explosion_orange.png"],
-    ["explosion_purple", "effects/explosion_purple.png"],
-    ["enemy_regular_bullet", "img/enemy_bullet.png"],
-    ["enemy_haunting_bullet", "img/enemy_rocket.png"],
-    ["player_hp_bar", "img/player_hp_bar.png"],
-    ["player_hp_bar_back", "img/player_hp_bar_back.png"],
-    ["player_hp_bar_text_back", "img/player_hp_bar_text_back.png"],
-    ["heal_orb", "img/heal_orb.png"],
-    ["player_laser", "img/player_laser.png"]
+    ["img/player_ship.png"],
+    ["img/enemy_ship.png"],
+    ["img/player_regular_bullet.png"],
+    ["img/player_multi_bullet.png"],
+    ["img/player_shield.png"],
+    ["img/dummy.png"],
+    ["effects/explosion_orange.png", 100, 100],
+    ["effects/explosion_purple.png", 100, 100],
+    ["effects/heal_animation.png", 192, 192],
+    ["img/enemy_regular_bullet.png"],
+    ["img/enemy_rocket.png"],
+    ["img/player_hp_bar.png"],
+    ["img/player_hp_bar_back.png"],
+    ["img/heal_orb.png"],
+    ["img/player_laser.png"],
 ]
 
-/**Loads all game assets.
- * When every asset is loaded, executes callback()
- */
-function loadAssets(callback) {
-    let aName, aSrc, result = {}, count = ASSETS_LIST.length, onSingleAssetLoad = function () {
-        if (--count === 0) {
-            console.log(ASSETS_LIST.length + " assets loaded!")
-            callback(result);
-        }
-    };
-    console.log("Loading assets...")
+export default class AssetManager {
+    constructor(game, assetsLoadedCallback) {
+        this._game = game
+        this._callback = assetsLoadedCallback
 
-    for (let i = 0; i < ASSETS_LIST.length; i++) {
-        [aName, aSrc] = ASSETS_LIST[i]
-        if (isImage(aSrc)) {
-            result[aName] = new Image();
-        } else if (isSound(aSrc)) {
-            result[aName] = new Audio()
-        }
-        result[aName].onload = onSingleAssetLoad;
-        result[aName].src = "./assets/" + aSrc;
+        this.textures = {}
+        this.sounds = {}
+
+        this._loadAssets(assetsLoadedCallback)
     }
 
-    return result
+    addFromFile(assetInfo, callback) {
+        let assetSrc = "./assets/" + assetInfo[0],
+            assetName = extractFilename(assetSrc)
+
+        console.log("Processing " + assetName)
+
+        switch (determineAssetType(assetSrc)) {
+            case ASSET_TYPE.IMAGE:
+                let img = new Image()
+                img.src = assetSrc
+
+                if (assetInfo.length === 3) {
+                    img.onload = function () {
+                        this.textures[assetName] = new SpriteSheet(assetName, img, assetInfo[1], assetInfo[2])
+                        callback()
+                    }
+                } else {
+                    img.onload = function () {
+                        this.textures[assetName] = new SingleImage(assetName, img)
+                        callback()
+                    }
+                }
+
+                img.onload = img.onload.bind(this)
+                break
+
+            case ASSET_TYPE.SOUND:
+                throw "Sounds are not supported yet. Implement if you wish :)"
+        }
+    }
+
+    _loadAssets(assetsLoadedCallback) {
+        let assetsUnhandledCount = ASSETS_LIST.length,
+            onSingleAssetLoaded = function () {
+                if (--assetsUnhandledCount === 0) {
+                    console.log(ASSETS_LIST.length + " assets loaded!")
+                    assetsLoadedCallback();
+                }
+            };
+        console.log("Loading assets...")
+
+        for (let i = 0; i < ASSETS_LIST.length; i++) {
+            this.addFromFile(ASSETS_LIST[i], onSingleAssetLoaded)
+        }
+    }
 }
 
-/**Determine if given filename holds an image.
+/**Determine asset type for passed filename.
  *
  * @param fName filename to check
- * @returns {boolean} result of check
+ * @returns {ASSET_TYPE} check result
  */
-function isImage(fName) {
-    return imageExtensions.includes(fName.split('.').pop())
+function determineAssetType(fName) {
+    let fileExt = fName.split('.').pop()
+    if (imageExtensions.includes(fileExt))
+        return ASSET_TYPE.IMAGE
+    else if (soundExtensions.includes(fileExt))
+        return ASSET_TYPE.SOUND
+    else
+        throw "Unknown file extension: " + fileExt
 }
 
-/**Determine if given filename holds a sound.
+/** Returns filename without extension.
  *
- * @param fName filename to check
- * @returns {boolean} result of check
+ * @param fPath{string}
+ * @returns {string}
  */
-function isSound(fName) {
-    return soundExtensions.includes(fName.split('.').pop())
+function extractFilename(fPath) {
+    return fPath.split('\\').pop().split('/').pop().split('.')[0]
 }

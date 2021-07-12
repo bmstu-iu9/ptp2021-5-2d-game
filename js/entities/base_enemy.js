@@ -11,12 +11,13 @@ class BaseEnemy extends BaseEntity {
     /**
      *
      * @param body {Body} Body representing physical position and properties
-     * @param sprite sprite to be rendered
+     * @param atlas atlas to be rendered
      * @param health initial health
      * @param damage bullet's damage
      */
-    constructor(body, sprite, health, damage = 0) {
-        super(body, sprite)
+    constructor(body, atlas, health, damage = 0) {
+        super(body, atlas)
+
         this.health = health
         this.damage = damage
     }

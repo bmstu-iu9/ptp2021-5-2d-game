@@ -1,4 +1,7 @@
 import {BaseEntity} from "./base_entity.js";
+import {ConstantSpeed} from "../components/movement_logic.js";
+import {ORB_SPEED} from "../core/game_constants.js";
+import {Vector} from "../math/vector.js";
 
 export {
     BaseBooster
@@ -11,11 +14,12 @@ class BaseBooster extends BaseEntity {
     /**
      *
      * @param body {Body} Body representing physical position and properties
-     * @param sprite sprite to be rendered\
+     * @param atlas {TextureAtlas} atlas to be rendered
+     * @param boosterType {String}
      */
-    //Switch cases in collision rules is the only difference between boosters (except for sprites and boosterType)
-    constructor(body, sprite, boosterType) {
-        super(body, sprite)
+    constructor(body, atlas, boosterType) {
+        super(body, atlas)
         this.boosterType = boosterType
+        this.movementLogic = this.components.add(new ConstantSpeed(new Vector(0, ORB_SPEED)))
     }
 }

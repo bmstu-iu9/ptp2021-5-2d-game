@@ -5,16 +5,18 @@ export {
 }
 
 /**Base class for every bullet.
- * Body's rotation always equals to the speed Vector angle.
+ * Body's rotation always equals to the maxSpeed Vector angle.
  */
 class BaseBullet extends BaseEntity {
     /**
      * @param body Body representing physical pos
-     * @param sprite sprite to render
+     * @param atlas atlas to render
      * @param damage damage on hit
+     * @param movementLogic MovementLogic describing how this bullet will move
      */
-    constructor(body, sprite, damage) {
-        super(body, sprite)
+    constructor(body, atlas, movementLogic, damage) {
+        super(body, atlas)
+        this.movementLogic = this.components.add(movementLogic)
         this.damage = damage
     }
 
@@ -36,6 +38,6 @@ class BaseBullet extends BaseEntity {
 
     update() {
         super.update();
-        this.body.rotation = this.body.speed.angle // set rotation according to speed vector angle
+        this.body.rotation = this.movementLogic.speed.angle // set rotation according to maxSpeed vector angle
     }
 }
