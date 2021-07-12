@@ -46,6 +46,11 @@ export class Vector {
         this.y = this.length * accurate(Math.sin(angle))
     }
 
+    setTo(x, y) {
+        this.x = x
+        this.y = y
+    }
+
     /**Make a clone of this Vector.
      *
      * @returns {Vector} a clone of this Vector.

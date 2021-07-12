@@ -68,7 +68,7 @@ const collisionRules = [
     new CollisionRule(isBooster, isPlayer, function (boost, player) {
         boost.destroy()
         switch (boost.boosterType){
-            case "heal_boost":
+            case "heal":
                 player.heal(25)
                 break
         }

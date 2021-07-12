@@ -9,7 +9,7 @@ export {
  */
 class Body {
     /**
-     * @param pos {Point}
+     * @param pos {Vector}
      * @param width {number}
      * @param height {number}
      * @param speed {Vector}
@@ -20,7 +20,6 @@ class Body {
         this.pos = pos
         this.width = width
         this.height = height
-        this.speed = speed || new Vector()
         this.canCollide = canCollide
         this.rotation = rotation
     }

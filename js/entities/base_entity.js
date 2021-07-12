@@ -1,54 +1,51 @@
-import {game} from "../core/game.js";
 import {STATE_ACTIVE, STATE_DESTROYED} from "../core/game_constants.js";
+import {SPRITE_SHEET} from "../textures/texture_atlas.js";
+import {AnimationManager} from "../components/animation_manager.js";
+import ComponentManager from "../core/component_manager.js";
 
 export {BaseEntity}
 
 /**Base class for every entity in the game.
- * Provides some basic logic: movement, bouncing,
- * destruction, and simple sprite rendering.
+ * Provides some basic logic.
  */
 class BaseEntity {
     /**
      *
      * @param body Body representing physical position and properties
-     * @param sprite sprite to be rendered. If no specified then default will be used.
+     * @param atlas SingleImage or SpriteSheet
      */
-    constructor(body, sprite = null) {
+    constructor(body, atlas) {
         this.body = body
-        this.sprite = sprite || game.assets["dummy"]
+
+        this.components = new ComponentManager(this)
+
+        this.atlas = atlas
+        this.cellIndex = this.atlas.cellIndex
+
+        this.animationManager = null
+        if (this.atlas.type === SPRITE_SHEET)
+            this.animationManager = this.components.add(new AnimationManager(this))
+
         this.state = STATE_ACTIVE
-    }
-
-    /**This method is executed before update() code.
-     * Put your code here, not in BaseEntity.update */
-    preUpdate() {
-    }
-
-    /**Contains entity's movement logic.
-     * Override this method to change dx and dy
-     * for specific movement patterns.
-     */
-    calculateMovement() {
-
     }
 
     /**Updates entity's inner state.
      * You should not override this method. */
     update() {
-        this.preUpdate();
-        // Here movement goes
-        this.calculateMovement()
-        // TODO: Think about correcting for time elapsed (* game.timeElapsed)
-        this.body.pos.moveBy(this.body.speed)
+        this.components.preUpdate()
+        this.components.update()
+        this.components.postUpdate()
     }
 
-    /**Draws entity's sprite by default. If you want custom
+    /**Draws entity's atlas by default. If you want custom
      * rendering, override this method.
      *
      * @param ctx canvas context passed by render()
      */
     draw(ctx) {
-        ctx.drawImage(this.sprite, this.body.pos.x, this.body.pos.y, this.body.width, this.body.height)
+        let cell = this.atlas.cells[this.cellIndex]
+        ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, this.body.pos.x, this.body.pos.y,
+            this.body.width, this.body.height)
     }
 
     /**Renders entity on canvas.
@@ -63,8 +60,10 @@ class BaseEntity {
             this.draw(ctx)
             return
         }
+
         // Rotate the canvas according to the body.rotation, draw and then restore the canvas.
         ctx.save()
+
         ctx.translate(this.body.centerX, this.body.centerY)
         ctx.rotate(this.body.rotation)
         ctx.translate(-this.body.centerX, -this.body.centerY)
