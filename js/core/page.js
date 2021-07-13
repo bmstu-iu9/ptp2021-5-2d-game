@@ -1,4 +1,5 @@
 import {game} from "./game.js";
+import {GAME_STATE} from "./enums.js";
 
 let settings = {}
 
@@ -21,8 +22,10 @@ export function switchPage(id) {
 }
 
 export function switchToGame() {
-    game.start()
-    $('#pages').fadeOut(1000)
+    if (game.state === GAME_STATE.MENU) {
+        game.start()
+        $('#pages').fadeOut(1000)
+    }
 }
 
 export function switchToMenu() {
