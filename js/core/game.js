@@ -35,10 +35,12 @@ class Game {
 
         this.playArea = new Body(new Vector(0, 0), window.innerWidth, window.innerHeight)
 
-        // Load background
-        this.bgImg = new Image()
-        this.bgImg.src = 'assets/img/bg.jpg';
         this.lastHBarWidth = 260
+        this.backgroundObjects = new BackgroundScroller()
+            //.add('assets/img/bg.jpg', 0.5)
+            .add('assets/img/stars1.png', 0.5)
+            .add('assets/img/stars2.png', 1)
+            .add('assets/img/nebula.png', 1)
 
         this.gameObjects = []
 
@@ -106,6 +108,8 @@ class Game {
         this.timeElapsed = ts - this.lastTimestamp;
         this.lastTimestamp = ts
 
+        this.backgroundObjects.update()
+
         // Update cycle
         for (let i = 0; i < this.gameObjects.length; i++) {
             this.gameObjects[i].update()
@@ -163,8 +167,8 @@ class Game {
      *
      */
     render() {
-        // Draw background
-        this.context.drawImage(this.bgImg, 0, 0, this.playArea.width, this.playArea.height)
+
+        this.backgroundObjects.render(this.context)
 
         // Render all gameObjects
         for (let ent of this.gameObjects) {
@@ -193,6 +197,44 @@ class Game {
 
         game.playArea.width = ww
         game.playArea.height = wh
+    }
+}
+
+class BackgroundScroller {
+    constructor() {
+        this._objects = {}
+    }
+
+    add(filepath, speed) {
+        let image = new Image()
+        image.src = filepath
+
+        this._objects[filepath] = {
+            image: image,
+            speed: speed,
+            currentPosition: 0,
+        }
+
+        return this
+    }
+
+    update() {
+        Object.values(this._objects).forEach(function (obj) {
+            obj.currentPosition += obj.speed
+
+            if (obj.currentPosition >= obj.image.height)
+                obj.currentPosition = 0
+        })
+    }
+
+    render(ctx) {
+        ctx.fillStyle = "#000000"
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        Object.values(this._objects).forEach(function (obj) {
+            ctx.drawImage(obj.image, 0, obj.currentPosition)
+            ctx.drawImage(obj.image, 0, obj.currentPosition - obj.image.height)
+        })
     }
 }
 
