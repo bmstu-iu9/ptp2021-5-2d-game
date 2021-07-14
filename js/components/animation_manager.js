@@ -20,19 +20,19 @@ export class AnimationManager extends Component {
             this.currentAnimation = this._animations['default']
         } else {
             let defaultCells = [];
-
             for (let i = 0; i < this._atlas.cells.length; i++) {
                 defaultCells.push(i);
             }
 
-            this.currentAnimation = this.add('default', defaultCells, 0.05, true, false)
+            this.currentAnimation = this.add('default', defaultCells, 20, true, false)
         }
+
         this.currentAnimation.play()
     }
 
-    /** Tells if the current animation is playing.
+    /** Tells if the current Animation is playing.
      *
-     * @returns {boolean}
+     * @returns {boolean} if the current Animation is playing
      */
     get isPlaying() {
         return this.currentAnimation.isPlaying
@@ -40,7 +40,6 @@ export class AnimationManager extends Component {
 
     /**
      * Gets the cell that the current Animation is currently at.
-     *
      */
     get currentCell() {
         return this.currentAnimation.currentCell;
@@ -49,14 +48,16 @@ export class AnimationManager extends Component {
     /**
      * Gets the current frame index of the cell in the Sequence that is currently playing.
      *
+     * @returns {number}
      */
     get frameIndex() {
         return this.currentAnimation.frameIndex;
     }
 
     /**
-     * Returns the length (Number of cells) of the current Animation that is playing. This is READ ONLY.
+     * Returns the length of the current Animation that is playing.
      *
+     * @returns {number} the number of cells in the current Animation
      */
     get length() {
         return this.currentAnimation.length;
@@ -65,16 +66,17 @@ export class AnimationManager extends Component {
     /**
      * Creates a new Animation (by creating a Sequence) that can then be played on this AnimationManager.
      *
-     * @param name {string} The name of the animation that is to be created.
-     * @param cells {Array} An array of numbers, which are reference to each cell that is to be played in the Animation in order.
-     * @param speed {number} The amount of time that each cell in the Animation should stay on screen for. In seconds.
-     * @param loop {boolean} If when the Animation reaches the last frame, it should go back to the start again.
-     * @param play {boolean} If once created the animation should played right away.
-     * @param addToAtlas {boolean} If the new Sequence should be added to the TextureAtlas or not.
-     * @return {Animation} The Animation that was created.
+     * @param name {string} the name of the animation that is to be created.
+     * @param cells {Array} an array of numbers, which are reference to each cell that is to be played in the
+     * Animation in order.
+     * @param duration {Number} the duration of the animation (in milliseconds).
+     * @param loop {boolean} if animation should play again when it has reached the end.
+     * @param play {boolean} ff once created the animation should played right away.
+     * @param addToAtlas {boolean} if the new Sequence should be added to the TextureAtlas or not.
+     * @return {Animation} the Animation that was created.
      */
-    add(name, cells, speed, loop = false, play = false, addToAtlas = true) {
-        let newSequence = new Sequence(name, cells, speed, loop);
+    add(name, cells, duration, loop = false, play = false, addToAtlas = true) {
+        let newSequence = new Sequence(name, cells, duration, loop);
         if (addToAtlas === true) this._atlas.sequences.push(newSequence);
 
         return this.createFromSequence(newSequence, play);
@@ -82,13 +84,12 @@ export class AnimationManager extends Component {
 
     /**
      * Creates a new Animation based on a Sequence that is passed.
-     * If you pass to this the name of a Animation that already exists, then the previous Animation will be overridden by this new one.
-     * Note: If the Animation you have overridden was the currentAnimation, then the previous Animation will keep playing until a different Animation is switched to.
-     * Returns the Animation that was created.
+     * If you pass to this the name of a Animation that already exists, then the previous Animation will be
+     * overwritten by a new one.
      *
-     * @param sequence {Sequence} The sequence that the Animation is based on.
-     * @param play {boolean} If the Animation should played once it has been created
-     * @return  The Animation that was created.
+     * @param sequence {Sequence} the sequence that the Animation is based on.
+     * @param play {boolean} if the Animation should played once it has been created
+     * @return {Animation} the Animation that was created.
      */
     createFromSequence(sequence, play = false) {
         this._animations[sequence.name] = new Animation(sequence.name, sequence, this);
@@ -96,21 +97,6 @@ export class AnimationManager extends Component {
         if (play) this.play(sequence.name)
 
         return this._animations[sequence.name]
-    }
-
-    /**
-     * Plays either the current animation or the name of the animation that you pass.
-     *
-     * @param name{String} The name of the animation you want to play.
-     * @param resetTime{Boolean}
-     * @return {Animation} Returns the current Animation that is now playing.
-     */
-    play(name = this.currentAnimation.name, resetTime = true) {
-        if (resetTime === false && this.currentAnimation.name === name && this.currentAnimation.isPlaying === true) {
-            return this.currentAnimation;
-        } else {
-            return this._play(name);
-        }
     }
 
     /**
@@ -132,6 +118,21 @@ export class AnimationManager extends Component {
 
         this.updateCellIndex();
         return this.currentAnimation;
+    }
+
+    /**
+     * Plays either the current animation or the name of the animation that you pass.
+     *
+     * @param name{String} The name of the animation you want to play.
+     * @param resetTime{Boolean}
+     * @return {Animation} Returns the current Animation that is now playing.
+     */
+    play(name = this.currentAnimation.name, resetTime = true) {
+        if (resetTime === false && this.currentAnimation.name === name && this.currentAnimation.isPlaying === true) {
+            return this.currentAnimation;
+        } else {
+            return this._play(name);
+        }
     }
 
     /**
@@ -211,34 +212,27 @@ export class AnimationManager extends Component {
 
         if (this.currentAnimation.name !== name) {
 
-            if (this.currentAnimation !== null) this.currentAnimation.stop();
+            if (this.currentAnimation !== null)
+                this.currentAnimation.stop()
 
             if (this._animations[name]) {
-
-                this.currentAnimation = this._animations[name];
-
+                this.currentAnimation = this._animations[name]
             } else if (inheritFromTexture) {
                 //Check to see if that animation exists on the atlas.
                 //If so create a new version of it.
-
                 for (let i = 0; i < this._atlas.sequences.length; i++) {
-
                     if (this._atlas.sequences[i].name === name) {
                         this.currentAnimation = this.createFromSequence(this._atlas.sequences[i], false);
                         //this.onChange.dispatch(name, this.currentAnimation);
                     }
-
                 }
-
             }
-
         }
     }
 
     /**
      * Updates the current animation.
      *
-     * @public
      */
     update() {
         if (this.currentAnimation) {
