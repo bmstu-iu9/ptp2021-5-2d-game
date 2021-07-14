@@ -12,11 +12,10 @@ class Body {
      * @param pos {Vector}
      * @param width {number}
      * @param height {number}
-     * @param speed {Vector}
      * @param canCollide {boolean}
      * @param rotation {number}
      */
-    constructor(pos, width, height, speed = null, canCollide = true, rotation = 0) {
+    constructor(pos, width, height, canCollide = true, rotation = 0) {
         this.pos = pos
         this.width = width
         this.height = height
@@ -24,7 +23,8 @@ class Body {
         this.rotation = rotation
     }
 
-    /**Returns X of the center
+    /**
+     * Get the X-axis coordinate of the center of this body
      *
      * @returns {number}
      */
@@ -32,7 +32,16 @@ class Body {
         return this.pos.x + this.width / 2
     }
 
-    /**Returns Y of the center
+    /**
+     * Set the X-axis coordinate of the center of this body
+     *
+     */
+    set centerX(value) {
+        this.pos.x = value - this.width / 2
+    }
+
+    /**
+     * Get the Y-axis coordinate of the center of this body
      *
      * @returns {number}
      */
@@ -40,11 +49,26 @@ class Body {
         return this.pos.y + this.height / 2
     }
 
-    clone() {
-        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    /**
+     * Set the Y-axis coordinate of the center of this body
+     *
+     */
+    set centerY(value) {
+        this.pos.y = value - this.height / 2
     }
 
-    /**Scales this Body by given factor. Keeps the center at the same point.
+    /**
+     * Clone this Body.
+     *
+     * @return {Body} new Body which is identical to this Body
+     */
+    clone() {
+        return new Body(this.pos.clone(), this.width, this.height, this.canCollide, this.rotation)
+    }
+
+    /**
+     * Scale this Body by given factor.
+     * Center is kept at the same point.
      *
      * @param factor value by which to scale
      */
@@ -57,6 +81,8 @@ class Body {
 
         this.width *= factor
         this.height *= factor
+
+        return this
     }
 
     /**Checks if this Body intersects with other Body.
