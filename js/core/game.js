@@ -5,7 +5,7 @@ import AssetManager from "./asset_manager.js";
 import {Body} from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {STATE_DESTROYED} from "./game_constants.js";
+import {ENTITY_STATE} from "./enums.js";
 import {Vector} from "../math/vector.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {switchToMenu} from "./page.js";
@@ -135,7 +135,7 @@ class Game {
 
         // Process destroyed objects
         for (let i = 0; i < this.gameObjects.length; i++) {
-            if (this.gameObjects[i].state === STATE_DESTROYED) {
+            if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.gameObjects.push(
                         new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_orange"]))

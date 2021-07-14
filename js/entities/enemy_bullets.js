@@ -1,5 +1,5 @@
 import {BaseBullet} from "./base_bullet.js";
-import {STATE_DESTROYED} from "../core/game_constants.js";
+import {ENTITY_STATE} from "../core/enums.js";
 import {game} from "../core/game.js";
 import {Body} from "../physics/body.js";
 import {FollowTarget} from "../components/movement_logic.js";
@@ -38,6 +38,6 @@ class EnemyHauntingBullet extends EnemyBullet {
         this.lifetime = this.components.add(new Lifetime(this, 300))
     }
     destroy() {
-        this.state = STATE_DESTROYED
+        this.state = ENTITY_STATE.DESTROYED
     }
 }

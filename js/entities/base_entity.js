@@ -1,4 +1,4 @@
-import {STATE_ACTIVE, STATE_DESTROYED} from "../core/game_constants.js";
+import {ENTITY_STATE} from "../core/enums.js";
 import {SPRITE_SHEET} from "../textures/texture_atlas.js";
 import {AnimationManager} from "../components/animation_manager.js";
 import ComponentManager from "../core/component_manager.js";
@@ -26,7 +26,7 @@ class BaseEntity {
         if (this.atlas.type === SPRITE_SHEET)
             this.animationManager = this.components.add(new AnimationManager(this))
 
-        this.state = STATE_ACTIVE
+        this.state = ENTITY_STATE.ACTIVE
     }
 
     /**Updates entity's inner state.
@@ -78,6 +78,6 @@ class BaseEntity {
      * and then remove object from game.
      * You should not override this method. */
     destroy() {
-        this.state = STATE_DESTROYED
+        this.state = ENTITY_STATE.DESTROYED
     }
 }
