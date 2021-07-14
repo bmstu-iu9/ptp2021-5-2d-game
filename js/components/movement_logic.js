@@ -88,37 +88,25 @@ class KeyboardControl extends MovementLogic {
 class ClipToTarget extends MovementLogic {
     constructor(target, settings) {
         super("ClipToTarget")
+
         this.target = target
 
-        this.clipX = settings.clipX || false
-        this.clipY = settings.clipY || false
+        this.modeX = settings.modeX || null
+        this.modeY = settings.modeY || null
 
-        this.offsetX = settings.offsetX || 0
-        this.offsetY = settings.offsetY || 0
-
-        this.offsetCenterX = settings.offsetCenterX || 0
-        this.offsetCenterY = settings.offsetCenterY || 0
+        this.offsetX = this.modeX && settings.offsetX ? settings.offsetX : 0
+        this.offsetY = this.modeY && settings.offsetY ? settings.offsetY : 0
     }
 
     update() {
-        let newX, newY;
+        if (this.modeX === 'center')
+            this.owner.body.centerX = this.target.body.centerX + this.offsetX
+        else
+            this.owner.body.pos.x = this.target.body.pos.x + this.offsetX
 
-        if (this.clipX) {
-            if (this.offsetCenterX !== 0)
-                newX = this.target.body.centerX + this.offsetCenterX
-            else
-                newX = this.target.body.pos.x + this.offsetX
-
-            this.owner.body.pos.x = newX
-        }
-
-        if (this.clipY) {
-            if (this.offsetCenterY !== 0)
-                newY = this.target.body.centerY + this.offsetCenterY
-            else
-                newY = this.target.body.pos.y + this.offsetY
-
-            this.owner.body.pos.y = newY
-        }
+        if (this.modeY === 'center')
+            this.owner.body.centerY = this.target.body.centerY + this.offsetY
+        else
+            this.owner.body.pos.y = this.target.body.pos.y + this.offsetY
     }
 }

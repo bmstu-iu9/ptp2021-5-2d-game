@@ -5,11 +5,10 @@ import AssetManager from "./asset_manager.js";
 import {Body} from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {STATE_DESTROYED} from "./game_constants.js";
+import {ENTITY_STATE, GAME_STATE} from "./enums.js";
 import {Vector} from "../math/vector.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {switchToMenu} from "./page.js";
-import {GAME_STATE} from "./enums.js";
 import {ExplosionEffect} from "../entities/effects.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
 import {BaseBooster} from "../entities/base_booster.js";
@@ -26,10 +25,9 @@ class Game {
 
     constructor() {
         // Create canvas and extract its context
-        this.viewport = document.createElement('canvas');
-        this.viewport.id = "gameViewport";
-        this.viewport.width = window.innerWidth;
-        this.viewport.height = window.innerHeight;
+        this.viewport = document.getElementById("gameViewport");
+        this.viewport.width = window.innerWidth
+        this.viewport.height = window.innerHeight
         this.context = this.viewport.getContext('2d');
         document.getElementById("container").insertBefore(this.viewport, null);
 
@@ -135,7 +133,7 @@ class Game {
 
         // Process destroyed objects
         for (let i = 0; i < this.gameObjects.length; i++) {
-            if (this.gameObjects[i].state === STATE_DESTROYED) {
+            if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.gameObjects.push(
                         new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_orange"]))

@@ -1,4 +1,5 @@
 import Signal from "../core/signal.js";
+import {game} from "../core/game.js";
 
 /**
  * An Animation contains info about single animation that is played using AnimationManager.
@@ -13,42 +14,65 @@ export default class Animation {
     constructor(name, sequence, parent) {
         this.name = name
         this._sequence = sequence
-        this._loop = sequence.loop
+        this._speed = sequence.speed
         this._parent = parent
+        this.loop = sequence.loop
 
         this.frameIndex = 0
-        this._speed = sequence.speed
+        this._lastFrameTimestamp = game.lastTimestamp
 
         this.onComplete = new Signal()
     }
 
-    get loop() {
-        return this._loop
+    /**
+     * Get the duration of this Animation.
+     *
+     * @returns {number} the duration of this Animation
+     */
+    get duration() {
+        return this._speed * this.length
     }
 
-    set loop(value) {
-        this._loop = value
+    /**
+     * Set the duration of this Animation to the specified value.
+     * Note: Changes do not affect the underlying sequence.
+     *
+     * @param value the required duration of this Animation
+     */
+    set duration(value) {
+        this._speed = Math.floor(value / this.length)
     }
 
+    /**
+     * Get length of this Animation.
+     *
+     * @returns {Number} the number of cells in underlying sequence
+     */
     get length() {
-        return this._sequence.cells.length
+        return this._sequence.length
     }
 
     get currentCell() {
         return this._sequence.cells[this.frameIndex]
     }
 
+    /**
+     * Start this Animation.
+     *
+     * @param index index of the frame in the sequence that is to play. If no provided, Animation will start from
+     * where it left off.
+     * @private
+     */
     _start(index = null) {
-        if (index !== null) {
-            this.frameIndex = index;
-        }
+        if (index !== null)
+            this.frameIndex = index
 
         // If the animation is out of range then start it at the beginning
-        if (this.frameIndex >= this.length - 1 || this.frameIndex < 0) {
-            this.frameIndex = 0;
-        }
+        if (this.frameIndex >= this.length - 1 || this.frameIndex < 0)
+            this.frameIndex = 0
 
         this._isPlaying = true
+        this._lastFrameTimestamp = game.lastTimestamp
     }
 
     playAt(index) {
@@ -80,9 +104,14 @@ export default class Animation {
         if (!this._isPlaying)
             return
 
-        this.frameIndex++
+        let frameDelta = Math.trunc(((game.lastTimestamp - this._lastFrameTimestamp) / this._speed) % (this.length + 1))
+        if (frameDelta === 0)
+            return
 
-        if (this._loop) {
+        this.frameIndex += frameDelta
+        this._lastFrameTimestamp = game.lastTimestamp
+
+        if (this.loop) {
             if (this.frameIndex < 0)
                 this.frameIndex = (this.length + this.frameIndex % this.length) % this.length
             else if (this.frameIndex >= this.length)
@@ -91,6 +120,7 @@ export default class Animation {
         } else if (this.frameIndex < 0 || this.frameIndex >= this.length) {
             this._parent.stop()
             this.onComplete.dispatch()
+
             return
         }
 

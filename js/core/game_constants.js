@@ -18,12 +18,6 @@ export const
     PLAYER_LASER_WIDTH = 30,
     PLAYER_BOOSTER_DURATION = 300;
 
-/**Possible entity states */
-export const
-    STATE_ACTIVE = 0,
-    STATE_UNDER_FIRE = 1,
-    STATE_DESTROYED = 13;
-
 /**World */
 export const
     BACKGROUND_SPEED = 2,
