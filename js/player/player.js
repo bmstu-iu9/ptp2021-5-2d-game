@@ -11,9 +11,9 @@ import {
     PLAYER_BULLET_W,
     PLAYER_DIM,
     PLAYER_FRAMES_PER_BULLET,
-    PLAYER_HEALTH,
-    STATE_DESTROYED
+    PLAYER_HEALTH
 } from "../core/game_constants.js";
+import {ENTITY_STATE} from "../core/enums.js";
 import {Vector} from "../math/vector.js";
 import {WEAPON_TYPE} from "../core/enums.js";
 import {KeyboardControl} from "../components/movement_logic.js";
@@ -116,7 +116,7 @@ export class Player extends BaseEntity {
     }
 
     destroy() {
-        this.state = STATE_DESTROYED
+        this.state = ENTITY_STATE.DESTROYED
         game.reset()
     }
 

@@ -13,4 +13,9 @@ export const
         REGULAR: 0,
         MULTI: 1,
         LASER: 2,
+    }),
+    ENTITY_STATE = Object.freeze({
+        ACTIVE: 0,
+        UNDER_FIRE: 1,
+        DESTROYED: 13
     })

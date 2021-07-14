@@ -49,8 +49,6 @@ export default class AssetManager {
         let assetSrc = "./assets/" + assetInfo[0],
             assetName = extractFilename(assetSrc)
 
-        console.log("Processing " + assetName)
-
         switch (determineAssetType(assetSrc)) {
             case ASSET_TYPE.IMAGE:
                 let img = new Image()
