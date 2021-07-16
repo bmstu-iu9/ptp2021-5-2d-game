@@ -91,7 +91,7 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     gameLoop(ts) {
-        if (game.state !== GAME_STATE.RUNNING)
+        if (game.state === GAME_STATE.LOADING || game.state === GAME_STATE.MENU)
             return
         game.update(ts);
         game.render()
@@ -172,6 +172,24 @@ class Game {
 
         this.context.drawImage(game.assets.textures["player_hp_bar"].image, 0, 0, barW, 20, 27, 28, barW, 20)
 
+
+        if (this.state === GAME_STATE.BETWEEN_LEVELS) {
+            let ctx = this.context
+            ctx.font = "48px Serif"
+            ctx.fillStyle = "red";
+            ctx.textAlign = "center";
+            ctx.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", this.viewport.width/2, this.viewport.height/2);
+        } else if (this.state === GAME_STATE.END) {
+            let ctx = this.context
+            ctx.font = "48px Serif"
+            ctx.fillStyle = "red";
+            ctx.textAlign = "center";
+            ctx.fillText("Game over. Total score: " + this.levelManager.score, this.viewport.width/2, this.viewport.height/2);
+            setTimeout(function(){
+                game.player.destroy();
+            },5000);
+        }
+
     }
 
     onResize() {
@@ -227,7 +245,7 @@ const GAME_LEVELS = [
     {
         'waves': [
             [
-                ['BaseEnemy', 5]
+                ['BaseEnemy', 1]
             ],
             [
                 ['ShootingEnemy', 1]
@@ -235,7 +253,7 @@ const GAME_LEVELS = [
         ],
         'default_weapon' : WEAPON_TYPE.REGULAR,
         'boss': null,
-        'boostersFrequency': 100,
+        'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser'],
         'pointsReward': 666,
     },
@@ -243,7 +261,7 @@ const GAME_LEVELS = [
     {
         'waves': [
             [
-                ['BaseEnemy', 15]
+                ['BaseEnemy', 5]
             ],
             [
                 ['ShootingEnemy', 1]
@@ -251,7 +269,7 @@ const GAME_LEVELS = [
         ],
         'default_weapon' : WEAPON_TYPE.LASER,
         'boss': null,
-        'boostersFrequency': 100,
+        'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser'],
         'pointsReward': 666,
     },
@@ -259,7 +277,7 @@ const GAME_LEVELS = [
     {
         'waves': [
             [
-                ['BaseEnemy', 10]
+                ['BaseEnemy', 5]
             ],
             [
                 ['ShootingEnemy', 1]
@@ -267,7 +285,7 @@ const GAME_LEVELS = [
         ],
         'default_weapon' : WEAPON_TYPE.MULTI,
         'boss': null,
-        'boostersFrequency': 100,
+        'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser'],
         'pointsReward': 666,
     },
@@ -279,18 +297,19 @@ class LevelManager{
         this.currentLevelIndex = index
         this.currentLevel = GAME_LEVELS[index]
         this.framesTillNextBooster = this.currentLevel.boostersFrequency
+        this.score = 0;
         this.currentWave = 0
         this.enemiesTotalNum = 0
         this.enemiesKilled = 0
         this.availableEnemies = []
         game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
 
-
     }
 
 
     update(){
         if (this.availableEnemies.length === 0 && this.currentWave < this.currentLevel.waves.length) {
+            this.score += this.currentLevel.pointsReward
             for (let [name, amount] of this.currentLevel.waves[this.currentWave]) {
                 this.enemiesTotalNum += amount
                 switch (name) {
@@ -314,11 +333,10 @@ class LevelManager{
             this.currentWave++
         }
 
-        if (this.framesTillNextBooster === 0) {
+        if (this.framesTillNextBooster === 0 && game.state === GAME_STATE.RUNNING) {
             let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50)
             game.gameObjects.push(new BaseBooster(body, game.assets.textures["heal_orb"], "heal"))
             this.framesTillNextBooster = this.currentLevel.boostersFrequency
-            console.log(this.framesTillNextBooster)
         }
         this.framesTillNextBooster--
 
@@ -326,28 +344,25 @@ class LevelManager{
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length) {
                 this.nextLevel()
             } else {
-                this.displayCongratulations()
+                game.state = GAME_STATE.END
             }
         }
-        if (this.availableEnemies.length > 0 && rnd(1, 100) > 95) {
+
+        if (rnd(1, 100) > 95 && this.availableEnemies.length > 0 && game.state === GAME_STATE.RUNNING) {
             game.gameObjects.push(this.availableEnemies.shift())
         }
     }
 
     nextLevel(){
+        game.state = GAME_STATE.BETWEEN_LEVELS
         this.currentLevel = GAME_LEVELS[++this.currentLevelIndex]
         this.currentWave = 0
         this.enemiesTotalNum = 0
         this.enemiesKilled = 0
         game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
-    }
-
-    displayCongratulations(){
         setTimeout(function(){
-            game.player.destroy();
-        },500);
-        // Write "LEVEL CLEARED"
-        // Веселая музыка
+            game.state = GAME_STATE.RUNNING;
+        },3000)
     }
 
 
