@@ -85,17 +85,21 @@ class KeyboardControl extends MovementLogic {
 
 }
 
+/**
+ * Provides "clip" movement logic.
+ *
+ */
 class ClipToTarget extends MovementLogic {
-    constructor(target, settings) {
+    constructor(target, modeX = null, modeY = null, offsetX = 0, offsetY = 0) {
         super("ClipToTarget")
 
         this.target = target
 
-        this.modeX = settings.modeX || null
-        this.modeY = settings.modeY || null
+        this.modeX = modeX
+        this.modeY = modeY
 
-        this.offsetX = this.modeX && settings.offsetX ? settings.offsetX : 0
-        this.offsetY = this.modeY && settings.offsetY ? settings.offsetY : 0
+        this.offsetX = offsetX
+        this.offsetY = offsetY
     }
 
     update() {

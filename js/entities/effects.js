@@ -18,7 +18,7 @@ class HealEffect extends BaseEffect {
 
         this.target = target
         this.movementLogic = this.components.add(
-            new ClipToTarget(this.target, {modeX: 'center', modeY: 'center', offsetX: 0, offsetY: 0}))
+            new ClipToTarget(this.target, 'center', 'center', 0, 0))
     }
 
     draw(ctx) {
