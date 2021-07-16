@@ -33,7 +33,7 @@ class PlayerLaser extends PlayerBullet {
     constructor(pos) {
         super(new Body(pos.clone(), PLAYER_LASER_WIDTH, 100),
             game.assets.textures["player_laser"],
-            new ClipToTarget(game.player, {clipX: true, offsetCenterX: -PLAYER_LASER_WIDTH / 2}))
+            new ClipToTarget(game.player, {modeX: 'center', offsetX: -PLAYER_LASER_WIDTH / 2}))
 
         this.body.pos.y = 0
         this.body.pos.x = game.player.body.centerX - this.body.width / 2
@@ -45,8 +45,6 @@ class PlayerLaser extends PlayerBullet {
 
     update() {
         super.update()
-        // Follow player
-        this.body.pos.x = game.player.body.centerX - this.body.width / 2
         this.body.height = game.player.body.pos.y
 
         // Pulsate
