@@ -5,7 +5,7 @@ import AssetManager from "./asset_manager.js";
 import {Body} from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {ENTITY_STATE, GAME_STATE} from "./enums.js";
+import {ENTITY_STATE, GAME_STATE, WEAPON_TYPE} from "./enums.js";
 import {Vector} from "../math/vector.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {switchToMenu} from "./page.js";
@@ -79,6 +79,7 @@ class Game {
 
         game.player = new Player()
         game.gameObjects.push(game.player)
+        this.levelManager = new LevelManager(0)
 
         game.state = GAME_STATE.RUNNING
 
@@ -92,7 +93,6 @@ class Game {
     gameLoop(ts) {
         if (game.state !== GAME_STATE.RUNNING)
             return
-
         game.update(ts);
         game.render()
         window.requestAnimationFrame(game.gameLoop)
@@ -137,6 +137,7 @@ class Game {
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.gameObjects.push(
                         new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_orange"]))
+                    this.levelManager.enemiesKilled++
                 } else if (this.gameObjects[i] instanceof EnemyHauntingBullet) {
                     this.gameObjects.push(
                         new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_purple"]))
@@ -144,21 +145,7 @@ class Game {
                 this.gameObjects.splice(i, 1)
             }
         }
-
-        if (rnd(1, 100) > 98) {
-            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
-                enemy = new BaseEnemy(body, game.assets.textures["enemy_ship"], 10)
-            enemy.movementLogic = enemy.components.add(new ConstantSpeed(new Vector(0, rnd(1, 6))))
-            game.gameObjects.push(enemy)
-        }
-        if (rnd(1, 200) > 198) {
-            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
-            game.gameObjects.push(new ShootingEnemy(body, game.assets.textures["enemy_ship"], 15, 10))
-        }
-        if (rnd(1, 500) > 498) {
-            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50)
-            game.gameObjects.push(new BaseBooster(body, game.assets.textures["heal_orb"], "heal"))
-        }
+        game.levelManager.update();
     }
 
     /**Draws background and calls render() for every entity
@@ -234,6 +221,137 @@ class BackgroundScroller {
             ctx.drawImage(obj.image, 0, obj.currentPosition - obj.image.height)
         })
     }
+}
+
+const GAME_LEVELS = [
+    {
+        'waves': [
+            [
+                ['BaseEnemy', 5]
+            ],
+            [
+                ['ShootingEnemy', 1]
+            ]
+        ],
+        'default_weapon' : WEAPON_TYPE.REGULAR,
+        'boss': null,
+        'boostersFrequency': 100,
+        'allowedBooster': ['heal', 'laser'],
+        'pointsReward': 666,
+    },
+
+    {
+        'waves': [
+            [
+                ['BaseEnemy', 15]
+            ],
+            [
+                ['ShootingEnemy', 1]
+            ]
+        ],
+        'default_weapon' : WEAPON_TYPE.LASER,
+        'boss': null,
+        'boostersFrequency': 100,
+        'allowedBooster': ['heal', 'laser'],
+        'pointsReward': 666,
+    },
+
+    {
+        'waves': [
+            [
+                ['BaseEnemy', 10]
+            ],
+            [
+                ['ShootingEnemy', 1]
+            ]
+        ],
+        'default_weapon' : WEAPON_TYPE.MULTI,
+        'boss': null,
+        'boostersFrequency': 100,
+        'allowedBooster': ['heal', 'laser'],
+        'pointsReward': 666,
+    },
+
+]
+
+class LevelManager{
+    constructor(index) {
+        this.currentLevelIndex = index
+        this.currentLevel = GAME_LEVELS[index]
+        this.framesTillNextBooster = this.currentLevel.boostersFrequency
+        this.currentWave = 0
+        this.enemiesTotalNum = 0
+        this.enemiesKilled = 0
+        this.availableEnemies = []
+        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
+
+
+    }
+
+
+    update(){
+        if (this.availableEnemies.length === 0 && this.currentWave < this.currentLevel.waves.length) {
+            for (let [name, amount] of this.currentLevel.waves[this.currentWave]) {
+                this.enemiesTotalNum += amount
+                switch (name) {
+                    case 'BaseEnemy':
+                        for (let i = 0; i < amount; i++) {
+                            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
+                                enemy = new BaseEnemy(body, game.assets.textures["enemy_ship"], 10)
+                            enemy.movementLogic = enemy.components.add(new ConstantSpeed(new Vector(0, rnd(1, 6))))
+                            this.availableEnemies.push(enemy)
+                        }
+                        break
+                    case 'ShootingEnemy':
+                        for (let i = 0; i < amount; i++) {
+                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
+                            this.availableEnemies.push(new ShootingEnemy(body, game.assets.textures["enemy_ship"], 15, 10))
+                        }
+                        break
+                }
+            }
+
+            this.currentWave++
+        }
+
+        if (this.framesTillNextBooster === 0) {
+            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50)
+            game.gameObjects.push(new BaseBooster(body, game.assets.textures["heal_orb"], "heal"))
+            this.framesTillNextBooster = this.currentLevel.boostersFrequency
+            console.log(this.framesTillNextBooster)
+        }
+        this.framesTillNextBooster--
+
+        if (this.enemiesKilled === this.enemiesTotalNum) {
+            if (this.currentLevelIndex + 1 < GAME_LEVELS.length) {
+                this.nextLevel()
+            } else {
+                this.displayCongratulations()
+            }
+        }
+        if (this.availableEnemies.length > 0 && rnd(1, 100) > 95) {
+            game.gameObjects.push(this.availableEnemies.shift())
+        }
+    }
+
+    nextLevel(){
+        this.currentLevel = GAME_LEVELS[++this.currentLevelIndex]
+        this.currentWave = 0
+        this.enemiesTotalNum = 0
+        this.enemiesKilled = 0
+        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
+    }
+
+    displayCongratulations(){
+        setTimeout(function(){
+            game.player.destroy();
+        },500);
+        // Write "LEVEL CLEARED"
+        // Веселая музыка
+    }
+
+
+
 }
 
 export const game = new Game();
