@@ -101,12 +101,12 @@ class ClipToTarget extends MovementLogic {
     update() {
         if (this.modeX === 'center')
             this.owner.body.centerX = this.target.body.centerX + this.offsetX
-        else
+        else if (this.modeX === 'pos')
             this.owner.body.pos.x = this.target.body.pos.x + this.offsetX
 
         if (this.modeY === 'center')
             this.owner.body.centerY = this.target.body.centerY + this.offsetY
-        else
+        else if (this.modeY === 'pos')
             this.owner.body.pos.y = this.target.body.pos.y + this.offsetY
     }
 }
