@@ -145,7 +145,10 @@ class Game {
                 this.gameObjects.splice(i, 1)
             }
         }
-        game.levelManager.update();
+        if (game.state === GAME_STATE.RUNNING) {
+            game.levelManager.update();
+        }
+
     }
 
     /**Draws background and calls render() for every entity
@@ -309,7 +312,6 @@ class LevelManager{
 
     update(){
         if (this.availableEnemies.length === 0 && this.currentWave < this.currentLevel.waves.length) {
-            this.score += this.currentLevel.pointsReward
             for (let [name, amount] of this.currentLevel.waves[this.currentWave]) {
                 this.enemiesTotalNum += amount
                 switch (name) {
@@ -341,6 +343,7 @@ class LevelManager{
         this.framesTillNextBooster--
 
         if (this.enemiesKilled === this.enemiesTotalNum) {
+            this.score += this.currentLevel.pointsReward
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length) {
                 this.nextLevel()
             } else {
