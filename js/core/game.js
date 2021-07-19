@@ -183,11 +183,6 @@ class Game {
             ctx.textAlign = "center";
             ctx.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", this.viewport.width/2, this.viewport.height/2);
         } else if (this.state === GAME_STATE.END) {
-            setTimeout(function () {
-                game.reset()
-            }, 5000)
-            this.state = GAME_STATE.RESULT
-        } else if (this.state === GAME_STATE.RESULT) {
             let ctx = this.context
             ctx.font = "48px Serif"
             ctx.fillStyle = "red";
@@ -349,6 +344,9 @@ class LevelManager{
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length) {
                 this.nextLevel()
             } else {
+                setTimeout(function(){
+                    game.reset()
+                },5000)
                 game.state = GAME_STATE.END
             }
         }

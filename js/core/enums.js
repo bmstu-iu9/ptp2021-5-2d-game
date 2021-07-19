@@ -9,8 +9,7 @@ export const
         MENU: 1,
         RUNNING: 2,
         BETWEEN_LEVELS: 3,
-        END: 4,
-        RESULT: 5
+        END: 4
     }),
     WEAPON_TYPE = Object.freeze({
         REGULAR: 0,
