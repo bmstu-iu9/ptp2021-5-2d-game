@@ -12,6 +12,7 @@ import {switchToMenu} from "./page.js";
 import {ExplosionEffect} from "../entities/effects.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
 import {BaseBooster} from "../entities/base_booster.js";
+import {PlayerOrbitalShield} from "../entities/player_bullets.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -126,7 +127,7 @@ class Game {
 
         // Destroy entities which left the screen
         for (let obj of this.gameObjects) {
-            if (!obj.body.collidesWith(this.playArea)) {
+            if (!obj.body.collidesWith(this.playArea) && !(obj instanceof PlayerOrbitalShield)) {
                 obj.destroy()
             }
         }
@@ -257,7 +258,7 @@ const GAME_LEVELS = [
         'default_weapon' : WEAPON_TYPE.REGULAR,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser'],
+        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
         'pointsReward': 666,
     },
 
@@ -273,7 +274,7 @@ const GAME_LEVELS = [
         'default_weapon' : WEAPON_TYPE.LASER,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser'],
+        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
         'pointsReward': 666,
     },
 
@@ -289,7 +290,7 @@ const GAME_LEVELS = [
         'default_weapon' : WEAPON_TYPE.MULTI,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser'],
+        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
         'pointsReward': 666,
     },
 
@@ -336,8 +337,9 @@ class LevelManager{
         }
 
         if (this.framesTillNextBooster === 0 && game.state === GAME_STATE.RUNNING) {
+            let boostName = GAME_LEVELS[this.currentLevelIndex].allowedBooster[Math.floor(Math.random()*GAME_LEVELS[this.currentLevelIndex].allowedBooster.length)];
             let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50)
-            game.gameObjects.push(new BaseBooster(body, game.assets.textures["heal_orb"], "heal"))
+            game.gameObjects.push(new BaseBooster(body, game.assets.textures[boostName + "_orb"], boostName))
             this.framesTillNextBooster = this.currentLevel.boostersFrequency
         }
         this.framesTillNextBooster--

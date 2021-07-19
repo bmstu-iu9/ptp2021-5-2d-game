@@ -15,6 +15,7 @@ export const
         REGULAR: 0,
         MULTI: 1,
         LASER: 2,
+        ORBITAL_SHIELD: 3,
     }),
     ENTITY_STATE = Object.freeze({
         ACTIVE: 0,
