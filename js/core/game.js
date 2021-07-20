@@ -188,9 +188,6 @@ class Game {
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
             ctx.fillText("Game over. Total score: " + this.levelManager.score, this.viewport.width/2, this.viewport.height/2);
-            setTimeout(function(){
-                game.player.destroy();
-            },5000);
         }
 
     }
@@ -347,6 +344,9 @@ class LevelManager{
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length) {
                 this.nextLevel()
             } else {
+                setTimeout(function(){
+                    game.reset()
+                },5000)
                 game.state = GAME_STATE.END
             }
         }
