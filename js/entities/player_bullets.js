@@ -62,17 +62,19 @@ class PlayerLaser extends PlayerBullet {
         }
     }
 }
+
 class PlayerOrbitalShield extends PlayerBullet{
     constructor() {
         super(new Body(new Vector(game.player.body.centerX, game.player.body.centerY), 50, 50),
             game.assets.textures["orbital_shield"],
-            new SpinAround(game.player, 150, (Math.PI * 2) / 90), (Math.PI * 2) / 360)
+            new SpinAround(game.player, 150, (Math.PI * 2) / 60))
 
         this.body.pos.x = game.player.body.centerX - this.body.width / 2
         this.body.pos.y = game.player.body.centerY + 125 - this.body.height / 2
 
         this.lifetimeRemaining = 2 * PLAYER_BOOSTER_DURATION
     }
+
     update() {
         super.update()
 

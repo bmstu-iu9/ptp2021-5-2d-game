@@ -37,7 +37,7 @@ class BaseBullet extends BaseEntity {
     }
 
     update() {
-        super.update();
-        this.body.rotation = this.movementLogic.speed.angle // set rotation according to maxSpeed vector angle
+        super.update()
+        this.body.rotation = this.movementLogic.rotation || this.movementLogic.speed.angle
     }
 }
