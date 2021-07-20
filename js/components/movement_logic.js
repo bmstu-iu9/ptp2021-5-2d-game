@@ -115,24 +115,26 @@ class ClipToTarget extends MovementLogic {
     }
 }
 class SpinAround extends MovementLogic {
-    constructor(target, radius, rotationSpeed) {
+    constructor(target, radius, rotationSpeed, spriteRotation) {
         super("SpinAround")
 
         //Rotation parameters
         this.target = target
         this.radius = radius
         this.rotationSpeed = rotationSpeed
-
+        this.spriteRotation = spriteRotation
         //Current angle with target on the center of coordinate system
         //Angle can be a large number, so be careful wit rotation speed and life time of a body
         this.currentAngle = 0
     }
+
     update() {
         //Update current angle by adding rotationSpeed. Angle changes due to the change in the current angle.
         //Also, the coordinate system is different from the game coordinate system.
         // But we just transform it into a game coordinate system during calculations.
+        this.owner.body.rotation += this.spriteRotation
         this.currentAngle += this.rotationSpeed
-        this.owner.body.pos.y = this.target.body.centerY - this.owner.body.height / 2 + this.radius * Math.cos(this.currentAngle)
-        this.owner.body.pos.x = this.target.body.centerX - this.owner.body.width / 2 + this.radius * Math.sin(this.currentAngle)
+        this.owner.body.centerY = this.target.body.centerY + this.radius * Math.cos(this.currentAngle)
+        this.owner.body.centerX = this.target.body.centerX + this.radius * Math.sin(this.currentAngle)
     }
 }
