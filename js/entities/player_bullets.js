@@ -2,10 +2,11 @@ import {BaseBullet} from "./base_bullet.js";
 import {game} from "../core/game.js";
 import {Body} from "../physics/body.js";
 import {PLAYER_BOOSTER_DURATION, PLAYER_LASER_WIDTH} from "../core/game_constants.js";
-import {ClipToTarget, ConstantSpeed} from "../components/movement_logic.js";
+import {ClipToTarget, ConstantSpeed, SpinAround} from "../components/movement_logic.js";
+import {Vector} from "../math/vector.js";
 import Lifetime from "../components/lifetime.js";
 
-export {PlayerBullet, SimplePlayerBullet, PlayerLaser}
+export {PlayerBullet, SimplePlayerBullet, PlayerLaser, PlayerOrbitalShield}
 
 /**Base class for player's bullet.
  * Every bullet fired by the player should be PlayerBullet's child.
@@ -59,5 +60,29 @@ class PlayerLaser extends PlayerBullet {
         } else {
             target.destroy()
         }
+    }
+}
+
+class PlayerOrbitalShield extends PlayerBullet{
+    constructor() {
+        super(new Body(new Vector(game.player.body.centerX, game.player.body.centerY), 50, 50),
+            game.assets.textures["orbital_shield"],
+            new SpinAround(game.player, 150, (Math.PI * 2) / 60))
+
+        this.body.pos.x = game.player.body.centerX - this.body.width / 2
+        this.body.pos.y = game.player.body.centerY + 125 - this.body.height / 2
+
+        this.lifetimeRemaining = 2 * PLAYER_BOOSTER_DURATION
+    }
+
+    update() {
+        super.update()
+
+        if (--this.lifetimeRemaining <= 0)
+            this.destroy()
+    }
+    //Destroys target if it collide with the shield. We dont use collision rules because the shield is a kind of a bullet for us.
+    hit(target) {
+        target.destroy()
     }
 }

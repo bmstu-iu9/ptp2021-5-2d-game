@@ -32,6 +32,9 @@ const ASSETS_LIST = [
     ["img/player_hp_bar_back.png"],
     ["img/heal_orb.png"],
     ["img/player_laser.png"],
+    ["img/orbital_shield.png"],
+    ["img/orbital_shield_orb.png"],
+    ["img/laser_orb.png"],
 ]
 
 export default class AssetManager {

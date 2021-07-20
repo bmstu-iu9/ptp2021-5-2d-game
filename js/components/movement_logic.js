@@ -3,7 +3,7 @@ import {Vector} from "../math/vector.js";
 import {game} from "../core/game.js";
 import {PLAYER_MAX_SPEED, PLAYER_VELOCITY} from "../core/game_constants.js";
 
-export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget}
+export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget, SpinAround}
 
 class MovementLogic extends Component {
     /**
@@ -112,5 +112,28 @@ class ClipToTarget extends MovementLogic {
             this.owner.body.centerY = this.target.body.centerY + this.offsetY
         else if (this.modeY === 'pos')
             this.owner.body.pos.y = this.target.body.pos.y + this.offsetY
+    }
+}
+
+class SpinAround extends MovementLogic {
+    constructor(target, radius, rotationSpeed) {
+        super("SpinAround")
+
+        this.target = target
+        this.radius = radius
+        this.rotationSpeed = rotationSpeed
+        //Current angle with target on the center of coordinate system
+        //Angle can be a large number, so be careful wit rotation speed and life time of a body
+        this.rotation = 0
+    }
+
+    update() {
+        //Update current angle by adding rotationSpeed. Angle changes due to the change in the current angle.
+        //Also, the coordinate system is different from the game coordinate system.
+        // But we just transform it into a game coordinate system during calculations.
+        this.rotation = (this.rotation + this.rotationSpeed) % 360
+
+        this.owner.body.centerY = this.target.body.centerY + this.radius * Math.sin(this.rotation)
+        this.owner.body.centerX = this.target.body.centerX + this.radius * Math.cos(this.rotation)
     }
 }

@@ -1,7 +1,7 @@
 import {game} from "../core/game.js";
 import {BaseEntity} from "../entities/base_entity.js";
 import {Body} from "../physics/body.js"
-import {PlayerLaser, SimplePlayerBullet} from "../entities/player_bullets.js";
+import {PlayerLaser, PlayerOrbitalShield, SimplePlayerBullet} from "../entities/player_bullets.js";
 import {
     MULTI_BULLET_W,
     MULTU_BULLET_H,
@@ -66,6 +66,9 @@ export class Player extends BaseEntity {
                 game.gameObjects.push(new PlayerLaser(this.body.pos))
 
                 break
+            case WEAPON_TYPE.ORBITAL_SHIELD:
+                game.gameObjects.push(new PlayerOrbitalShield())
+
         }
     }
 

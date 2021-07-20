@@ -4,6 +4,8 @@ import {PLAYER_BASE_COLLISION_DAMAGE} from "../core/game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet} from "../entities/player_bullets.js";
 import {BaseBooster} from "../entities/base_booster.js";
+import {WEAPON_TYPE} from "../core/enums.js";
+import {PlayerOrbitalShield} from "../entities/player_bullets.js";
 
 export function applyCollisionRules(obj1, obj2) {
     for (let rule of collisionRules) {
@@ -65,11 +67,21 @@ const collisionRules = [
     new CollisionRule(isEnemyBullet, isPlayer, function (enemyBullet, player) {
         enemyBullet.hit(player)
     }),
+    new CollisionRule(isPlayerBullet, isEnemyBullet, function (myBullet, enemyBullet) {
+       if (myBullet instanceof  PlayerOrbitalShield)
+           enemyBullet.destroy()
+    }),
     new CollisionRule(isBooster, isPlayer, function (boost, player) {
         boost.destroy()
         switch (boost.boosterType){
             case "heal":
                 player.heal(25)
+                break
+            case "laser":
+                player.changeWeapon(WEAPON_TYPE.LASER)
+                break
+            case "orbital_shield":
+                player.changeWeapon(WEAPON_TYPE.ORBITAL_SHIELD)
                 break
         }
     })
