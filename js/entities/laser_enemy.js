@@ -5,9 +5,9 @@ import {EnemyLaserBullet} from "./enemy_bullets.js";
 import {BounceHorizontally} from "../components/movement_logic.js";
 import {Vector} from "../math/vector.js";
 
-export {ShootingEnemy}
+export {LaserEnemy}
 
-class ShootingEnemy extends BaseEnemy {
+class LaserEnemy extends BaseEnemy {
     constructor(body, atlas, health, damage = 0) {
         super(body, atlas, health, damage);
         this.fireState = 0
