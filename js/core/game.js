@@ -5,6 +5,7 @@ import AssetManager from "./asset_manager.js";
 import {Body} from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
+import {LaserEnemy} from "../entities/laser_enemy.js";
 import {ENTITY_STATE, GAME_STATE, WEAPON_TYPE} from "./enums.js";
 import {Vector} from "../math/vector.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
@@ -246,6 +247,19 @@ const GAME_LEVELS = [
     {
         'waves': [
             [
+                ['LaserEnemy', 10]
+            ],
+        ],
+        'default_weapon' : WEAPON_TYPE.REGULAR,
+        'boss': null,
+        'boostersFrequency': 300,
+        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'pointsReward': 666,
+    },
+
+    {
+        'waves': [
+            [
                 ['BaseEnemy', 1]
             ],
             [
@@ -325,6 +339,12 @@ class LevelManager{
                         for (let i = 0; i < amount; i++) {
                             let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
                             this.availableEnemies.push(new ShootingEnemy(body, game.assets.textures["enemy_ship"], 15, 10))
+                        }
+                        break
+                    case 'LaserEnemy':
+                        for (let i = 0; i < amount; i++) {
+                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
+                            this.availableEnemies.push(new LaserEnemy(body, game.assets.textures["laser_enemy"], 15, 10))
                         }
                         break
                 }
