@@ -247,7 +247,7 @@ const GAME_LEVELS = [
     {
         'waves': [
             [
-                ['LaserEnemy', 10]
+                ['LaserEnemy', 8]
             ],
         ],
         'default_weapon' : WEAPON_TYPE.REGULAR,
@@ -343,7 +343,7 @@ class LevelManager{
                         break
                     case 'LaserEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
+                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(60, 300)), 50, 50)
                             this.availableEnemies.push(new LaserEnemy(body, game.assets.textures["laser_enemy"], 15, 10))
                         }
                         break

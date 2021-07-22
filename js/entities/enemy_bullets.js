@@ -51,7 +51,7 @@ class EnemyLaserBullet extends EnemyBullet {
      */
     constructor(pos) {
         let body = new Body(pos, 60, 30)
-        super(body, game.assets.textures["laser_bullet"], new MoveTowards(game.player, 10), 50)
+        super(body, game.assets.textures["laser_bullet"], new MoveTowards(game.player, 9.5), 50)
     }
     destroy() {
         this.state = ENTITY_STATE.DESTROYED
