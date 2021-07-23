@@ -2,6 +2,7 @@ import {BaseEnemy} from "../entities/base_enemy.js";
 import {Player} from "../player/player.js";
 import {configureKeyWatchers} from "../player/keyboard_control.js";
 import AssetManager from "./asset_manager.js";
+import SoundManager from "./sound_manager.js";
 import {Body} from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
@@ -13,6 +14,7 @@ import {ExplosionEffect} from "../entities/effects.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
+import Signal from "./signal.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -47,6 +49,7 @@ class Game {
 
         this.isPressed = {}
 
+        this.destroyed = new Signal()
         return this
     }
 
@@ -79,6 +82,7 @@ class Game {
         game.lastTimestamp = Date.now()
 
         game.player = new Player()
+        this.sounds = new SoundManager()
         game.gameObjects.push(game.player)
         this.levelManager = new LevelManager(0)
 
@@ -135,6 +139,7 @@ class Game {
         // Process destroyed objects
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
+                this.destroyed.dispatch(this.gameObjects[i])
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.gameObjects.push(
                         new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_orange"]))

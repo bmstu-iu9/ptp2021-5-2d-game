@@ -35,6 +35,11 @@ const ASSETS_LIST = [
     ["img/orbital_shield.png"],
     ["img/orbital_shield_orb.png"],
     ["img/laser_orb.png"],
+    ["sounds/player_shot.mp3"],
+    ["sounds/laser3.mp3"],
+    ["sounds/multiple.mp3"],
+    ["sounds/base_enemy_destruction.mp3"],
+    ["sounds/boost.mp3"],
 ]
 
 export default class AssetManager {
@@ -73,7 +78,11 @@ export default class AssetManager {
                 break
 
             case ASSET_TYPE.SOUND:
-                throw "Sounds are not supported yet. Implement if you wish :)"
+                this.sounds[assetName] = new Audio(assetSrc)
+                this.sounds[assetName].volume = 0.2
+                callback()
+
+                break
         }
     }
 

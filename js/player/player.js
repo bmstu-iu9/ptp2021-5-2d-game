@@ -18,6 +18,7 @@ import {Vector} from "../math/vector.js";
 import {WEAPON_TYPE} from "../core/enums.js";
 import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
+import Signal from "../core/signal.js";
 
 /**Represents, well, player
  *
@@ -34,6 +35,8 @@ export class Player extends BaseEntity {
         this.fireState = 0
         this.fireBoosterDuration = 0
         this.weaponType = WEAPON_TYPE.REGULAR
+
+        this.onFire = new Signal()
     }
 
     receiveDamage(damageAmount) {
@@ -73,6 +76,7 @@ export class Player extends BaseEntity {
     }
 
     fire() {
+        this.onFire.dispatch(this.weaponType)
         switch (this.weaponType) {
             case WEAPON_TYPE.REGULAR:
                 let bx = this.body.centerX - PLAYER_BULLET_W / 2,
