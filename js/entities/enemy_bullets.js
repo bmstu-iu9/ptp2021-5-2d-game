@@ -2,10 +2,10 @@ import {BaseBullet} from "./base_bullet.js";
 import {ENTITY_STATE} from "../core/enums.js";
 import {game} from "../core/game.js";
 import {Body} from "../physics/body.js";
-import {FollowTarget} from "../components/movement_logic.js";
+import {FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
 
-export {EnemyBullet, EnemyHauntingBullet}
+export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet}
 
 /**Base class for enemy's bullet.
  *
@@ -36,6 +36,22 @@ class EnemyHauntingBullet extends EnemyBullet {
         let body = new Body(pos, 50, 20)
         super(body, game.assets.textures["enemy_rocket"], new FollowTarget(game.player), 10)
         this.lifetime = this.components.add(new Lifetime(this, 300))
+    }
+    destroy() {
+        this.state = ENTITY_STATE.DESTROYED
+    }
+}
+
+/**Laser bullet fast and powerful
+ */
+class EnemyLaserBullet extends EnemyBullet {
+    /**
+     *
+     * @param pos Vector representing position
+     */
+    constructor(pos) {
+        let body = new Body(pos, 60, 30)
+        super(body, game.assets.textures["laser_bullet"], new MoveTowards(game.player, 9.5), 50)
     }
     destroy() {
         this.state = ENTITY_STATE.DESTROYED

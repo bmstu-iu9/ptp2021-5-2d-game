@@ -2,6 +2,7 @@ import {ENTITY_STATE} from "../core/enums.js";
 import {SPRITE_SHEET} from "../textures/texture_atlas.js";
 import {AnimationManager} from "../components/animation_manager.js";
 import ComponentManager from "../core/component_manager.js";
+import Signal from "../core/signal.js";
 
 export {BaseEntity}
 
@@ -18,6 +19,7 @@ class BaseEntity {
         this.body = body
 
         this.components = new ComponentManager(this)
+        this.onDestroyed = new Signal()
 
         this.atlas = atlas
         this.cellIndex = this.atlas.cellIndex
@@ -79,5 +81,6 @@ class BaseEntity {
      * You should not override this method. */
     destroy() {
         this.state = ENTITY_STATE.DESTROYED
+        this.onDestroyed.dispatch()
     }
 }

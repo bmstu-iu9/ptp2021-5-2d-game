@@ -19,6 +19,7 @@ const ASSET_TYPE = Object.freeze({
 const ASSETS_LIST = [
     ["img/player_ship.png"],
     ["img/enemy_ship.png"],
+    ["img/laser_enemy.png"],
     ["img/player_regular_bullet.png"],
     ["img/player_multi_bullet.png"],
     ["img/player_shield.png"],
@@ -28,6 +29,7 @@ const ASSETS_LIST = [
     ["effects/heal_animation.png", 192, 192],
     ["img/enemy_regular_bullet.png"],
     ["img/enemy_rocket.png"],
+    ["img/laser_bullet.png"],
     ["img/player_hp_bar.png"],
     ["img/player_hp_bar_back.png"],
     ["img/heal_orb.png"],
