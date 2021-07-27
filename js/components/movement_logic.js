@@ -3,7 +3,7 @@ import {Vector} from "../math/vector.js";
 import {game} from "../core/game.js";
 import {PLAYER_MAX_SPEED, PLAYER_VELOCITY} from "../core/game_constants.js";
 
-export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget, SpinAround, MoveTowards}
+export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget, SpinAround, MoveTowards, PushAway}
 
 class MovementLogic extends Component {
     /**
@@ -17,6 +17,18 @@ class MovementLogic extends Component {
 
     update() {
         this.owner.body.pos.add(this.speed)
+    }
+
+    stopIfOut() {
+        let pos = this.owner.body.pos,
+            w = this.owner.body.width,
+            h = this.owner.body.height;
+
+        if (pos.x < 0 || pos.x + w > game.playArea.width)
+            this.speed.x = 0
+
+        if (pos.y < 0 || pos.y + h > game.playArea.height)
+            this.speed.y = 0
     }
 }
 
@@ -70,19 +82,9 @@ class KeyboardControl extends MovementLogic {
         acceleration.length = PLAYER_MAX_SPEED
         this.speed.lerp(acceleration, PLAYER_VELOCITY).limit(PLAYER_MAX_SPEED)
     }
-
     postUpdate() {
-        let pos = this.owner.body.pos,
-            w = this.owner.body.width,
-            h = this.owner.body.height;
-
-        if (pos.x < 0 || pos.x + w > game.playArea.width)
-            this.speed.x = 0
-
-        if (pos.y < 0 || pos.y + h > game.playArea.height)
-            this.speed.y = 0
+        super.stopIfOut()
     }
-
 }
 
 /**
@@ -139,8 +141,8 @@ class SpinAround extends MovementLogic {
 }
 
 class MoveTowards extends MovementLogic {
-    constructor(target, speedLength) {
-        super("MoveInDirection")
+    constructor(target, speedLength, name = "MoveTowards") {
+        super(name)
         this.target = target
         this.speed = null
         this.speedLength = speedLength
@@ -152,5 +154,14 @@ class MoveTowards extends MovementLogic {
             this.speed.length = this.speedLength
             this.aimed = true
         }
+    }
+}
+
+class PushAway extends MoveTowards {
+    constructor(target, speedLength) {
+        super(target, -speedLength, "PushAway");
+    }
+    postUpdate() {
+        super.stopIfOut()
     }
 }
