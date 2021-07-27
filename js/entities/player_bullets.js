@@ -43,6 +43,8 @@ class PlayerLaser extends PlayerBullet {
         this.extraWidthRate = 0.2
 
         this.lifetime = this.components.add(new Lifetime(PLAYER_BOOSTER_DURATION))
+
+        this.damage = 1;
     }
 
     update() {
@@ -56,7 +58,7 @@ class PlayerLaser extends PlayerBullet {
     }
 
     hit(target) {
-        if ("receiveDamage" in target) {
+        if (target instanceof BaseBoss) {
             target.receiveDamage(this.damage)
         } else {
             target.destroy()

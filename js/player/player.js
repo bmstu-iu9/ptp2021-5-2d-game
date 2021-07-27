@@ -95,7 +95,7 @@ export class Player extends BaseEntity {
 
                     game.gameObjects.push(
                         new SimplePlayerBullet(bulletBody, game.assets.textures["player_multi_bullet"],
-                            bulletSpeed))
+                            bulletSpeed, 1.5))
                 }
 
                 break
