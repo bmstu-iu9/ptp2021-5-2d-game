@@ -55,7 +55,7 @@ html, body {
     font-family: shadows into light;
 }
 
-.button:hover {
+.button:hover, .button.active {
     background: rgba(100, 100, 100, 0.5);
     color: white;
     transform: scale(1.1);
