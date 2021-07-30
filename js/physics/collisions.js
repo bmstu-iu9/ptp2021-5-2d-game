@@ -60,11 +60,11 @@ class CollisionRule {
 
 const collisionRules = [
     new CollisionRule(isPlayer, isBoss, function (player, boss) {
-        player.movementLogic = player.components.add(new PushAway(boss, 60))
+        player.movementLogic = player.components.add(new PushAway(boss, 20))
         player.receiveDamage(boss.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
         setTimeout(function(){
             player.components.removeComponentByName("PushAway")
-        },100)
+        },200)
     }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
         player.receiveDamage(enemy.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)

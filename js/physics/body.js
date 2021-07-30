@@ -57,6 +57,10 @@ class Body {
         this.pos.y = value - this.height / 2
     }
 
+    get center() {
+        return new Vector(this.centerX, this.centerY)
+    }
+
     /**
      * Clone this Body.
      *

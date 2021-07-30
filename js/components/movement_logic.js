@@ -62,7 +62,7 @@ class FollowTarget extends MovementLogic {
     }
 
     preUpdate() {
-        let targetSpeed = this.target.body.pos.clone().subtract(this.owner.body.pos)
+        let targetSpeed = this.target.body.center.subtract(this.owner.body.center)
         targetSpeed.length = this.maxSpeed
 
         this.speed.lerp(targetSpeed, this.turningSpeed)
@@ -150,7 +150,7 @@ class MoveTowards extends MovementLogic {
     }
     preUpdate() {
         if (!this.aimed) {
-            this.speed = this.target.body.pos.clone().subtract(this.owner.body.pos)
+            this.speed = this.target.body.center.subtract(this.owner.body.center)
             this.speed.length = this.speedLength
             this.aimed = true
         }
