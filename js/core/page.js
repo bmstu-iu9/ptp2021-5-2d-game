@@ -3,9 +3,13 @@ import {GAME_STATE} from "./enums.js";
 
 let settings = {}
 
+$('document').on('loaded', function () {
+    // Set up k
+})
+
 export function switchPage(id) {
     let currentPage = $('.page.active')
-    if (id === currentPage.id)
+    if (id === currentPage.attr('id'))
         return
 
     if (currentPage.id === 'settings')
@@ -73,5 +77,50 @@ function loadSettings() {
 
     // Change settings' elements here
 }
+
+function menuKeyboardControl(ev) {
+    if (game.state !== GAME_STATE.MENU)
+        return
+
+    let currentButton = $('.page.active > .page-item.active'),
+        nextButton, prevButton
+
+    if (currentButton.length === 0 || currentButton.next().length === 0)
+        nextButton = $('.page.active > .page-item:first-child')
+    else
+        nextButton = currentButton.next()
+
+    if (currentButton.length === 0 || currentButton.prev().length === 0)
+        prevButton = $('.page.active > .page-item:last-child')
+    else
+        prevButton = currentButton.prev()
+
+    switch (ev.code) {
+        case 'ArrowDown':
+        case 'KeyS':
+            currentButton.removeClass('active')
+            nextButton.addClass('active')
+
+            break
+        case 'ArrowUp':
+        case 'KeyW':
+            currentButton.removeClass('active')
+            prevButton.addClass('active')
+
+            break
+        case 'Enter':
+        case 'Space':
+            currentButton.trigger('click')
+
+            break
+        case 'Escape':
+        case 'Backspace':
+            switchPage("menu")
+
+            break
+    }
+}
+
+$('html').on('keydown', null, null, menuKeyboardControl)
 
 
