@@ -9,10 +9,11 @@ export {
  *
  */
 class BaseBoss extends BaseEnemy {
-    constructor(body, atlas, health, damage = 100) {
+    constructor(body, atlas, health, damage = 100, hpBarWidth = body.width*0.8) {
         super(body, atlas, health, damage);
         this.fullHealth = health
-        this.fullBarWidth = 560
+        this.fullBarWidth = hpBarWidth
+        this.leftCorner = (game.viewport.width - this.fullBarWidth)/2
         this.lastHBarWidth = this.fullBarWidth
     }
 
@@ -24,7 +25,7 @@ class BaseBoss extends BaseEnemy {
             this.body.width, this.body.height)
 
         // Draw HP bar
-        ctx.drawImage(game.assets.textures["player_hp_bar_back"].image, game.viewport.width/2 - this.fullBarWidth/2, 20, 574, 36)
+        ctx.drawImage(game.assets.textures["boss_hp_bar_back"].image, this.leftCorner, 20, this.fullBarWidth, 36)
 
         let barW = this.fullBarWidth * this.health / this.fullHealth,
             diff = barW - this.lastHBarWidth
@@ -33,7 +34,7 @@ class BaseBoss extends BaseEnemy {
             this.lastHBarWidth = barW
         }
 
-        ctx.drawImage(game.assets.textures["boss_hp_bar"].image, 0, 0, 260, 20, game.viewport.width/2 - this.fullBarWidth/2 + 7, 28, barW, 20)
+        ctx.drawImage(game.assets.textures["boss_hp_bar"].image, 0, 0, 260, 20, this.leftCorner+this.fullBarWidth*0.03, 28, barW, 20)
 
     }
 

@@ -33,6 +33,7 @@ const ASSETS_LIST = [
     ["img/player_hp_bar.png"],
     ["img/boss_hp_bar.png"],
     ["img/player_hp_bar_back.png"],
+    ["img/boss_hp_bar_back.png"],
     ["img/heal_orb.png"],
     ["img/player_laser.png"],
     ["img/orbital_shield.png"],
