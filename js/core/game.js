@@ -372,7 +372,7 @@ class LevelManager{
             switch (this.currentLevel.boss) {
                 case 'BaseBoss':
                     let body = new Body(new Vector(game.playArea.width/2-125, 20), 250, 250),
-                        boss = new BaseBoss(body, game.assets.textures["enemy_ship"], 500, 10)
+                        boss = new BaseBoss(body, game.assets.textures["base_boss"], 500, 10)
                     this.availableEnemies.push(boss)
                     break
             }
