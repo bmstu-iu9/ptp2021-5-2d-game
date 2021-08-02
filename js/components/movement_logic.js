@@ -3,7 +3,7 @@ import {Vector} from "../math/vector.js";
 import {game} from "../core/game.js";
 import {PLAYER_MAX_SPEED, PLAYER_VELOCITY} from "../core/game_constants.js";
 
-export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget, SpinAround, MoveTowards, PushAway}
+export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget, SpinAround, MoveTowards, PushAway, Spin}
 
 class MovementLogic extends Component {
     /**
@@ -137,6 +137,18 @@ class SpinAround extends MovementLogic {
 
         this.owner.body.centerY = this.target.body.centerY + this.radius * Math.sin(this.rotation)
         this.owner.body.centerX = this.target.body.centerX + this.radius * Math.cos(this.rotation)
+    }
+}
+
+class Spin extends MovementLogic {
+    constructor(target, rotation) {
+        super("Spin")
+        this.target = target
+        this.rotation = rotation
+    }
+
+    update() {
+        this.target.body.rotation += this.rotation
     }
 }
 

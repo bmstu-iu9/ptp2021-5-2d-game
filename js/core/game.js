@@ -15,6 +15,7 @@ import {BounceHorizontally, ConstantSpeed} from "../components/movement_logic.js
 import {BaseBooster} from "../entities/base_booster.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBoss} from "../entities/base_boss.js";
+import {LaserBoss} from "../entities/laser_boss.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -248,7 +249,7 @@ const GAME_LEVELS = [
     {
         'waves': [],
         'default_weapon' : WEAPON_TYPE.REGULAR,
-        'boss': 'BaseBoss',
+        'boss': 'LaserBoss',
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'orbital_shield'],
         'pointsReward': 666,
@@ -375,6 +376,9 @@ class LevelManager{
                         boss = new BaseBoss(body, game.assets.textures["base_boss"], 500, 10)
                     this.availableEnemies.push(boss)
                     break
+                case 'LaserBoss':
+                    this.availableEnemies.push(new LaserBoss(new Body(new Vector(game.playArea.width/2-125, 30), 250, 250),
+                        game.assets.textures["base_boss"], 500, 10))
             }
             this.bossPushed = true
         }
