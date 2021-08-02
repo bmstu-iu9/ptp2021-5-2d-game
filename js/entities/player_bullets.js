@@ -5,6 +5,7 @@ import {PLAYER_BOOSTER_DURATION, PLAYER_LASER_WIDTH} from "../core/game_constant
 import {ClipToTarget, ConstantSpeed, SpinAround} from "../components/movement_logic.js";
 import {Vector} from "../math/vector.js";
 import Lifetime from "../components/lifetime.js";
+import {BaseBoss} from "./base_boss.js";
 
 export {PlayerBullet, SimplePlayerBullet, PlayerLaser, PlayerOrbitalShield}
 
@@ -42,6 +43,8 @@ class PlayerLaser extends PlayerBullet {
         this.extraWidthRate = 0.2
 
         this.lifetime = this.components.add(new Lifetime(PLAYER_BOOSTER_DURATION))
+
+        this.damage = 1;
     }
 
     update() {
@@ -55,7 +58,7 @@ class PlayerLaser extends PlayerBullet {
     }
 
     hit(target) {
-        if ("receiveDamage" in target) {
+        if (target instanceof BaseBoss) {
             target.receiveDamage(this.damage)
         } else {
             target.destroy()
@@ -73,6 +76,8 @@ class PlayerOrbitalShield extends PlayerBullet{
         this.body.pos.y = game.player.body.centerY + 125 - this.body.height / 2
 
         this.lifetimeRemaining = 2 * PLAYER_BOOSTER_DURATION
+
+        this.bossDamage = 3
     }
 
     update() {
@@ -83,6 +88,10 @@ class PlayerOrbitalShield extends PlayerBullet{
     }
     //Destroys target if it collide with the shield. We dont use collision rules because the shield is a kind of a bullet for us.
     hit(target) {
-        target.destroy()
+        if (target instanceof BaseBoss) {
+            target.receiveDamage(this.bossDamage)
+        } else {
+            target.destroy()
+        }
     }
 }

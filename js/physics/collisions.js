@@ -6,6 +6,8 @@ import {PlayerBullet} from "../entities/player_bullets.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {WEAPON_TYPE} from "../core/enums.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
+import {MoveTowards, PushAway} from "../components/movement_logic.js";
+import {BaseBoss} from "../entities/base_boss.js";
 
 export function applyCollisionRules(obj1, obj2) {
     for (let rule of collisionRules) {
@@ -57,6 +59,13 @@ class CollisionRule {
 }
 
 const collisionRules = [
+    new CollisionRule(isPlayer, isBoss, function (player, boss) {
+        player.movementLogic = player.components.add(new PushAway(boss, 20))
+        player.receiveDamage(boss.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
+        setTimeout(function(){
+            player.components.removeComponentByName("PushAway")
+        },200)
+    }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
         player.receiveDamage(enemy.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
         enemy.destroy()
@@ -102,6 +111,9 @@ function isEnemy(x) {
 function isPlayer(x) {
     return x instanceof Player
 }
-function  isBooster(x){
+function isBooster(x) {
     return x instanceof BaseBooster
+}
+function isBoss(x) {
+    return x instanceof BaseBoss;
 }
