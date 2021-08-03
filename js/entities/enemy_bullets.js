@@ -2,10 +2,11 @@ import {BaseBullet} from "./base_bullet.js";
 import {ENTITY_STATE} from "../core/enums.js";
 import {game} from "../core/game.js";
 import {Body} from "../physics/body.js";
-import {FollowTarget, MoveTowards} from "../components/movement_logic.js";
+import {ConstantSpeed, FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
+import {Vector} from "../math/vector.js";
 
-export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet}
+export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet, SpinningBossBullet}
 
 /**Base class for enemy's bullet.
  *
@@ -52,6 +53,20 @@ class EnemyLaserBullet extends EnemyBullet {
     constructor(pos) {
         let body = new Body(pos, 60, 30)
         super(body, game.assets.textures["laser_bullet"], new MoveTowards(game.player, 9.5), 50)
+    }
+    destroy() {
+        this.state = ENTITY_STATE.DESTROYED
+    }
+}
+
+class SpinningBossBullet extends EnemyBullet {
+    constructor(boss) {
+        let speed = new Vector(Math.cos(boss.body.rotation + Math.PI/2), Math.sin(boss.body.rotation + Math.PI/2))
+        speed.length = boss.body.width/2
+        let body = new Body(boss.body.center.add(speed), 30, 60)
+
+        speed.length = 12;
+        super(body, game.assets.textures["spinning_boss_bullet"], new ConstantSpeed(speed), 20)
     }
     destroy() {
         this.state = ENTITY_STATE.DESTROYED
