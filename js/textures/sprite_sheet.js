@@ -1,11 +1,9 @@
 import TextureAtlas from "./texture_atlas.js";
 import Sequence from "../animations/sequence.js";
 
-const SPRITE_SHEET = 1
-
 export default class SpriteSheet extends TextureAtlas {
     constructor(name, texture, cellWidth, cellHeight, cellsCount, rows, cols, sheetOffsetX, sheetOffsetY, cellOffsetX, cellOffsetY) {
-        super(name, SPRITE_SHEET, texture)
+        super(name, TextureAtlas.SPRITE_SHEET, texture)
 
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
@@ -41,14 +39,6 @@ export default class SpriteSheet extends TextureAtlas {
                     y: dy,
                     w: this.cellWidth,
                     h: this.cellHeight,
-                    hitboxes: [
-                        {
-                            x: 0,
-                            y: 0,
-                            w: this.cellWidth,
-                            h: this.cellHeight
-                        }
-                    ]
                 })
 
                 cellNumeric.push(i++)
