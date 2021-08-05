@@ -77,12 +77,12 @@ const collisionRules = [
         enemyBullet.hit(player)
     }),
     new CollisionRule(isPlayerBullet, isEnemyBullet, function (myBullet, enemyBullet) {
-       if (myBullet instanceof  PlayerOrbitalShield)
-           enemyBullet.destroy()
+        if (myBullet instanceof PlayerOrbitalShield)
+            enemyBullet.destroy()
     }),
     new CollisionRule(isBooster, isPlayer, function (boost, player) {
         boost.destroy()
-        switch (boost.boosterType){
+        switch (boost.boosterType) {
             case "heal":
                 player.heal(25)
                 break
@@ -111,9 +111,11 @@ function isEnemy(x) {
 function isPlayer(x) {
     return x instanceof Player
 }
+
 function isBooster(x) {
     return x instanceof BaseBooster
 }
+
 function isBoss(x) {
     return x instanceof BaseBoss;
 }

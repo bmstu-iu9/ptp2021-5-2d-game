@@ -1,24 +1,39 @@
-import BaseEffect from "./base_effect.js";
-import {game} from "../core/game.js";
-import {ClipToTarget} from "../components/movement_logic.js";
+import {BaseEffect, BaseTargetedEffect} from "./base_effect.js";
+import {Body} from "../physics/body.js";
+import Vector from "../math/vector.js";
 
 export {ExplosionEffect, HealEffect}
 
-class ExplosionEffect extends BaseEffect {
-    constructor(body, atlas) {
-        super(body, atlas)
-        this.body.scale(2)
+/**
+ * Visual effect of an explosion.
+ */
+class ExplosionEffect extends BaseTargetedEffect {
+    /**
+     *
+     * @param target a BaseEntity to play this Effect on.
+     * @param atlasName the frames of this effect packed in a SpriteSheet
+     * @param duration the duration of Effect's animation
+     * @param dimFactor the number to multiply target's dimensions by
+     */
+    constructor(target, atlasName = 'explosion_orange', duration = 500, dimFactor = 2) {
+        super(target, atlasName, duration, dimFactor)
     }
 }
 
-class HealEffect extends BaseEffect {
+/**
+ * Visual effect of healing.
+ */
+class HealEffect extends BaseTargetedEffect {
+    /**
+     *
+     * @param target a BaseEntity to play this Effect on
+     */
     constructor(target) {
-        let effectBody = target.body.clone().scale(1.35)
-        super(effectBody, game.assets.textures["heal_animation"])
+        super(target, "heal_animation", 500, 1.35)
+
+        this.opacity = 0.75
 
         this.target = target
-        this.movementLogic = this.components.add(
-            new ClipToTarget(this.target, 'center', 'center', 0, 0))
     }
 
     draw(ctx) {

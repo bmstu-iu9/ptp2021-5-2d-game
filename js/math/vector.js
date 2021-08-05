@@ -1,7 +1,7 @@
-/**A class representing a 2-D vector.
- *
+/**
+ * A class representing a 2D vector.
  */
-export class Vector {
+export default class Vector {
     constructor(x = 0, y = 0) {
         this.x = x
         this.y = y
@@ -12,7 +12,7 @@ export class Vector {
      * @returns {number} the length of this Vector.
      */
     get length() {
-        return Math.sqrt(this.x ** 2 + this.y ** 2)
+        return accurate(Math.sqrt(this.x ** 2 + this.y ** 2))
     }
 
     /**Sets the length of this Vector.
@@ -34,7 +34,7 @@ export class Vector {
             result += 2 * Math.PI
         }
 
-        return result
+        return accurate(result)
     }
 
     /**Set the angle of this Vector.

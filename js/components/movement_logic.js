@@ -1,5 +1,5 @@
 import Component from "../core/component.js";
-import {Vector} from "../math/vector.js";
+import Vector from "../math/vector.js";
 import {game} from "../core/game.js";
 import {PLAYER_MAX_SPEED, PLAYER_VELOCITY} from "../core/game_constants.js";
 

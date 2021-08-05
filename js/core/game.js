@@ -7,7 +7,7 @@ import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
 import {LaserEnemy} from "../entities/laser_enemy.js";
 import {ENTITY_STATE, WEAPON_TYPE} from "./enums.js";
-import {Vector} from "../math/vector.js";
+import Vector from "../math/vector.js";
 import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {switchToMenu} from "./page.js";
 import {ExplosionEffect} from "../entities/effects.js";

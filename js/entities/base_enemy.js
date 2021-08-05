@@ -1,22 +1,20 @@
 import {BaseEntity} from "./base_entity.js";
 
-export {
-    BaseEnemy
-}
+export {BaseEnemy}
 
-/**Base class for every enemy ship.
- *
+/**
+ * Base class for every enemy ship.
  */
 class BaseEnemy extends BaseEntity {
     /**
      *
      * @param body {Body} Body representing physical position and properties
-     * @param atlas atlas to be rendered
+     * @param atlasName name of atlas loaded into AssetsManager
      * @param health initial health
      * @param damage collision's damage
      */
-    constructor(body, atlas, health, damage = 0) {
-        super(body, atlas)
+    constructor(body, atlasName, health, damage = 0) {
+        super(body, atlasName)
 
         this.health = health
         this.damage = damage

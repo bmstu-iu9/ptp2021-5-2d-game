@@ -10,12 +10,12 @@ export {
 class BaseBullet extends BaseEntity {
     /**
      * @param body Body representing physical pos
-     * @param atlas atlas to render
+     * @param atlasName name of atlas loaded into AssetsManager
      * @param damage damage on hit
      * @param movementLogic MovementLogic describing how this bullet will move
      */
-    constructor(body, atlas, movementLogic, damage) {
-        super(body, atlas)
+    constructor(body, atlasName, movementLogic, damage) {
+        super(body, atlasName)
         this.movementLogic = this.components.add(movementLogic)
         this.damage = damage
     }

@@ -4,13 +4,6 @@ export const
         WASD: 1,
         TOUCH: 2,
     }),
-    GAME_STATE = Object.freeze({
-        LOADING: 0,
-        MENU: 1,
-        RUNNING: 2,
-        BETWEEN_LEVELS: 3,
-        END: 4
-    }),
     WEAPON_TYPE = Object.freeze({
         REGULAR: 0,
         MULTI: 1,

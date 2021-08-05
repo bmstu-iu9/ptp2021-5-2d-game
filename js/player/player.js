@@ -5,29 +5,35 @@ import {PlayerLaser, PlayerOrbitalShield, SimplePlayerBullet} from "../entities/
 import {
     MULTI_BULLET_W,
     MULTU_BULLET_H,
-    PLAYER_BOOSTER_DURATION,
     PLAYER_BULLET_H,
     PLAYER_BULLET_SPEED,
     PLAYER_BULLET_W,
-    PLAYER_DIM,
     PLAYER_FRAMES_PER_BULLET,
-    PLAYER_HEALTH
 } from "../core/game_constants.js";
-import {ENTITY_STATE} from "../core/enums.js";
-import {Vector} from "../math/vector.js";
-import {WEAPON_TYPE} from "../core/enums.js";
+import {ENTITY_STATE, WEAPON_TYPE} from "../core/enums.js";
+import Vector from "../math/vector.js";
 import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
+import Shield from "../entities/shield.js";
 
 /**Represents, well, player
  *
  */
 export class Player extends BaseEntity {
-    constructor() {
-        let initialPos = new Vector((game.playArea.width - PLAYER_DIM) / 2, (game.playArea.height - PLAYER_DIM) / 2)
-        super(new Body(initialPos, PLAYER_DIM, PLAYER_DIM), game.assets.textures["player_ship"])
+    static DIMENSIONS = 70
+    static MAX_HEALTH = 100
+    static MAX_SPEED = 7
+    static VELOCITY = 0.07
+    static BOOSTER_DURATION = 300
 
-        this.health = PLAYER_HEALTH;
+    shield
+
+    constructor() {
+        let initialPos = new Vector((game.playArea.width - Player.DIMENSIONS) / 2,
+            (game.playArea.height - Player.DIMENSIONS) / 2)
+        super(new Body(initialPos, Player.DIMENSIONS, Player.DIMENSIONS), "player_ship")
+
+        this.health = Player.MAX_HEALTH;
 
         this.movementLogic = this.components.add(new KeyboardControl(this))
 
@@ -44,7 +50,7 @@ export class Player extends BaseEntity {
     }
 
     heal(healAmount) {
-        this.health = Math.min(this.health + healAmount, PLAYER_HEALTH)
+        this.health = Math.min(this.health + healAmount, Player.MAX_HEALTH)
         game.gameObjects.push(new HealEffect(this))
     }
 
@@ -57,18 +63,17 @@ export class Player extends BaseEntity {
                 break
             case WEAPON_TYPE.MULTI:
                 this.weaponType = WEAPON_TYPE.MULTI
-                this.fireBoosterDuration = PLAYER_BOOSTER_DURATION
+                this.fireBoosterDuration = Player.BOOSTER_DURATION
 
                 break
             case WEAPON_TYPE.LASER:
                 this.weaponType = WEAPON_TYPE.LASER
-                this.fireBoosterDuration = PLAYER_BOOSTER_DURATION
+                this.fireBoosterDuration = Player.BOOSTER_DURATION
                 game.gameObjects.push(new PlayerLaser(this.body.pos))
 
                 break
             case WEAPON_TYPE.ORBITAL_SHIELD:
                 game.gameObjects.push(new PlayerOrbitalShield())
-
         }
     }
 
@@ -81,8 +86,7 @@ export class Player extends BaseEntity {
                     bulletSpeed = new Vector(0, -PLAYER_BULLET_SPEED)
 
                 game.gameObjects.push(
-                    new SimplePlayerBullet(bulletBody, game.assets.textures["player_regular_bullet"],
-                        bulletSpeed))
+                    new SimplePlayerBullet(bulletBody, "player_regular_bullet", bulletSpeed))
 
                 break
 
@@ -94,8 +98,7 @@ export class Player extends BaseEntity {
                         bulletSpeed = new Vector((-2.5 + i) * 0.3, -PLAYER_BULLET_SPEED)
 
                     game.gameObjects.push(
-                        new SimplePlayerBullet(bulletBody, game.assets.textures["player_multi_bullet"],
-                            bulletSpeed, 1.5))
+                        new SimplePlayerBullet(bulletBody, "player_multi_bullet", bulletSpeed, 1.5))
                 }
 
                 break
@@ -120,7 +123,7 @@ export class Player extends BaseEntity {
 
     destroy() {
         this.state = ENTITY_STATE.DESTROYED
-        game.reset()
+        game.gameover()
     }
 
 }

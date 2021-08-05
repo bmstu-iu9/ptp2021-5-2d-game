@@ -1,8 +1,9 @@
 import {ENTITY_STATE} from "../core/enums.js";
-import {SPRITE_SHEET} from "../textures/texture_atlas.js";
-import {AnimationManager} from "../components/animation_manager.js";
+import AnimationManager from "../components/animation_manager.js";
 import ComponentManager from "../core/component_manager.js";
 import Signal from "../core/signal.js";
+import AssetsManager from "../core/asset_manager.js";
+import TextureAtlas from "../textures/texture_atlas.js";
 
 export {BaseEntity}
 
@@ -12,16 +13,16 @@ export {BaseEntity}
 class BaseEntity {
     /**
      *
-     * @param body Body representing physical position and properties
-     * @param atlas SingleImage or SpriteSheet
+     * @param body {Body} Body representing physical position and properties
+     * @param atlasName {String} name of atlas loaded into AssetsManager
      */
-    constructor(body, atlas) {
+    constructor(body, atlasName) {
         this.body = body
 
         this.components = new ComponentManager(this)
         this.onDestroyed = new Signal()
 
-        this.atlas = atlas
+        this.atlas = AssetsManager.textures[atlasName]
         this.cellIndex = this.atlas.cellIndex
 
         this.animationManager = null

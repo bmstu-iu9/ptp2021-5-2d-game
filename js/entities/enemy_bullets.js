@@ -18,8 +18,8 @@ class EnemyBullet extends BaseBullet {
      * @param damage damage on hit
      * @param movementLogic MovementLogic describing how this bullet will move
      */
-    constructor(body, atlas, movementLogic, damage) {
-        super(body, atlas, movementLogic)
+    constructor(body, atlasName, movementLogic, damage) {
+        super(body, atlasName, movementLogic)
         this.damage = damage
     }
 }
@@ -34,9 +34,10 @@ class EnemyHauntingBullet extends EnemyBullet {
      */
     constructor(pos) {
         let body = new Body(pos, 50, 20)
-        super(body, game.assets.textures["enemy_rocket"], new FollowTarget(game.player), 10)
+        super(body, "enemy_rocket", new FollowTarget(game.player), 10)
         this.lifetime = this.components.add(new Lifetime(this, 300))
     }
+
     destroy() {
         this.state = ENTITY_STATE.DESTROYED
     }
@@ -51,8 +52,9 @@ class EnemyLaserBullet extends EnemyBullet {
      */
     constructor(pos) {
         let body = new Body(pos, 60, 30)
-        super(body, game.assets.textures["laser_bullet"], new MoveTowards(game.player, 9.5), 50)
+        super(body, "laser_bullet", new MoveTowards(game.player, 9.5), 50)
     }
+
     destroy() {
         this.state = ENTITY_STATE.DESTROYED
     }

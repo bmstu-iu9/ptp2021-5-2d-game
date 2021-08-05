@@ -52,10 +52,10 @@ html, body {
     transition: 0.5s;
     cursor: pointer;
     color: orange;
-    font-family: shadows into light;
+    font-family: shadows into light, serif;
 }
 
-.button:hover {
+.button:hover, .button.active {
     background: rgba(100, 100, 100, 0.5);
     color: white;
     transform: scale(1.1);

@@ -1,4 +1,4 @@
-import {Vector} from "../math/vector.js";
+import Vector from "../math/vector.js";
 
 export {
     Body
@@ -59,6 +59,11 @@ class Body {
 
     get center() {
         return new Vector(this.centerX, this.centerY)
+    }
+
+    set center(v) {
+        this.centerX = v.x
+        this.centerY = v.y
     }
 
     /**
