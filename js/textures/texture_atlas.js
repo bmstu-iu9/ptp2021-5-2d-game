@@ -1,10 +1,9 @@
 import Sequence from "../animations/sequence.js";
 
-export const
-    SINGLE_IMAGE = 0,
-    SPRITE_SHEET = 1
-
 export default class TextureAtlas {
+    static SINGLE_IMAGE = 0
+    static SPRITE_SHEET = 1
+
     constructor(name, type, image) {
         this.name = name
         this.type = type
@@ -25,14 +24,8 @@ export default class TextureAtlas {
 
         if (obj.name !== undefined) this.name = obj.name;
 
-        for (let i = 0; i < obj.cells.length; i++) {
+        for (let i = 0; i < obj.cells.length; i++)
             this.cells.push(obj.cells[i]);
-
-            if (obj.cells[i].hitboxes === undefined) {
-                this.cells[i].hitboxes = []
-                this.cells[i].hitboxes.push({x: 0, y: 0, w: this.cells[i].w, h: this.cells[i].h});
-            }
-        }
 
         if (obj.sequences) { // leave as empty array if no animations
             for (let i = 0; i < obj.sequences.length; i++) {
