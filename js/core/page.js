@@ -2,10 +2,6 @@ import {game} from "./game.js";
 
 let settings = {}
 
-$('document').on('loaded', function () {
-    // Set up k
-})
-
 export function switchPage(id) {
     let currentPage = $('.page.active')
     if (id === currentPage.attr('id'))
