@@ -91,12 +91,6 @@ export default class BaseEntity {
      * @param ctx canvas context passed by engine
      */
     render(ctx) {
-        // Just draw if no rotation needed.
-        if (this.body.rotation === 0) {
-            this.draw(ctx)
-            return
-        }
-
         // Rotate the canvas according to the body.rotation, draw and then restore the canvas.
         ctx.save()
 

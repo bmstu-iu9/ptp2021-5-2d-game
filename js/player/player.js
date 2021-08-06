@@ -89,7 +89,7 @@ export class Player extends BaseEntity {
 
             case WEAPON_TYPE.MULTI:
                 for (let i = 0; i < 6; i++) {
-                    let bx = this.body.centerX - PLAYER.BULLET.HEIGHT * (1.5 + i / 3),
+                    let bx = this.body.centerX + PLAYER.BULLET.HEIGHT * (i / 3 - 1.5),
                         by = this.body.pos.y - PLAYER.BULLET.WIDTH * (2.5 - Math.abs(i - 2.5)) / 3,
                         bulletBody = new Body(new Vector(bx, by), PLAYER.BULLET.WIDTH, PLAYER.BULLET.HEIGHT),
                         bulletSpeed = new Vector((-2.5 + i) * 0.3, -PLAYER.BULLET.SPEED)
