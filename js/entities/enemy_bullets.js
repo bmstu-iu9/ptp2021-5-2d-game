@@ -1,22 +1,22 @@
 import {BaseBullet} from "./base_bullet.js";
 import {ENTITY_STATE} from "../core/enums.js";
 import {game} from "../core/game.js";
-import {Body} from "../physics/body.js";
+import Body from "../physics/body.js";
 import {FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
 
 export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet}
 
-/**Base class for enemy's bullet.
- *
+/**
+ * Base class for enemy's bullet.
  */
 class EnemyBullet extends BaseBullet {
     /**
      *
-     * @param body Body representing physical position and properties
-     * @param atlas atlas to render
-     * @param damage damage on hit
-     * @param movementLogic MovementLogic describing how this bullet will move
+     * @param body {Body} Body representing physical position and properties
+     * @param atlasName {String} name of atlas loaded into AssetsManager
+     * @param damage {Number} damage on hit
+     * @param movementLogic {MovementLogic} MovementLogic describing how this bullet will move
      */
     constructor(body, atlasName, movementLogic, damage) {
         super(body, atlasName, movementLogic)
@@ -24,10 +24,13 @@ class EnemyBullet extends BaseBullet {
     }
 }
 
-/**Bullet that haunts the player.
- * Will destroy itself after 300 frames.
+/**
+ * Bullet that haunts the player.
+ * Will destroy itself after {EnemyHauntingBullet.DURATION} frames.
  */
 class EnemyHauntingBullet extends EnemyBullet {
+    static DURATION = 300
+
     /**
      *
      * @param pos Vector representing position
@@ -35,7 +38,7 @@ class EnemyHauntingBullet extends EnemyBullet {
     constructor(pos) {
         let body = new Body(pos, 50, 20)
         super(body, "enemy_rocket", new FollowTarget(game.player), 10)
-        this.lifetime = this.components.add(new Lifetime(this, 300))
+        this.lifetime = this.components.add(new Lifetime(this, EnemyHauntingBullet.DURATION))
     }
 
     destroy() {
@@ -43,7 +46,8 @@ class EnemyHauntingBullet extends EnemyBullet {
     }
 }
 
-/**Laser bullet fast and powerful
+/**
+ * Laser bullet fast and powerful.
  */
 class EnemyLaserBullet extends EnemyBullet {
     /**

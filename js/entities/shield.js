@@ -2,6 +2,7 @@ import Lifetime from "../components/lifetime.js";
 import Easing from "../util/easing.js";
 import BaseEntity from "./base_entity.js";
 import {ClipToTarget} from "../components/movement_logic.js";
+import {PLAYER} from "../core/game_constants.js";
 
 /**
  * <p>Player's shield.
@@ -9,7 +10,6 @@ import {ClipToTarget} from "../components/movement_logic.js";
  *
  */
 export default class Shield extends BaseEntity {
-    static DURATION = 500 // shield power-up duration
     static IN_OUT_DURATION = 90 // shield spawn and destruction opacity animation duration
 
     /**
@@ -17,14 +17,14 @@ export default class Shield extends BaseEntity {
      * @param owner a BaseEntity to apply this Shield to
      */
     constructor(owner) {
-        super(owner.body.clone().scale(2), "shield_animation")
+        super(owner.body.clone().scale(PLAYER.POWERUPS.SHIELD.DIM_FACTOR), "shield_animation")
 
         this.owner = owner
         this.owner.shield = this
 
         this.movementLogic = this.components.add(
             new ClipToTarget(owner, ClipToTarget.MODE_CENTER, ClipToTarget.MODE_CENTER))
-        this.lifetime = this.components.add(new Lifetime(Shield.DURATION))
+        this.lifetime = this.components.add(new Lifetime(PLAYER.POWERUPS.DURATION))
     }
 
     /**

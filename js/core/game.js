@@ -2,7 +2,7 @@ import {BaseEnemy} from "../entities/base_enemy.js";
 import {Player} from "../player/player.js";
 import {configureKeyWatchers} from "../player/keyboard_control.js";
 import AssetsManager from "./asset_manager.js";
-import {Body} from "../physics/body.js";
+import Body from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
 import {LaserEnemy} from "../entities/laser_enemy.js";
@@ -289,7 +289,7 @@ const GAME_LEVELS = [
         'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': 'BaseBoss',
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'allowedBooster': ['heal', 'laser', 'shield'],
         'pointsReward': 666,
     },
 
@@ -302,7 +302,7 @@ const GAME_LEVELS = [
         'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'allowedBooster': ['heal', 'laser', 'shield'],
         'pointsReward': 666,
     },
 
@@ -318,7 +318,7 @@ const GAME_LEVELS = [
         'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'allowedBooster': ['heal', 'laser', 'shield'],
         'pointsReward': 666,
     },
 
@@ -334,7 +334,7 @@ const GAME_LEVELS = [
         'default_weapon': WEAPON_TYPE.LASER,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'allowedBooster': ['heal', 'laser', 'shield'],
         'pointsReward': 666,
     },
 

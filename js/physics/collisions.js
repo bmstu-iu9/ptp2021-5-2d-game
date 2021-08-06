@@ -1,6 +1,6 @@
 import {Player} from "../player/player.js";
 import {BaseEnemy} from "../entities/base_enemy.js";
-import {PLAYER_BASE_COLLISION_DAMAGE} from "../core/game_constants.js";
+import {PLAYER} from "../core/game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet, PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBooster} from "../entities/base_booster.js";
@@ -68,7 +68,7 @@ const collisionRules = [
         },200)
     }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
-        player.receiveDamage(enemy.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
+        player.receiveDamage(enemy.damage * 2 || PLAYER.COLLISION_DAMAGE)
         enemy.destroy()
     }),
     new CollisionRule(isPlayerBullet, isEnemy, function (myBullet, enemy) {

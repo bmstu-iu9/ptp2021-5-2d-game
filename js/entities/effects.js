@@ -1,5 +1,5 @@
 import {BaseEffect, BaseTargetedEffect} from "./base_effect.js";
-import {Body} from "../physics/body.js";
+import Body from "../physics/body.js";
 import Vector from "../math/vector.js";
 import Shield from "./shield.js";
 

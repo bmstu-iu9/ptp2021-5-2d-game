@@ -1,13 +1,9 @@
 import Vector from "../math/vector.js";
 
-export {
-    Body
-}
-
-/**Class representing physical pos and properties of game object.
- *
+/**
+ * Represents physical position, dimensions and rotation.
  */
-class Body {
+export default class Body {
     /**
      * @param pos {Vector}
      * @param width {number}
