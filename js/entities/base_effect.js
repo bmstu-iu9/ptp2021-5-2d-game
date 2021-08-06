@@ -1,4 +1,4 @@
-import {BaseEntity} from "./base_entity.js";
+import BaseEntity from "./base_entity.js";
 import {ClipToTarget} from "../components/movement_logic.js";
 import {Body} from "../physics/body.js";
 import Vector from "../math/vector.js";

@@ -16,8 +16,8 @@ import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
 
-/**Represents, well, player
- *
+/**
+ * Represents, well, player
  */
 export class Player extends BaseEntity {
     static DIMENSIONS = 70
@@ -40,6 +40,16 @@ export class Player extends BaseEntity {
         this.fireState = 0
         this.fireBoosterDuration = 0
         this.weaponType = WEAPON_TYPE.REGULAR
+    }
+
+    applyShield() {
+        if (this.hasOwnProperty("shield") && this.shield instanceof Shield) {
+            this.shield.extend()
+            return
+        }
+
+        this.shield = new Shield(this)
+        game.gameObjects.push(this.shield)
     }
 
     receiveDamage(damageAmount) {

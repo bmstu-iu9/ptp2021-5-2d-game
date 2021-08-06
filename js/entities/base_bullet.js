@@ -1,4 +1,4 @@
-import {BaseEntity} from "./base_entity.js";
+import BaseEntity from "./base_entity.js";
 
 export {
     BaseBullet

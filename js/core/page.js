@@ -114,7 +114,3 @@ function menuKeyboardControl(ev) {
             break
     }
 }
-
-$('html').on('keydown', null, null, menuKeyboardControl)
-
-

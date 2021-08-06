@@ -1,4 +1,4 @@
-import {BaseEntity} from "./base_entity.js";
+import BaseEntity from "./base_entity.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
 import {ORB_SPEED} from "../core/game_constants.js";
 import Vector from "../math/vector.js";
@@ -7,8 +7,8 @@ export {
     BaseBooster
 }
 
-/**Base class for boosters.
- *
+/**
+ * Base class for boosters.
  */
 class BaseBooster extends BaseEntity {
     /**

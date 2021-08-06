@@ -347,7 +347,7 @@ const GAME_LEVELS = [
         'default_weapon': WEAPON_TYPE.MULTI,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'allowedBooster': ['heal', 'laser', 'shield'],
         'pointsReward': 666,
     },
 
