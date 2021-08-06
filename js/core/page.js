@@ -2,6 +2,10 @@ import {game} from "./game.js";
 
 let settings = {}
 
+$(window).on("load", function () {
+    $('html').on('keydown', null, null, menuKeyboardControl)
+})
+
 export function switchPage(id) {
     let currentPage = $('.page.active')
     if (id === currentPage.attr('id'))
