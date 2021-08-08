@@ -147,6 +147,7 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     update(ts) {
+        console.log(this.levelManager.score)
         Clock.update(ts)
 
         this.backgroundObjects.update()
@@ -171,8 +172,11 @@ class Game {
                 if (destructionEffect !== null)
                     this.gameObjects.push(destructionEffect)
 
-                if (this.gameObjects[i] instanceof BaseEnemy)
+                if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.levelManager.enemiesKilled++
+                    this.levelManager.score += this.gameObjects[i].reward
+                }
+
 
                 this.gameObjects.splice(i, 1)
             }
@@ -299,7 +303,6 @@ const GAME_LEVELS = [
         'boss': 'SpinningBoss',
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
     {
@@ -315,7 +318,6 @@ const GAME_LEVELS = [
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
     {
@@ -331,7 +333,6 @@ const GAME_LEVELS = [
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
     {
@@ -344,7 +345,6 @@ const GAME_LEVELS = [
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
 ]
@@ -440,7 +440,6 @@ class LevelManager {
 
         // Going to the next level
         if (this.enemiesKilled === this.enemiesTotalNum) {
-            this.score += this.currentLevel.pointsReward
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length)
                 this.nextLevel()
             else

@@ -1,6 +1,7 @@
 import {BaseEnemy} from "./base_enemy.js";
 import AssetsManager from "../core/assets_manager.js";
 import {ExplosionEffect} from "./effects.js";
+import {REWARD} from "../core/game_constants.js";
 
 export {
     BaseBoss
@@ -10,8 +11,8 @@ export {
  * Base class for every boss.
  */
 class BaseBoss extends BaseEnemy {
-    constructor(body, atlasName, health, damage = 100, hpBarWidth = body.width * 0.6) {
-        super(body, atlasName, health, damage);
+    constructor(body, atlasName, health, damage = 100, reward = REWARD.BASE_BOSS, hpBarWidth = body.width * 0.6) {
+        super(body, atlasName, health, damage, reward);
         this.fullHealth = health
         this.fullBarWidth = hpBarWidth
         this.hpBarPos = this.body.pos.clone()
