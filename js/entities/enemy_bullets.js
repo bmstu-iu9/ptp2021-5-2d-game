@@ -4,6 +4,7 @@ import {game} from "../core/game.js";
 import Body from "../physics/body.js";
 import {FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
+import {ExplosionEffect} from "./effects.js";
 
 export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet}
 
@@ -39,6 +40,10 @@ class EnemyHauntingBullet extends EnemyBullet {
         let body = new Body(pos, 50, 20)
         super(body, "enemy_rocket", new FollowTarget(game.player), 10)
         this.lifetime = this.components.add(new Lifetime(this, EnemyHauntingBullet.DURATION))
+    }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_purple', 500, 0.75)
     }
 
     destroy() {

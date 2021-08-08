@@ -1,5 +1,6 @@
 import {BaseEnemy} from "./base_enemy.js";
-import AssetsManager from "../core/asset_manager.js";
+import AssetsManager from "../core/assets_manager.js";
+import {ExplosionEffect} from "./effects.js";
 
 export {
     BaseBoss
@@ -17,6 +18,10 @@ class BaseBoss extends BaseEnemy {
         this.hpBarPos.x += (body.width - hpBarWidth) / 2
         this.hpBarPos.y += this.body.height
         this.lastHBarWidth = this.fullBarWidth
+    }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_boss', 1200, 1.2)
     }
 
     draw(ctx) {

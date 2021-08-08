@@ -8,9 +8,7 @@ import {ShootingEnemy} from "../entities/shooting_enemy.js";
 import {LaserEnemy} from "../entities/laser_enemy.js";
 import {ENTITY_STATE, WEAPON_TYPE} from "./enums.js";
 import Vector from "../math/vector.js";
-import {EnemyHauntingBullet} from "../entities/enemy_bullets.js";
 import {switchToMenu} from "./page.js";
-import {ExplosionEffect} from "../entities/effects.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
@@ -58,7 +56,6 @@ class Game {
     load() {
         configureKeyWatchers()
         AssetsManager.loadAssets(this.onLoaded)
-        configureKeyWatchers()
     }
 
     /**
@@ -139,15 +136,13 @@ class Game {
         this.backgroundObjects.update()
 
         // Update cycle
-        for (let i = 0; i < this.gameObjects.length; i++) {
+        for (let i = 0; i < this.gameObjects.length; i++)
             this.gameObjects[i].update()
-        }
 
         // Destroy entities which left the screen
         for (let obj of this.gameObjects) {
-            if (!obj.body.collidesWith(this.playArea) && !(obj instanceof PlayerOrbitalShield)) {
+            if (!obj.body.collidesWith(this.playArea) && !(obj instanceof PlayerOrbitalShield))
                 obj.destroy()
-            }
         }
 
         this.processCollisions()
@@ -155,21 +150,20 @@ class Game {
         // Process destroyed objects
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
-                if (this.gameObjects[i] instanceof BaseEnemy) {
-                    this.gameObjects.push(
-                        new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_orange"]))
+                let destructionEffect = this.gameObjects[i].destructionEffect
+
+                if (destructionEffect !== null)
+                    this.gameObjects.push(destructionEffect)
+
+                if (this.gameObjects[i] instanceof BaseEnemy)
                     this.levelManager.enemiesKilled++
-                } else if (this.gameObjects[i] instanceof EnemyHauntingBullet) {
-                    this.gameObjects.push(
-                        new ExplosionEffect(this.gameObjects[i].body, this.assets.textures["explosion_purple"]))
-                }
+
                 this.gameObjects.splice(i, 1)
             }
         }
-        if (game.state === Game.STATE_RUNNING) {
-            game.levelManager.update();
-        }
 
+        if (game.state === Game.STATE_RUNNING)
+            game.levelManager.update()
     }
 
     /**Draws background and calls render() for every entity
@@ -285,27 +279,7 @@ class BackgroundScroller {
 }
 
 const GAME_LEVELS = [
-    {
-        'waves': [],
-        'default_weapon': WEAPON_TYPE.REGULAR,
-        'boss': 'BaseBoss',
-        'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
-    },
 
-    {
-        'waves': [
-            [
-                ['LaserEnemy', 8]
-            ],
-        ],
-        'default_weapon': WEAPON_TYPE.REGULAR,
-        'boss': null,
-        'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
-    },
 
     {
         'waves': [

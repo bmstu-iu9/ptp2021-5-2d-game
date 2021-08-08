@@ -1,5 +1,5 @@
 import BaseEntity from "./base_entity.js";
-//import {ExplosionEffect} from "./effects.js"
+import {ExplosionEffect} from "./effects.js"
 
 export {BaseEnemy}
 
@@ -19,6 +19,10 @@ class BaseEnemy extends BaseEntity {
 
         this.health = health
         this.damage = damage
+    }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, "explosion_orange", 500, 2)
     }
 
     receiveDamage(amount) {
