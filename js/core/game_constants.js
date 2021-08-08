@@ -6,14 +6,14 @@ export const
             WIDTH: 40,
             HEIGHT: 30,
             SPEED: 10,
-            DAMAGE: 2,
+            DAMAGE: 3,
         },
 
         POWERUPS: {
             DURATION: 500,
 
             SHIELD: {
-                DIM_FACTOR: 2,
+                SIZE_MULTIPLIER: 2,
             },
             LASER: {
                 WIDTH: 30,

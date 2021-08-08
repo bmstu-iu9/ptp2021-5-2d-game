@@ -17,7 +17,7 @@ export default class Shield extends BaseEntity {
      * @param owner a BaseEntity to apply this Shield to
      */
     constructor(owner) {
-        super(owner.body.clone().scale(PLAYER.POWERUPS.SHIELD.DIM_FACTOR), "shield_animation")
+        super(owner.body.clone().scale(PLAYER.POWERUPS.SHIELD.SIZE_MULTIPLIER), "shield_animation")
 
         this.owner = owner
         this.owner.shield = this
