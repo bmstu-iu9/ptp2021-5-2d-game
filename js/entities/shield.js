@@ -33,7 +33,7 @@ export default class Shield extends BaseEntity {
      * should be used to extend an existing Shield's lifetime instead of creating a duplicate.
      */
     extend() {
-        this.lifetime.remaining = Shield.DURATION - Shield.IN_OUT_DURATION
+        this.lifetime.remaining = PLAYER.POWERUPS.DURATION - Shield.IN_OUT_DURATION
     }
 
     update() {

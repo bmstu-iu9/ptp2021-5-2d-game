@@ -403,17 +403,26 @@ class LevelManager {
         // Push boss
         if (this.currentWave === this.currentLevel.waves.length && this.currentLevel.boss !== null && !this.bossPushed) {
             this.enemiesTotalNum++
+
+            let body, boss
+
             switch (this.currentLevel.boss) {
                 case 'BaseBoss':
-                    let body = new Body(new Vector(game.playArea.width / 2 - 100, 20), 200, 150),
-                        boss = new BaseBoss(body, "base_boss", 500, 10)
+                    body = new Body(new Vector(game.playArea.width / 2 - 100, 20), 200, 150)
+                    boss = new BaseBoss(body, "base_boss", 200, 10)
+
                     this.availableEnemies.push(boss)
+
                     break
                 case 'SpinningBoss':
-                    let body = new Body(new Vector(game.playArea.width / 2 - 125, 100), 250, 250),
-                        boss = new SpinningBoss(, "spinning_boss", 400, 10)
+                    body = new Body(new Vector(game.playArea.width / 2 - 125, 20), 200, 150)
+                    boss = new SpinningBoss(body, "base_boss", 200, 10)
+
                     this.availableEnemies.push(boss)
+
+                    break
             }
+
             this.bossPushed = true
         }
 
