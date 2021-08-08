@@ -298,7 +298,7 @@ const GAME_LEVELS = [
         'default_weapon': WEAPON_TYPE.LASER,
         'boss': null,
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'orbital_shield'],
+        'allowedBooster': ['heal', 'orbital_shield'],
         'pointsReward': 666,
     },
 
@@ -331,7 +331,7 @@ class LevelManager {
         this.bossPushed = false
         this.enemiesKilled = 0
         this.availableEnemies = []
-        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
+        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
 
     }
 
@@ -427,7 +427,7 @@ class LevelManager {
         this.enemiesTotalNum = 0
         this.enemiesKilled = 0
         this.bossPushed = false
-        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
+        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
         setTimeout(function () {
             game.state = GAME_STATE.RUNNING;
         }, 3000)

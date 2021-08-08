@@ -32,7 +32,8 @@ export class Player extends BaseEntity {
 
         this.fireState = 0
         this.fireBoosterDuration = 0
-        this.weaponType = WEAPON_TYPE.REGULAR
+        this.currentWeaponType = WEAPON_TYPE.REGULAR
+        this.defaultWeaponType = WEAPON_TYPE.REGULAR
     }
 
     receiveDamage(damageAmount) {
@@ -47,20 +48,23 @@ export class Player extends BaseEntity {
         game.gameObjects.push(new HealEffect(this))
     }
 
-    changeWeapon(weaponType) {
+    changeWeapon(weaponType, permanent=false) {
+        if (permanent) {
+            this.defaultWeaponType = weaponType
+        }
         switch (weaponType) {
             case WEAPON_TYPE.REGULAR:
-                this.weaponType = WEAPON_TYPE.REGULAR
+                this.currentWeaponType = WEAPON_TYPE.REGULAR
                 this.fireBoosterDuration = 0
 
                 break
             case WEAPON_TYPE.MULTI:
-                this.weaponType = WEAPON_TYPE.MULTI
+                this.currentWeaponType = WEAPON_TYPE.MULTI
                 this.fireBoosterDuration = PLAYER_BOOSTER_DURATION
 
                 break
             case WEAPON_TYPE.LASER:
-                this.weaponType = WEAPON_TYPE.LASER
+                this.currentWeaponType = WEAPON_TYPE.LASER
                 this.fireBoosterDuration = PLAYER_BOOSTER_DURATION
                 game.gameObjects.push(new PlayerLaser(this.body.pos))
 
@@ -72,7 +76,7 @@ export class Player extends BaseEntity {
     }
 
     fire() {
-        switch (this.weaponType) {
+        switch (this.currentWeaponType) {
             case WEAPON_TYPE.REGULAR:
                 let bx = this.body.centerX - PLAYER_BULLET_W / 2,
                     by = this.body.pos.y,
@@ -107,8 +111,8 @@ export class Player extends BaseEntity {
     update() {
         super.update()
         // If booster is over, switch to regular weapon
-        if (this.weaponType !== WEAPON_TYPE.REGULAR && --this.fireBoosterDuration <= 0)
-            this.changeWeapon(WEAPON_TYPE.REGULAR)
+        if (this.currentWeaponType !== this.defaultWeaponType && --this.fireBoosterDuration <= 0)
+            this.changeWeapon(this.defaultWeaponType)
 
         // If its time to fire, go fire
         if (++this.fireState === PLAYER_FRAMES_PER_BULLET) {

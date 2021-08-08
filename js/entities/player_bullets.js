@@ -4,8 +4,8 @@ import {Body} from "../physics/body.js";
 import {PLAYER_BOOSTER_DURATION, PLAYER_LASER_WIDTH} from "../core/game_constants.js";
 import {ClipToTarget, ConstantSpeed, SpinAround} from "../components/movement_logic.js";
 import {Vector} from "../math/vector.js";
-import Lifetime from "../components/lifetime.js";
 import {BaseBoss} from "./base_boss.js";
+import {WEAPON_TYPE} from "../core/enums.js";
 
 export {PlayerBullet, SimplePlayerBullet, PlayerLaser, PlayerOrbitalShield}
 
@@ -42,8 +42,6 @@ class PlayerLaser extends PlayerBullet {
 
         this.extraWidthRate = 0.2
 
-        this.lifetime = this.components.add(new Lifetime(PLAYER_BOOSTER_DURATION))
-
         this.damage = 1;
     }
 
@@ -55,6 +53,9 @@ class PlayerLaser extends PlayerBullet {
         this.body.width += this.extraWidthRate
         if (this.body.width < (PLAYER_LASER_WIDTH - 5) || this.body.width > (PLAYER_LASER_WIDTH + 5))
             this.extraWidthRate = -this.extraWidthRate
+        if (game.player.currentWeaponType !== WEAPON_TYPE.LASER) {
+            this.destroy()
+        }
     }
 
     hit(target) {
