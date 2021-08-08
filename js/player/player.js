@@ -42,6 +42,7 @@ export class Player extends BaseEntity {
     receiveDamage(damageAmount) {
         this.health -= damageAmount
         if (this.health <= 0) {
+            this.health = 0
             this.destroy()
         }
     }
