@@ -1,22 +1,27 @@
 import {BaseEnemy} from "./base_enemy.js";
-import {game} from "../core/game.js";
+import AssetsManager from "../core/assets_manager.js";
+import {ExplosionEffect} from "./effects.js";
 
 export {
     BaseBoss
 }
 
-/**Base class for every boss.
- *
+/**
+ * Base class for every boss.
  */
 class BaseBoss extends BaseEnemy {
-    constructor(body, atlas, health, damage = 100, hpBarWidth = body.width * 0.6) {
-        super(body, atlas, health, damage);
+    constructor(body, atlasName, health, damage = 100, hpBarWidth = body.width * 0.6) {
+        super(body, atlasName, health, damage);
         this.fullHealth = health
         this.fullBarWidth = hpBarWidth
         this.hpBarPos = this.body.pos.clone()
         this.hpBarPos.x += (body.width - hpBarWidth) / 2
         this.hpBarPos.y += this.body.height
         this.lastHBarWidth = this.fullBarWidth
+    }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_boss', 1200, 1.2)
     }
 
     drawHpBar(ctx) {
@@ -29,7 +34,8 @@ class BaseBoss extends BaseEnemy {
             barW = this.lastHBarWidth + diff * 0.1;
             this.lastHBarWidth = barW
         }
-        ctx.drawImage(game.assets.textures["boss_hp_bar"].image, 0, 0, 260, 20, this.hpBarPos.x, this.hpBarPos.y + 11,
+
+        ctx.drawImage(AssetsManager.textures["boss_hp_bar"].image, 0, 0, 260, 20, this.hpBarPos.x, this.hpBarPos.y + 11,
             barW, 7)
     }
 

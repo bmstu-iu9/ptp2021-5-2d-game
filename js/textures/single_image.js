@@ -1,10 +1,8 @@
 import TextureAtlas from "./texture_atlas.js";
 
-const SINGLE_IMAGE = 0
-
 export default class SingleImage extends TextureAtlas {
     constructor(name, image, width, height, offsetX, offsetY) {
-        super(name, SINGLE_IMAGE, image)
+        super(name, TextureAtlas.SINGLE_IMAGE, image)
         this.width = width || image.width
         this.height = height || image.height
         this.offsetX = offsetX || 0
@@ -14,11 +12,6 @@ export default class SingleImage extends TextureAtlas {
     }
 
     generateAtlasCells() {
-        return [
-            {
-                x: this.offsetX, y: this.offsetY, w: this.width, h: this.height,
-                hitboxes: [{x: 0, y: 0, w: this.width, h: this.height}]
-            }
-        ]
+        return [{x: this.offsetX, y: this.offsetY, w: this.width, h: this.height}]
     }
 }

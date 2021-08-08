@@ -1,16 +1,8 @@
 export default class SignalBinding {
     constructor(signal, listener, listenerContext) {
-        this._signal = signal
-        this._listener = listener
+        this.signal = signal
+        this.listener = listener
         this.context = listenerContext
-    }
-
-    get listener() {
-        return this._listener
-    }
-
-    get signal() {
-        return this._signal
     }
 
     /**
@@ -20,14 +12,14 @@ export default class SignalBinding {
      * @returns {*} value returned by listener
      */
     execute(paramsArray) {
-        return this._listener.apply(this.context, paramsArray)
+        return this.listener.apply(this.context, paramsArray)
     }
 
     /**
      * Detach this binding from its signal.
      */
     detach() {
-        this._signal.remove(this._listener, this.context)
+        this.signal.remove(this.listener, this.context)
     }
 
     destroy() {}

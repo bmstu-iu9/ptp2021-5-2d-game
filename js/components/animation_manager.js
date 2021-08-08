@@ -2,9 +2,9 @@ import Sequence from "../animations/sequence.js";
 import Component from "../core/component.js";
 import Animation from "../animations/animation.js";
 
-export class AnimationManager extends Component {
+export default class AnimationManager extends Component {
     constructor(entity, inheritSequences = true) {
-        super(entity, "Animation")
+        super("AnimationManager", entity)
         this.entity = entity
         this._atlas = this.entity.atlas
         this._animations = {}

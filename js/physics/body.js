@@ -1,13 +1,9 @@
-import {Vector} from "../math/vector.js";
+import Vector from "../math/vector.js";
 
-export {
-    Body
-}
-
-/**Class representing physical pos and properties of game object.
- *
+/**
+ * Represents physical position, dimensions and rotation.
  */
-class Body {
+export default class Body {
     /**
      * @param pos {Vector}
      * @param width {number}
@@ -59,6 +55,11 @@ class Body {
 
     get center() {
         return new Vector(this.centerX, this.centerY)
+    }
+
+    set center(v) {
+        this.centerX = v.x
+        this.centerY = v.y
     }
 
     /**

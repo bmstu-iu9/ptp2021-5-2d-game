@@ -1,10 +1,9 @@
 import {game} from "./game.js";
-import {GAME_STATE} from "./enums.js";
 
 let settings = {}
 
-$('document').on('loaded', function () {
-    // Set up k
+$(window).on("load", function () {
+    $('html').on('keydown', null, null, menuKeyboardControl)
 })
 
 export function switchPage(id) {
@@ -26,10 +25,8 @@ export function switchPage(id) {
 }
 
 export function switchToGame() {
-    if (game.state === GAME_STATE.MENU) {
-        game.start()
-        $('#pages').fadeOut(1000)
-    }
+    game.start()
+    $('#pages').fadeOut(1000)
 }
 
 export function switchToMenu() {
@@ -79,9 +76,6 @@ function loadSettings() {
 }
 
 function menuKeyboardControl(ev) {
-    if (game.state !== GAME_STATE.MENU)
-        return
-
     let currentButton = $('.page.active > .page-item.active'),
         nextButton, prevButton
 
@@ -120,7 +114,3 @@ function menuKeyboardControl(ev) {
             break
     }
 }
-
-$('html').on('keydown', null, null, menuKeyboardControl)
-
-
