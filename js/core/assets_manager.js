@@ -1,5 +1,6 @@
 import SpriteSheet from "../textures/sprite_sheet.js";
 import SingleImage from "../textures/single_image.js";
+import StaticClass from "../util/static_class.js";
 
 const imageExtensions = ["png", "jpg"],
     soundExtensions = ["mp3", "wav"]
@@ -38,7 +39,7 @@ const ASSETS_LIST = [
     ["img/laser_enemy.png"],
     ["img/laser_orb.png"],
     ["img/orbital_shield.png"],
-    ["img/orbital_shield_orb.png"],
+    ["img/shield_orb.png"],
     ["img/player_hp_bar.png"],
     ["img/player_hp_bar_back.png"],
     ["img/player_laser.png"],
@@ -57,7 +58,7 @@ const ASSETS_LIST = [
  * <p>Path to an asset should be hardcoded into ASSETS_LIST. Every asset loaded will be available under its filename.
  * <br>Example: "img/player_ship.png" will be available as: <br>AssetsManager.textures["player_ship"]
  */
-export default class AssetsManager {
+export default class AssetsManager extends StaticClass {
     static textures = {}
     static sounds = {}
 

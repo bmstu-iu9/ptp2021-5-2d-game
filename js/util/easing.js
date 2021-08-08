@@ -1,3 +1,5 @@
+import StaticClass from "./static_class.js";
+
 /**
  * <p>This class provides easing functions as static properties.
  * <p>Each easing function accepts current progress (value from 0 to 1) and returns
@@ -20,10 +22,9 @@
  *     console.log(currentSpeed)
  * }
  */
-export default class Easing {
-    constructor() {
-        throw "You cannot instantiate this class because it's static. To access specific easing function use" +
-        " \"Easing.{FUNCTION_NAME}\""
+export default class Easing extends StaticClass {
+    static linear(x) {
+        return x
     }
 
     static inExpo(x) {

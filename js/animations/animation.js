@@ -1,5 +1,5 @@
 import Signal from "../core/signal.js";
-import {game} from "../core/game.js";
+import Clock from "../core/clock.js";
 
 /**
  * An Animation contains info about single animation that is played using AnimationManager.
@@ -7,9 +7,9 @@ import {game} from "../core/game.js";
 export default class Animation {
     /**
      *
-     * @param name the name of this Animation
-     * @param sequence the sequence that this animation will be using
-     * @param parent the AnimationManager which manages this animation
+     * @param name {String} the name of this Animation
+     * @param sequence {Sequence} the sequence that this animation will be using
+     * @param parent {AnimationManager} the AnimationManager which manages this animation
      */
     constructor(name, sequence, parent) {
         this.name = name
@@ -19,7 +19,7 @@ export default class Animation {
         this.loop = sequence.loop
 
         this.frameIndex = 0
-        this._lastFrameTimestamp = game.lastTimestamp
+        this._lastFrameTimestamp = Clock.currentTimestamp
 
         this.onComplete = new Signal()
     }
@@ -72,7 +72,7 @@ export default class Animation {
             this.frameIndex = 0
 
         this._isPlaying = true
-        this._lastFrameTimestamp = game.lastTimestamp
+        this._lastFrameTimestamp = Clock.currentTimestamp
     }
 
     playAt(index) {
@@ -104,12 +104,13 @@ export default class Animation {
         if (!this._isPlaying)
             return
 
-        let frameDelta = Math.trunc(((game.lastTimestamp - this._lastFrameTimestamp) / this._speed) % (this.length + 1))
+        let frameDelta = Math.trunc(
+            ((Clock.currentTimestamp - this._lastFrameTimestamp) / this._speed) % (this.length + 1))
         if (frameDelta === 0)
             return
 
         this.frameIndex += frameDelta
-        this._lastFrameTimestamp = game.lastTimestamp
+        this._lastFrameTimestamp = Clock.currentTimestamp
 
         if (this.loop) {
             if (this.frameIndex < 0)
