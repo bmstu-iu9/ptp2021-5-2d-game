@@ -189,15 +189,17 @@ class Game {
 
         this.context.drawImage(AssetsManager.textures["player_hp_bar"].image, 0, 0, 260, 20, 27, 28, barW, 20)
 
-        this.context.font = "bold 48px shadows into light"
-        this.context.fillStyle = "orange";
-        this.context.textAlign = "center";
+        if (this.state === Game.STATE_BETWEEN_LEVELS || this.state === Game.STATE_END) {
+            let textX = this.viewport.width / 2,
+                textY = this.viewport.height / 2;
 
-        if (this.state === Game.STATE_BETWEEN_LEVELS) {
-            this.context.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", this.viewport.width / 2,
-                this.viewport.height / 2);
-        } else if (this.state === Game.STATE_END) {
-            if (this.levelManager.score > -1) {
+            if (this.state === Game.STATE_BETWEEN_LEVELS) {
+                this.context.font = "bold 48px shadows into light"
+                this.context.fillStyle = "orange";
+                this.context.textAlign = "center";
+
+                this.context.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", textX, textY)
+            } else {
                 if (!this.stop1) {
                     this.stop1 = 0
                     this.stop2 = 0.5
@@ -222,11 +224,9 @@ class Game {
                 this.grad.addColorStop(this.stop3, "red");
 
                 this.context.fillStyle = this.grad
+                this.context.fillText("Game over. Total score: " + this.levelManager.score, textX, textY)
             }
-            this.context.fillText("Game over. Total score: " + this.levelManager.score, this.viewport.width / 2,
-                this.viewport.height / 2);
         }
-
     }
 
     onResize() {
