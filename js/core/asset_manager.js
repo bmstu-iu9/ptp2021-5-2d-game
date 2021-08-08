@@ -40,6 +40,8 @@ const ASSETS_LIST = [
     ["img/orbital_shield_orb.png"],
     ["img/laser_orb.png"],
     ["img/base_boss.png"],
+    ["img/spinning_boss_bullet.png"],
+    ["img/spinning_boss.png"],
 ]
 
 export default class AssetManager {

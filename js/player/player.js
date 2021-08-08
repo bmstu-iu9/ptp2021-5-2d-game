@@ -13,9 +13,8 @@ import {
     PLAYER_FRAMES_PER_BULLET,
     PLAYER_HEALTH
 } from "../core/game_constants.js";
-import {ENTITY_STATE} from "../core/enums.js";
+import {ENTITY_STATE, WEAPON_TYPE} from "../core/enums.js";
 import {Vector} from "../math/vector.js";
-import {WEAPON_TYPE} from "../core/enums.js";
 import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
 

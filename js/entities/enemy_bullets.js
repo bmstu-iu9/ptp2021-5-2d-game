@@ -1,11 +1,11 @@
 import {BaseBullet} from "./base_bullet.js";
-import {ENTITY_STATE} from "../core/enums.js";
 import {game} from "../core/game.js";
 import {Body} from "../physics/body.js";
-import {FollowTarget, MoveTowards} from "../components/movement_logic.js";
+import {ConstantSpeed, FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
+import {Vector} from "../math/vector.js";
 
-export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet}
+export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet, SpinningBossBullet}
 
 /**Base class for enemy's bullet.
  *
@@ -24,7 +24,8 @@ class EnemyBullet extends BaseBullet {
     }
 }
 
-/**Bullet that haunts the player.
+/**
+ * Bullet that haunts the player.
  * Will destroy itself after 300 frames.
  */
 class EnemyHauntingBullet extends EnemyBullet {
@@ -35,14 +36,13 @@ class EnemyHauntingBullet extends EnemyBullet {
     constructor(pos) {
         let body = new Body(pos, 50, 20)
         super(body, game.assets.textures["enemy_rocket"], new FollowTarget(game.player), 10)
+
         this.lifetime = this.components.add(new Lifetime(this, 300))
-    }
-    destroy() {
-        this.state = ENTITY_STATE.DESTROYED
     }
 }
 
-/**Laser bullet fast and powerful
+/**
+ * Laser bullet fast and powerful
  */
 class EnemyLaserBullet extends EnemyBullet {
     /**
@@ -53,7 +53,23 @@ class EnemyLaserBullet extends EnemyBullet {
         let body = new Body(pos, 60, 30)
         super(body, game.assets.textures["laser_bullet"], new MoveTowards(game.player, 9.5), 50)
     }
-    destroy() {
-        this.state = ENTITY_STATE.DESTROYED
+}
+
+/**
+ * <p>Bullet fired by {@link SpinningBoss}.
+ * <p>Just a simple bullet with constant speed, which is fired with respect to Boss's rotation.
+ */
+class SpinningBossBullet extends EnemyBullet {
+    static SPEED = 12
+    static DAMAGE = 20
+
+    constructor(boss) {
+        let angle = boss.body.rotation + Math.PI / 2,
+            direction = new Vector(Math.cos(angle), Math.sin(angle)),
+            adjustedPos = boss.body.center.add(direction.clone().scale(boss.body.width / 2)),
+            speedVector = direction.clone().scale(SpinningBossBullet.SPEED)
+
+        super(new Body(adjustedPos, 30, 60), game.assets.textures["spinning_boss_bullet"],
+            new ConstantSpeed(speedVector), SpinningBossBullet.DAMAGE)
     }
 }

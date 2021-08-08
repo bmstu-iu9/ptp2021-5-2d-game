@@ -3,7 +3,22 @@ import {Vector} from "../math/vector.js";
 import {game} from "../core/game.js";
 import {PLAYER_MAX_SPEED, PLAYER_VELOCITY} from "../core/game_constants.js";
 
-export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipToTarget, SpinAround, MoveTowards, PushAway}
+export {
+    ConstantSpeed,
+    BounceHorizontally,
+    FollowTarget,
+    KeyboardControl,
+    ClipToTarget,
+    SpinAround,
+    MoveTowards,
+    PushAway,
+    Spin,
+    RandomSpin
+}
+
+function rnd(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
 class MovementLogic extends Component {
     /**
@@ -82,6 +97,7 @@ class KeyboardControl extends MovementLogic {
         acceleration.length = PLAYER_MAX_SPEED
         this.speed.lerp(acceleration, PLAYER_VELOCITY).limit(PLAYER_MAX_SPEED)
     }
+
     postUpdate() {
         super.stopIfOut()
     }
@@ -140,6 +156,31 @@ class SpinAround extends MovementLogic {
     }
 }
 
+class Spin extends MovementLogic {
+    constructor(target, rotation, name = "Spin") {
+        super(name)
+        this.target = target
+        this.rotation = rotation
+    }
+
+    update() {
+        this.target.body.rotation += this.rotation
+    }
+}
+
+class RandomSpin extends Spin {
+    constructor(target, rotation) {
+        super(target, rotation, "RandomSpin")
+    }
+
+    update() {
+        super.update();
+        if (Math.abs(this.target.body.rotation) > Math.PI / 2 || rnd(0, 500) === 0) {
+            this.rotation = -this.rotation
+        }
+    }
+}
+
 class MoveTowards extends MovementLogic {
     constructor(target, speedLength, name = "MoveTowards") {
         super(name)
@@ -148,6 +189,7 @@ class MoveTowards extends MovementLogic {
         this.speedLength = speedLength
         this.aimed = false
     }
+
     preUpdate() {
         if (!this.aimed) {
             this.speed = this.target.body.center.subtract(this.owner.body.center)
@@ -161,6 +203,7 @@ class PushAway extends MoveTowards {
     constructor(target, speedLength) {
         super(target, -speedLength, "PushAway");
     }
+
     postUpdate() {
         super.stopIfOut()
     }

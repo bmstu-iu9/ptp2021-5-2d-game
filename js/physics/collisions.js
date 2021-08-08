@@ -2,11 +2,10 @@ import {Player} from "../player/player.js";
 import {BaseEnemy} from "../entities/base_enemy.js";
 import {PLAYER_BASE_COLLISION_DAMAGE} from "../core/game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
-import {PlayerBullet} from "../entities/player_bullets.js";
+import {PlayerBullet, PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {WEAPON_TYPE} from "../core/enums.js";
-import {PlayerOrbitalShield} from "../entities/player_bullets.js";
-import {MoveTowards, PushAway} from "../components/movement_logic.js";
+import {PushAway} from "../components/movement_logic.js";
 import {BaseBoss} from "../entities/base_boss.js";
 
 export function applyCollisionRules(obj1, obj2) {
@@ -62,9 +61,9 @@ const collisionRules = [
     new CollisionRule(isPlayer, isBoss, function (player, boss) {
         player.movementLogic = player.components.add(new PushAway(boss, 20))
         player.receiveDamage(boss.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
-        setTimeout(function(){
+        setTimeout(function () {
             player.components.removeComponentByName("PushAway")
-        },200)
+        }, 200)
     }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
         player.receiveDamage(enemy.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
@@ -77,12 +76,12 @@ const collisionRules = [
         enemyBullet.hit(player)
     }),
     new CollisionRule(isPlayerBullet, isEnemyBullet, function (myBullet, enemyBullet) {
-       if (myBullet instanceof  PlayerOrbitalShield)
-           enemyBullet.destroy()
+        if (myBullet instanceof PlayerOrbitalShield)
+            enemyBullet.destroy()
     }),
     new CollisionRule(isBooster, isPlayer, function (boost, player) {
         boost.destroy()
-        switch (boost.boosterType){
+        switch (boost.boosterType) {
             case "heal":
                 player.heal(25)
                 break
@@ -111,9 +110,11 @@ function isEnemy(x) {
 function isPlayer(x) {
     return x instanceof Player
 }
+
 function isBooster(x) {
     return x instanceof BaseBooster
 }
+
 function isBoss(x) {
     return x instanceof BaseBoss;
 }
