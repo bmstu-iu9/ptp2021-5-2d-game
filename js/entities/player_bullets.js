@@ -66,7 +66,7 @@ class PlayerLaser extends PlayerBullet {
     }
 }
 
-class PlayerOrbitalShield extends PlayerBullet{
+class PlayerOrbitalShield extends PlayerBullet {
     constructor() {
         super(new Body(new Vector(game.player.body.centerX, game.player.body.centerY), 50, 50),
             game.assets.textures["orbital_shield"],
@@ -86,6 +86,7 @@ class PlayerOrbitalShield extends PlayerBullet{
         if (--this.lifetimeRemaining <= 0)
             this.destroy()
     }
+
     //Destroys target if it collide with the shield. We dont use collision rules because the shield is a kind of a bullet for us.
     hit(target) {
         if (target instanceof BaseBoss) {

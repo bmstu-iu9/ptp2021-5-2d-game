@@ -9,12 +9,13 @@ export {
 }
 
 class SpinningBoss extends BaseBoss {
-    constructor(body, atlas, health, damage = 10, hpBarWidth = body.width*0.6) {
-        body.rotation = Math.PI/3
+    constructor(body, atlas, health, damage = 10, hpBarWidth = body.width * 0.6) {
+        body.rotation = Math.PI / 3
         super(body, atlas, health, damage, hpBarWidth);
         this.movementLogic = this.components.add(new RandomSpin(this, 0.015))
         this.fireState = 0
     }
+
     update() {
         super.update()
         this.fireState++;

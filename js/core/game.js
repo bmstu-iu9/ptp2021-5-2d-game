@@ -185,13 +185,15 @@ class Game {
             ctx.font = "48px Serif"
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
-            ctx.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", this.viewport.width/2, this.viewport.height/2);
+            ctx.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", this.viewport.width / 2,
+                this.viewport.height / 2);
         } else if (this.state === GAME_STATE.END) {
             let ctx = this.context
             ctx.font = "48px Serif"
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
-            ctx.fillText("Game over. Total score: " + this.levelManager.score, this.viewport.width/2, this.viewport.height/2);
+            ctx.fillText("Game over. Total score: " + this.levelManager.score, this.viewport.width / 2,
+                this.viewport.height / 2);
         }
 
     }
@@ -248,7 +250,7 @@ class BackgroundScroller {
 const GAME_LEVELS = [
     {
         'waves': [],
-        'default_weapon' : WEAPON_TYPE.REGULAR,
+        'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': 'SpinningBoss',
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'orbital_shield'],
@@ -261,7 +263,7 @@ const GAME_LEVELS = [
                 ['LaserEnemy', 8]
             ],
         ],
-        'default_weapon' : WEAPON_TYPE.REGULAR,
+        'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'orbital_shield'],
@@ -277,7 +279,7 @@ const GAME_LEVELS = [
                 ['ShootingEnemy', 1]
             ]
         ],
-        'default_weapon' : WEAPON_TYPE.REGULAR,
+        'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'orbital_shield'],
@@ -293,7 +295,7 @@ const GAME_LEVELS = [
                 ['ShootingEnemy', 1]
             ]
         ],
-        'default_weapon' : WEAPON_TYPE.LASER,
+        'default_weapon': WEAPON_TYPE.LASER,
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'orbital_shield'],
@@ -309,7 +311,7 @@ const GAME_LEVELS = [
                 ['ShootingEnemy', 1]
             ]
         ],
-        'default_weapon' : WEAPON_TYPE.MULTI,
+        'default_weapon': WEAPON_TYPE.MULTI,
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'orbital_shield'],
@@ -318,7 +320,7 @@ const GAME_LEVELS = [
 
 ]
 
-class LevelManager{
+class LevelManager {
     constructor(index) {
         this.currentLevelIndex = index
         this.currentLevel = GAME_LEVELS[index]
@@ -334,7 +336,7 @@ class LevelManager{
     }
 
 
-    update(){
+    update() {
 
         // Push enemies from waves
         if (this.availableEnemies.length === 0 && this.currentWave < this.currentLevel.waves.length) {
@@ -352,13 +354,15 @@ class LevelManager{
                     case 'ShootingEnemy':
                         for (let i = 0; i < amount; i++) {
                             let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
-                            this.availableEnemies.push(new ShootingEnemy(body, game.assets.textures["enemy_ship"], 15, 10))
+                            this.availableEnemies.push(
+                                new ShootingEnemy(body, game.assets.textures["enemy_ship"], 15, 10))
                         }
                         break
                     case 'LaserEnemy':
                         for (let i = 0; i < amount; i++) {
                             let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(60, 300)), 50, 50)
-                            this.availableEnemies.push(new LaserEnemy(body, game.assets.textures["laser_enemy"], 15, 10))
+                            this.availableEnemies.push(
+                                new LaserEnemy(body, game.assets.textures["laser_enemy"], 15, 10))
                         }
                         break
                 }
@@ -372,13 +376,14 @@ class LevelManager{
             this.enemiesTotalNum++
             switch (this.currentLevel.boss) {
                 case 'BaseBoss':
-                    let body = new Body(new Vector(game.playArea.width/2-125, 20), 250, 250),
+                    let body = new Body(new Vector(game.playArea.width / 2 - 125, 20), 250, 250),
                         boss = new BaseBoss(body, game.assets.textures["base_boss"], 500, 10)
                     this.availableEnemies.push(boss)
                     break
                 case 'SpinningBoss':
-                    this.availableEnemies.push(new SpinningBoss(new Body(new Vector(game.playArea.width/2-125, 100), 250, 250),
-                        game.assets.textures["spinning_boss"], 400, 10))
+                    this.availableEnemies.push(
+                        new SpinningBoss(new Body(new Vector(game.playArea.width / 2 - 125, 100), 250, 250),
+                            game.assets.textures["spinning_boss"], 400, 10))
             }
             this.bossPushed = true
         }
@@ -386,7 +391,8 @@ class LevelManager{
 
         // Push boosters
         if (this.framesTillNextBooster === 0 && game.state === GAME_STATE.RUNNING) {
-            let boostName = GAME_LEVELS[this.currentLevelIndex].allowedBooster[Math.floor(Math.random()*GAME_LEVELS[this.currentLevelIndex].allowedBooster.length)];
+            let boostName = GAME_LEVELS[this.currentLevelIndex].allowedBooster[Math.floor(
+                Math.random() * GAME_LEVELS[this.currentLevelIndex].allowedBooster.length)];
             let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50)
             game.gameObjects.push(new BaseBooster(body, game.assets.textures[boostName + "_orb"], boostName))
             this.framesTillNextBooster = this.currentLevel.boostersFrequency
@@ -400,9 +406,9 @@ class LevelManager{
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length) {
                 this.nextLevel()
             } else {
-                setTimeout(function(){
+                setTimeout(function () {
                     game.reset()
-                },5000)
+                }, 5000)
                 game.state = GAME_STATE.END
             }
         }
@@ -414,7 +420,7 @@ class LevelManager{
         }
     }
 
-    nextLevel(){
+    nextLevel() {
         game.state = GAME_STATE.BETWEEN_LEVELS
         this.currentLevel = GAME_LEVELS[++this.currentLevelIndex]
         this.currentWave = 0
@@ -422,11 +428,10 @@ class LevelManager{
         this.enemiesKilled = 0
         this.bossPushed = false
         game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
-        setTimeout(function(){
+        setTimeout(function () {
             game.state = GAME_STATE.RUNNING;
-        },3000)
+        }, 3000)
     }
-
 
 
 }
