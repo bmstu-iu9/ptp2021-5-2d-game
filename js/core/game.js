@@ -1,7 +1,7 @@
 import {BaseEnemy} from "../entities/base_enemy.js";
 import {Player} from "../player/player.js";
 import {configureKeyWatchers} from "../player/keyboard_control.js";
-import AssetsManager from "./asset_manager.js";
+import AssetsManager from "./assets_manager.js";
 import Body from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
 import {ShootingEnemy} from "../entities/shooting_enemy.js";
@@ -15,6 +15,7 @@ import {ConstantSpeed} from "../components/movement_logic.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBoss} from "../entities/base_boss.js";
+import Clock from "./clock.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -28,8 +29,6 @@ class Game {
     static STATE_BETWEEN_LEVELS = 3
     static STATE_END = 4
 
-    lastTimestamp
-    timeElapsed
     player
 
     constructor() {
@@ -57,11 +56,13 @@ class Game {
     }
 
     load() {
+        configureKeyWatchers()
         AssetsManager.loadAssets(this.onLoaded)
         configureKeyWatchers()
     }
 
-    /**Callback for load().
+    /**
+     * Callback for load().
      * Shows the game menu.
      */
     onLoaded() {
@@ -74,8 +75,8 @@ class Game {
         setTimeout(function () {game.reset()}, 5000)
     }
 
-    /**Reset the game & switch to main menu.
-     * Replaces gameover() for now.
+    /**
+     * Reset the game & switch to main menu.
      */
     reset() {
         this.gameObjects = []
@@ -83,14 +84,12 @@ class Game {
         switchToMenu()
     }
 
-    /**Starts the game.
-     *
+    /**
+     * Start the game.
      */
     start() {
         if (this.state !== Game.STATE_MENU)
             return
-
-        game.lastTimestamp = Date.now()
 
         game.player = new Player()
         game.gameObjects.push(game.player)
@@ -102,14 +101,16 @@ class Game {
         window.requestAnimationFrame(game.gameLoop)
     }
 
-    /**Main loop
+    /**
+     * Main loop
      *
      * @param ts timestamp passed by requestAnimationFrame()
      */
     gameLoop(ts) {
         if (game.state === Game.STATE_LOADING || game.state === Game.STATE_MENU)
             return
-        game.update(ts);
+
+        game.update(ts)
         game.render()
         window.requestAnimationFrame(game.gameLoop)
     }
@@ -127,13 +128,13 @@ class Game {
         }
     }
 
-    /**Updates every entity in the game.
+    /**
+     * Update every entity in the game.
      *
      * @param ts timestamp passed by requestAnimationFrame()
      */
     update(ts) {
-        this.timeElapsed = ts - this.lastTimestamp;
-        this.lastTimestamp = ts
+        Clock.update(ts)
 
         this.backgroundObjects.update()
 

@@ -2,7 +2,7 @@ import {ENTITY_STATE} from "../core/enums.js";
 import AnimationManager from "../components/animation_manager.js";
 import ComponentManager from "../core/component_manager.js";
 import Signal from "../core/signal.js";
-import AssetsManager from "../core/asset_manager.js";
+import AssetsManager from "../core/assets_manager.js";
 import TextureAtlas from "../textures/texture_atlas.js";
 
 /**
