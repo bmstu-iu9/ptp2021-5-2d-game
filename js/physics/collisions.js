@@ -5,10 +5,15 @@ import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet, PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {WEAPON_TYPE} from "../core/enums.js";
-import {PlayerOrbitalShield} from "../entities/player_bullets.js";
-import {MoveTowards, PushAway} from "../components/movement_logic.js";
+import {Force} from "../components/movement_logic.js";
 import {BaseBoss} from "../entities/base_boss.js";
 import Shield from "../entities/shield.js";
+import Vector from "../math/vector.js";
+import Easing from "../util/easing.js";
+import {LightningEffect} from "../entities/effects.js";
+import Lifetime from "../components/lifetime.js";
+import {game} from "../core/game.js";
+import {Rotator} from "../components/rotator.js";
 
 export function applyCollisionRules(obj1, obj2) {
     for (let rule of collisionRules) {
@@ -61,11 +66,21 @@ class CollisionRule {
 
 const collisionRules = [
     new CollisionRule(isPlayer, isBoss, function (player, boss) {
-        player.movementLogic = player.components.add(new PushAway(boss, 20))
-        player.receiveDamage(boss.damage * 2 || PLAYER_BASE_COLLISION_DAMAGE)
-        setTimeout(function(){
-            player.components.removeComponentByName("PushAway")
-        },200)
+        let forceDirection = player.body.pos.clone().subtract(boss.body.pos),
+            forceLength = 10,
+            forceDuration = 60
+
+        player.components.add(new Rotator(4 * Math.PI, Easing.outCubic, forceDuration, true))
+
+        player.components.replaceComponent("KeyboardControl",
+            new Force(forceDirection, forceLength, Easing.linear, forceDuration), 0)
+        player.components.getComponent("KeyboardControl").speed = new Vector()
+
+        let l = new LightningEffect(boss, player)
+        l.lifetime = l.components.add(new Lifetime(forceDuration))
+        game.gameObjects.push(l)
+
+        player.receiveDamage(boss.damage * 2 || PLAYER.COLLISION_DAMAGE)
     }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
         player.receiveDamage(enemy.damage * 2 || PLAYER.COLLISION_DAMAGE)
@@ -97,8 +112,8 @@ const collisionRules = [
     }),
     new CollisionRule((x) => {return (isEnemyBullet(x) || isEnemy(x)) && !isBoss(x)},
         (x) => {return x instanceof Shield},
-        function (enemyBullet, shield) {
-            enemyBullet.destroy()
+        function (unfortunateVictim, shield) {
+            unfortunateVictim.destroy()
         })
 ]
 

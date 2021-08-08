@@ -7,7 +7,7 @@ export {ConstantSpeed, BounceHorizontally, FollowTarget, KeyboardControl, ClipTo
 
 class MovementLogic extends Component {
     constructor(name) {
-        super(name);
+        super(name)
         this.speed = new Vector()
     }
 
@@ -215,16 +215,16 @@ class Force extends MovementLogic {
 
         this.easingFn = easingFn
         this.currentFrame = 0
-        this.duration = duration
+        this.totalFrames = duration
     }
 
     preUpdate() {
-        let progress = this.currentFrame / this.duration,
+        let progress = this.currentFrame / this.totalFrames,
             factor = 1 - this.easingFn(progress)
 
         this.speed = this.initialSpeed.clone().scale(factor)
 
-        if (++this.currentFrame >= this.duration)
+        if (++this.currentFrame > this.totalFrames)
             this.destroy()
     }
 
