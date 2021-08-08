@@ -9,7 +9,7 @@ export {
 }
 
 class SpinningBoss extends BaseBoss {
-    constructor(body, atlasName, health, damage = 10, reward = REWARD.BASE_BOSS, hpBarWidth = body.width * 0.6) {
+    constructor(body, atlasName, health, damage = 10, reward = REWARD.SPINNING_BOSS, hpBarWidth = body.width * 0.6) {
         super(body, atlasName, health, damage, reward, hpBarWidth);
 
         this.body.rotation = Math.PI / 3

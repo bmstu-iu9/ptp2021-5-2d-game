@@ -67,6 +67,8 @@ class Game {
         this.state = Game.STATE_LOADING
 
         this.isPressed = {}
+
+        this.score = 0
     }
 
     load() {
@@ -147,7 +149,6 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     update(ts) {
-        console.log(this.levelManager.score)
         Clock.update(ts)
 
         this.backgroundObjects.update()
@@ -197,7 +198,16 @@ class Game {
             ent.render(this.context)
         }
 
-        //Draw HP-bar
+        // Draw score counter
+        if (this.state !== Game.STATE_END) {
+            if (this.score !== this.levelManager.score) {
+                this.score += Math.min(5, this.levelManager.score - this.score)
+            }
+            this.context.fillStyle = "orange";
+            this.context.fillText("Total score: " + this.score, this.viewport.width - 200, 80)
+        }
+
+        // Draw HP-bar
         this.context.drawImage(AssetsManager.textures["player_hp_bar_back"].image, 20, 20, 274, 36)
 
         let barW = 260 * this.player.health / 100,
