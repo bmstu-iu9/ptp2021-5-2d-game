@@ -86,13 +86,12 @@ export default class BaseEntity {
 
     /**
      * <p>Renders entity on canvas. This method handles opacity, rotation and other properties.
-     * <p>You should not override this method.
+     * <p>You **should not** override this method.
      * Override draw() instead.
      *
-     * @param ctx canvas context passed by engine
+     * @param ctx {CanvasRenderingContext2D} canvas context passed by Game.render()
      */
     render(ctx) {
-        // Rotate the canvas according to the body.rotation, draw and then restore the canvas.
         ctx.save()
 
         ctx.globalAlpha = this.opacity
@@ -103,7 +102,9 @@ export default class BaseEntity {
             ctx.translate(-this.body.centerX, -this.body.centerY)
         }
 
+        this.components.preRender(ctx)
         this.draw(ctx)
+        this.components.postRender(ctx)
 
         ctx.restore()
     }
