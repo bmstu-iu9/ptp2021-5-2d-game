@@ -7,7 +7,8 @@ export default class Vector {
         this.y = y
     }
 
-    /**Returns the length of this Vector.
+    /**
+     * Returns the length of this Vector.
      *
      * @returns {number} the length of this Vector.
      */
@@ -15,7 +16,8 @@ export default class Vector {
         return accurate(Math.sqrt(this.x ** 2 + this.y ** 2))
     }
 
-    /**Sets the length of this Vector.
+    /**
+     * Sets the length of this Vector.
      *
      * @param length required length
      */
@@ -23,7 +25,8 @@ export default class Vector {
         this.normalize().scale(length)
     }
 
-    /**Calculate the angle between this Vector and positive X-axis in radians.
+    /**
+     * Calculate the angle between this Vector and positive X-axis in radians.
      *
      * @returns {number} the angle between this Vector and positive X-axis in radians.
      */
@@ -37,7 +40,8 @@ export default class Vector {
         return accurate(result)
     }
 
-    /**Set the angle of this Vector.
+    /**
+     * Set the angle of this Vector.
      *
      * @param angle the angle in radians
      */
@@ -51,7 +55,8 @@ export default class Vector {
         this.y = y
     }
 
-    /**Make a clone of this Vector.
+    /**
+     * Make a Vector identical to this Vector.
      *
      * @returns {Vector} a clone of this Vector.
      */
@@ -59,7 +64,8 @@ export default class Vector {
         return new Vector(this.x, this.y)
     }
 
-    /**Scale this Vector by the given value.
+    /**
+     * Scale this Vector by the given value.
      *
      * @param factor value to scale the vector by
      * @returns {Vector}
@@ -71,7 +77,8 @@ export default class Vector {
         return this
     }
 
-    /**Normalize this vector.
+    /**
+     * Normalize this vector.
      * Makes the Vector's length equal to 1 while facing in the same direction.
      *
      * @returns {Vector} this Vector
@@ -89,7 +96,8 @@ export default class Vector {
         return this
     }
 
-    /**Limit the length of this Vector
+    /**
+     * Limit the length of this Vector
      *
      * @param max maximum length value
      * @returns {Vector} this Vector
@@ -104,7 +112,8 @@ export default class Vector {
         return this
     }
 
-    /**Add a given Vector to this Vector.
+    /**
+     * Add a given Vector to this Vector.
      *
      * @param other the Vector to add to this Vector
      * @returns {Vector} this Vector
@@ -116,7 +125,8 @@ export default class Vector {
         return this
     }
 
-    /**Subtract a given Vector from this Vector.
+    /**
+     * Subtract a given Vector from this Vector.
      *
      * @param other the Vector to subtract from this Vector
      * @returns {Vector} this Vector
@@ -128,7 +138,8 @@ export default class Vector {
         return this
     }
 
-    /**Negate the 'x' and 'y' components of this Vector
+    /**
+     * Negate the 'x' and 'y' components of this Vector
      *
      * @returns {Vector} this Vector
      */
@@ -139,7 +150,8 @@ export default class Vector {
         return this
     }
 
-    /**Calculate the dot product of this Vector and the given Vector.
+    /**
+     * Calculate the dot product of this Vector and the given Vector.
      *
      * @param other the Vector to compute dot product with
      * @returns {number} the dot product
@@ -148,7 +160,8 @@ export default class Vector {
         return this.x * other.x + this.y * other.y
     }
 
-    /**Calculate distance between this Vector and other Vector.
+    /**
+     * Calculate distance between this Vector and other Vector.
      *
      * @param other {Vector} vector to calculate the distance to
      * @returns {number} the resulting distance
@@ -160,7 +173,8 @@ export default class Vector {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    /**Calculate the angle between this Vector and other Vector.
+    /**
+     * Calculate the angle between this Vector and other Vector.
      *
      * @param other {Vector} Vector to calculate the angle to
      * @returns {number} resulting angle in radians
@@ -174,7 +188,8 @@ export default class Vector {
         return accurate(Math.cos(inner))
     }
 
-    /**Linearly interpolate between this Vector and the given vector.
+    /**
+     * Linearly interpolate between this Vector and the given vector.
      *
      * @param target {Vector} the Vector to interpolate towards.
      * @param t {number} the interpolation percentage, between 0 and 1.
