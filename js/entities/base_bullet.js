@@ -4,8 +4,11 @@ export {
     BaseBullet
 }
 
-/**Base class for every bullet.
- * Body's rotation always equals to the maxSpeed Vector angle.
+/**
+ * <p>Base class for every bullet.
+ * <br>**This class automatically handles its body rotation.**
+ * <p>If this bullet's MovementLogic provides property "rotation" then bullet's body.rotation will
+ * be set from bullet.movementLogic.rotation. Otherwise body.rotation will be set from speed vector angle.
  */
 class BaseBullet extends BaseEntity {
     /**
@@ -20,7 +23,8 @@ class BaseBullet extends BaseEntity {
         this.damage = damage
     }
 
-    /**Hits the target with specified damage.
+    /**
+     * Hits the target with specified damage.
      * Bullet is destroyed after hit.
      * Should be called by CollisionRule.
      *
