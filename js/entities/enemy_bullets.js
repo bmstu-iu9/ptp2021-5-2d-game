@@ -1,12 +1,10 @@
 import {BaseBullet} from "./base_bullet.js";
 import {game} from "../core/game.js";
 import Body from "../physics/body.js";
-import {FollowTarget, MoveTowards} from "../components/movement_logic.js";
-import {Body} from "../physics/body.js";
 import {ConstantSpeed, FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
 import {ExplosionEffect} from "./effects.js";
-import {Vector} from "../math/vector.js";
+import Vector from "../math/vector.js";
 
 export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet, SpinningBossBullet}
 
@@ -47,10 +45,6 @@ class EnemyHauntingBullet extends EnemyBullet {
     get destructionEffect() {
         return new ExplosionEffect(this, 'explosion_purple', 500, 0.75)
     }
-
-    destroy() {
-        this.state = ENTITY_STATE.DESTROYED
-    }
 }
 
 /**
@@ -65,9 +59,6 @@ class EnemyLaserBullet extends EnemyBullet {
         let body = new Body(pos, 60, 30)
         super(body, "laser_bullet", new MoveTowards(game.player, 9.5), 50)
     }
-
-    destroy() {
-        this.state = ENTITY_STATE.DESTROYED
 }
 
 /**
@@ -84,7 +75,7 @@ class SpinningBossBullet extends EnemyBullet {
             adjustedPos = boss.body.center.add(direction.clone().scale(boss.body.width / 2)),
             speedVector = direction.clone().scale(SpinningBossBullet.SPEED)
 
-        super(new Body(adjustedPos, 30, 60), game.assets.textures["spinning_boss_bullet"],
+        super(new Body(adjustedPos, 30, 60), "spinning_boss_bullet",
             new ConstantSpeed(speedVector), SpinningBossBullet.DAMAGE)
     }
 }

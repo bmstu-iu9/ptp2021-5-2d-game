@@ -38,7 +38,6 @@ const ASSETS_LIST = [
     ["img/laser_bullet.png"],
     ["img/laser_enemy.png"],
     ["img/laser_orb.png"],
-    ["img/orbital_shield.png"],
     ["img/shield_orb.png"],
     ["img/player_hp_bar.png"],
     ["img/player_hp_bar_back.png"],
@@ -47,8 +46,6 @@ const ASSETS_LIST = [
     ["img/player_regular_bullet.png"],
     ["img/player_shield.png"],
     ["img/player_ship.png"],
-    ["img/orbital_shield.png"],
-    ["img/orbital_shield_orb.png"],
     ["img/spinning_boss_bullet.png"],
     ["img/spinning_boss.png"],
 ]

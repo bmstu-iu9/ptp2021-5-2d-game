@@ -24,13 +24,6 @@ class BaseBoss extends BaseEnemy {
         return new ExplosionEffect(this, 'explosion_boss', 1200, 1.2)
     }
 
-    draw(ctx) {
-
-        // Draw boss sprite
-        let cell = this.atlas.cells[this.cellIndex]
-        ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, this.body.pos.x, this.body.pos.y,
-            this.body.width, this.body.height)
-
     drawHpBar(ctx) {
         this.hpBarPos = this.body.pos.clone()
         this.hpBarPos.x += (this.body.width - this.fullBarWidth) / 2
@@ -41,7 +34,8 @@ class BaseBoss extends BaseEnemy {
             barW = this.lastHBarWidth + diff * 0.1;
             this.lastHBarWidth = barW
         }
-        ctx.drawImage(game.assets.textures["boss_hp_bar"].image, 0, 0, 260, 20, this.hpBarPos.x, this.hpBarPos.y + 11,
+
+        ctx.drawImage(AssetsManager.textures["boss_hp_bar"].image, 0, 0, 260, 20, this.hpBarPos.x, this.hpBarPos.y + 11,
             barW, 7)
     }
 
