@@ -45,6 +45,11 @@ function configureKeyWatchers() {
                 game.player.changeWeapon(WEAPON_TYPE.LASER)
 
                 break
+            case 'F4':
+                ev.preventDefault()
+                game.player.applyShield()
+
+                break
         }
     };
 

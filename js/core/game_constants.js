@@ -1,22 +1,37 @@
 /**This file holds all game balance settings. */
 
-/**Player constants */
 export const
-    PLAYER_HEALTH = 100,
-    PLAYER_ACCELERATION = 1,
-    PLAYER_MAX_SPEED = 7,
-    PLAYER_VELOCITY = 0.07,
-    PLAYER_FRAMES_PER_BULLET = 10,
-    PLAYER_BULLET_DAMAGE = 5,
-    PLAYER_BASE_COLLISION_DAMAGE = 10,
-    PLAYER_DIM = 70, // player width == player height
-    PLAYER_BULLET_W = 40,
-    PLAYER_BULLET_H = 30,
-    MULTI_BULLET_W = 40,
-    MULTU_BULLET_H = 30,
-    PLAYER_BULLET_SPEED = 10,
-    PLAYER_LASER_WIDTH = 30,
-    PLAYER_BOOSTER_DURATION = 300;
+    PLAYER = {
+        BULLET: {
+            WIDTH: 40,
+            HEIGHT: 30,
+            SPEED: 10,
+            DAMAGE: 3,
+        },
+
+        POWERUPS: {
+            DURATION: 500,
+
+            SHIELD: {
+                SIZE_MULTIPLIER: 2,
+            },
+            LASER: {
+                WIDTH: 30,
+                DAMAGE: 1,
+            },
+            ORBITAL_SHIELD: {
+                DIMENSIONS: 70,
+                BOSS_DAMAGE: 3,
+            }
+        },
+
+        DIMENSIONS: 70,
+        MAX_HEALTH: 100,
+        FIRE_RATE: 10,
+        FRICTION: 0.07,
+        MAX_SPEED: 7,
+        COLLISION_DAMAGE: 10,
+    }
 
 /**World */
 export const

@@ -1,31 +1,69 @@
-import BaseEffect from "./base_effect.js";
-import {game} from "../core/game.js";
-import {ClipToTarget} from "../components/movement_logic.js";
+import {BaseEffect, BaseTargetedEffect} from "./base_effect.js";
+import Body from "../physics/body.js";
+import Vector from "../math/vector.js";
+import Shield from "./shield.js";
 
-export {ExplosionEffect, HealEffect}
+export {ExplosionEffect, HealEffect, LightningEffect}
 
-class ExplosionEffect extends BaseEffect {
-    constructor(body, atlas) {
-        super(body, atlas)
-        this.body.scale(2)
+/**
+ * Visual effect of an explosion.
+ */
+class ExplosionEffect extends BaseTargetedEffect {
+    /**
+     *
+     * @param target a BaseEntity to play this Effect on.
+     * @param atlasName the frames of this effect packed in a SpriteSheet
+     * @param duration the duration of Effect's animation
+     * @param dimFactor the number to multiply target's dimensions by
+     */
+    constructor(target, atlasName = 'explosion_orange', duration = 500, dimFactor = 2) {
+        super(target, atlasName, duration, dimFactor)
     }
 }
 
-class HealEffect extends BaseEffect {
+/**
+ * Visual effect of healing.
+ */
+class HealEffect extends BaseTargetedEffect {
+    /**
+     *
+     * @param target a BaseEntity to play this Effect on
+     */
     constructor(target) {
-        let effectBody = target.body.clone().scale(1.35)
-        super(effectBody, game.assets.textures["heal_animation"])
+        super(target, "heal_animation", 500, 1.35)
 
+        this.opacity = 0.75
+
+        if (target.hasOwnProperty("shield") && target.shield instanceof Shield)
+            this.opacity = 0.5
+    }
+}
+
+/**
+ * Visual effect of lightning between two BaseEntities.
+ */
+class LightningEffect extends BaseEffect {
+    /**
+     *
+     * @param origin {BaseEntity} an Entity to start lightning from
+     * @param target {BaseEntity} an Entity where the lightning will end
+     */
+    constructor(origin, target) {
+        super(new Body(new Vector(), 50, 0), "lightning_animation", 800, false)
+
+        this.origin = origin
         this.target = target
-        this.movementLogic = this.components.add(
-            new ClipToTarget(this.target, 'center', 'center', 0, 0))
     }
 
-    draw(ctx) {
-        ctx.globalAlpha = 0.75
-        let cell = this.atlas.cells[this.cellIndex]
-        ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, this.body.pos.x, this.body.pos.y,
-            this.body.width, this.body.height)
-        ctx.globalAlpha = 1
+    update() {
+        super.update()
+
+        this.body.centerX = (this.origin.body.centerX + this.target.body.centerX) / 2
+        this.body.centerY = (this.origin.body.centerY + this.target.body.centerY) / 2
+
+        let distanceVector = this.origin.body.center.subtract(this.target.body.center)
+
+        this.body.rotation = distanceVector.angle + Math.PI / 2
+        this.body.height = distanceVector.length
     }
 }

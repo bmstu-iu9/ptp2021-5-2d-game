@@ -1,16 +1,17 @@
 import {BaseEnemy} from "./base_enemy.js";
-import {game} from "../core/game.js";
+import AssetsManager from "../core/assets_manager.js";
+import {ExplosionEffect} from "./effects.js";
 
 export {
     BaseBoss
 }
 
-/**Base class for every boss.
- *
+/**
+ * Base class for every boss.
  */
 class BaseBoss extends BaseEnemy {
-    constructor(body, atlas, health, damage = 100, hpBarWidth = body.width * 0.6) {
-        super(body, atlas, health, damage);
+    constructor(body, atlasName, health, damage = 100, hpBarWidth = body.width * 0.6) {
+        super(body, atlasName, health, damage);
         this.fullHealth = health
         this.fullBarWidth = hpBarWidth
         this.hpBarPos = this.body.pos.clone()
@@ -18,6 +19,17 @@ class BaseBoss extends BaseEnemy {
         this.hpBarPos.y += this.body.height
         this.lastHBarWidth = this.fullBarWidth
     }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_boss', 1200, 1.2)
+    }
+
+    draw(ctx) {
+
+        // Draw boss sprite
+        let cell = this.atlas.cells[this.cellIndex]
+        ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, this.body.pos.x, this.body.pos.y,
+            this.body.width, this.body.height)
 
     drawHpBar(ctx) {
         this.hpBarPos = this.body.pos.clone()
