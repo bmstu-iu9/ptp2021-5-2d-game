@@ -19,6 +19,18 @@ function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
+    if (width < 2 * radius) radius = width / 2;
+    if (height < 2 * radius) radius = height / 2;
+    this.beginPath();
+    this.moveTo(x + radius, y);
+    this.arcTo(x + width, y, x + width, y + height, radius);
+    this.arcTo(x + width, y + height, x, y + height, radius);
+    this.arcTo(x, y + height, x, y, radius);
+    this.arcTo(x, y, x + width, y, radius);
+    this.closePath();
+    return this;
+}
 
 class Game {
     static STATE_LOADING = 0
@@ -31,11 +43,14 @@ class Game {
 
     constructor() {
         // Create canvas and extract its context
-        this.viewport = document.getElementById("gameViewport");
+        this.viewport = document.getElementById("gameViewport")
         this.viewport.width = window.innerWidth
         this.viewport.height = window.innerHeight
-        this.context = this.viewport.getContext('2d');
-        document.getElementById("container").insertBefore(this.viewport, null);
+        this.context = this.viewport.getContext('2d')
+        document.getElementById("container").insertBefore(this.viewport, null)
+
+        this.context.font = "bold 48px shadows into light"
+        this.context.textAlign = "center"
 
         this.playArea = new Body(new Vector(0, 0), window.innerWidth, window.innerHeight)
 
@@ -194,9 +209,7 @@ class Game {
                 textY = this.viewport.height / 2;
 
             if (this.state === Game.STATE_BETWEEN_LEVELS) {
-                this.context.font = "bold 48px shadows into light"
                 this.context.fillStyle = "orange";
-                this.context.textAlign = "center";
 
                 this.context.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", textX, textY)
             } else {
@@ -279,7 +292,14 @@ class BackgroundScroller {
 }
 
 const GAME_LEVELS = [
-
+    {
+        'waves': [],
+        'default_weapon': WEAPON_TYPE.REGULAR,
+        'boss': 'BaseBoss',
+        'boostersFrequency': 300,
+        'allowedBooster': ['heal', 'laser', 'shield'],
+        'pointsReward': 666,
+    },
 
     {
         'waves': [
@@ -290,7 +310,7 @@ const GAME_LEVELS = [
                 ['ShootingEnemy', 10]
             ]
         ],
-        'default_weapon': WEAPON_TYPE.REGULAR,
+        'default_weapon': WEAPON_TYPE.MULTI,
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
