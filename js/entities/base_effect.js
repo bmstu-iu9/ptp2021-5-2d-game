@@ -14,7 +14,7 @@ class BaseEffect extends BaseEntity {
      *
      * @param body {Body} this Effect's Body
      * @param atlasName {String} name of atlas loaded into AssetsManager
-     * @param duration Effect's animation duration (in milliseconds)
+     * @param duration {Number} Effect's animation duration (in milliseconds)
      * @param repeatOnce {boolean} if this Effect should be destroyed after the animation is complete
      */
     constructor(body, atlasName, duration = 500, repeatOnce = true) {

@@ -36,8 +36,9 @@ export default class BaseEntity {
 
     /**
      * Effect to be played when this Entity is destroyed.
+     * <br>If you want your Entity to die without destruction effect, return null here.
      *
-     * @example
+     * @example Play "explosion_orange" effect for 500ms
      * get destructionEffect() {
      *   return new ExplosionEffect(this, "explosion_orange", 500, 2)
      * }
