@@ -20,11 +20,14 @@ export default class Component {
         this.onDestroy = new Signal()
     }
 
-    preUpdate() {}
+    preUpdate() {
+    }
 
-    update() {}
+    update() {
+    }
 
-    postUpdate() {}
+    postUpdate() {
+    }
 
     /**
      * <p>Render this Component.
@@ -32,7 +35,8 @@ export default class Component {
      *
      * @param ctx {CanvasRenderingContext2D} canvas context where this Component should be rendered.
      */
-    preRender(ctx) {}
+    preRender(ctx) {
+    }
 
     /**
      * <p>Render this Component.
@@ -40,7 +44,8 @@ export default class Component {
      *
      * @param ctx {CanvasRenderingContext2D} canvas context where this Component should be rendered.
      */
-    postRender(ctx) {}
+    postRender(ctx) {
+    }
 
     /**
      * Destroy this component.

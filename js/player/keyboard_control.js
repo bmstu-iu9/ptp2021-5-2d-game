@@ -75,15 +75,23 @@ function configureKeyWatchers() {
     };
 
     Object.defineProperty(game.isPressed, 'moveLeft', {
-        get: () => {return moveLeft}
+        get: () => {
+            return moveLeft
+        }
     })
     Object.defineProperty(game.isPressed, 'moveUp', {
-        get: () => {return moveUp}
+        get: () => {
+            return moveUp
+        }
     })
     Object.defineProperty(game.isPressed, 'moveRight', {
-        get: () => {return moveRight}
+        get: () => {
+            return moveRight
+        }
     })
     Object.defineProperty(game.isPressed, 'moveDown', {
-        get: () => {return moveDown}
+        get: () => {
+            return moveDown
+        }
     })
 }
