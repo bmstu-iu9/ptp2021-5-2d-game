@@ -11,12 +11,12 @@ export {
  * Base class for every boss.
  */
 class BaseBoss extends BaseEnemy {
-    constructor(body, atlasName, health, damage = 100, reward = REWARD.BASE_BOSS, hpBarWidth = body.width * 0.6) {
+    constructor(body, atlasName, health, damage = 100, reward = REWARD.BASE_BOSS) {
         super(body, atlasName, health, damage, reward);
         this.fullHealth = health
-        this.fullBarWidth = hpBarWidth
+        this.fullBarWidth = Math.min(body.width * 0.6, 120)
         this.hpBarPos = this.body.pos.clone()
-        this.hpBarPos.x += (body.width - hpBarWidth) / 2
+        this.hpBarPos.x += (body.width - this.fullBarWidth) / 2
         this.hpBarPos.y += this.body.height
         this.lastHBarWidth = this.fullBarWidth
     }

@@ -68,7 +68,7 @@ class Game {
 
         this.isPressed = {}
 
-        this.score = 0
+        this.scoreDisplayed = 0
     }
 
     load() {
@@ -200,11 +200,11 @@ class Game {
 
         // Draw score counter
         if (this.state !== Game.STATE_END) {
-            if (this.score !== this.levelManager.score) {
-                this.score += Math.min(5, this.levelManager.score - this.score)
+            if (this.scoreDisplayed !== this.levelManager.score) {
+                this.scoreDisplayed += Math.min(5, this.levelManager.score - this.scoreDisplayed)
             }
             this.context.fillStyle = "orange";
-            this.context.fillText("Total score: " + this.score, this.viewport.width - 200, 80)
+            this.context.fillText("Total score: " + this.scoreDisplayed, this.viewport.width - 200, 80)
         }
 
         // Draw HP-bar
