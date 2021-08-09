@@ -25,9 +25,7 @@ class BaseEffect extends BaseEntity {
         this.animationManager.currentAnimation.duration = duration
         if (repeatOnce) {
             this.animationManager.currentAnimation.loop = false
-            this.animationManager.currentAnimation.onComplete.addListener(() => {
-                this.destroy()
-            }, this)
+            this.animationManager.currentAnimation.onComplete.addListener(() => {this.destroy()}, this)
         }
     }
 }
@@ -60,8 +58,6 @@ class BaseTargetedEffect extends BaseEffect {
         this.movementLogic = this.components.add(
             new ClipToTarget(target, ClipToTarget.MODE_CENTER, ClipToTarget.MODE_CENTER))
         this.target = target
-        this.target.onDestroyed.addListener(function () {
-            this.destroy()
-        }, this)
+        this.target.onDestroyed.addListener(function () {this.destroy()}, this)
     }
 }

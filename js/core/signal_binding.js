@@ -22,6 +22,5 @@ export default class SignalBinding {
         this.signal.remove(this.listener, this.context)
     }
 
-    destroy() {
-    }
+    destroy() {}
 }

@@ -53,7 +53,7 @@ export class Player extends BaseEntity {
         game.gameObjects.push(new HealEffect(this))
     }
 
-    changeWeapon(weaponType, permanent = false) {
+    changeWeapon(weaponType, permanent=false) {
         if (permanent) {
             this.defaultWeaponType = weaponType
         }

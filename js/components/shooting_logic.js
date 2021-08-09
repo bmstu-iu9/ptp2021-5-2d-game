@@ -18,8 +18,7 @@ class ShootingLogic extends Component {
         }
     }
 
-    fire() {
-    }
+    fire() {}
 }
 
 /**

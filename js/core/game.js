@@ -87,9 +87,7 @@ class Game {
 
     gameover() {
         this.state = Game.STATE_END
-        setTimeout(function () {
-            game.reset()
-        }, 5000)
+        setTimeout(function () {game.reset()}, 5000)
     }
 
     /**
