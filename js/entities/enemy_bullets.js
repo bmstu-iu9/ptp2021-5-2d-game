@@ -39,7 +39,7 @@ class EnemyHauntingBullet extends EnemyBullet {
     constructor(pos) {
         let body = new Body(pos, 50, 20)
         super(body, "enemy_rocket", new FollowTarget(game.player), 10)
-        this.lifetime = this.components.add(new Lifetime(this, EnemyHauntingBullet.DURATION))
+        this.lifetime = this.components.add(new Lifetime(EnemyHauntingBullet.DURATION))
     }
 
     get destructionEffect() {

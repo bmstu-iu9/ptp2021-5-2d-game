@@ -45,3 +45,13 @@ export const
     SPINNING_BOSS_FIRE_RATE = 7,
     ENEMY_HAUNTING_BULLET_SPEED = 4,
     ENEMY_HAUNTING_BULLET_VELOCITY = 0.9;
+
+/**Rewards */
+export const
+    REWARD = {
+        BASE_ENEMY: 50,
+        SHOOTING_ENEMY: 150,
+        LASER_ENEMY: 300,
+        BASE_BOSS: 500,
+        SPINNING_BOSS: 1000
+    }

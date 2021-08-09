@@ -3,14 +3,15 @@ import {game} from "../core/game.js";
 import {EnemyHauntingBullet} from "./enemy_bullets.js";
 import {BounceHorizontally} from "../components/movement_logic.js";
 import Vector from "../math/vector.js";
+import {REWARD} from "../core/game_constants.js";
 
 export {ShootingEnemy}
 
 class ShootingEnemy extends BaseEnemy {
     static FIRE_RATE = 150
 
-    constructor(body, atlasName, health, damage = 0) {
-        super(body, atlasName, health, damage);
+    constructor(body, atlasName, health, damage = 0, reward = REWARD.SHOOTING_ENEMY) {
+        super(body, atlasName, health, damage, reward);
         this.fireState = 0
         this.movementLogic = this.components.add(new BounceHorizontally(3))
     }

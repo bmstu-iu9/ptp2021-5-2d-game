@@ -1,5 +1,6 @@
 import BaseEntity from "./base_entity.js";
 import {ExplosionEffect} from "./effects.js"
+import {REWARD} from "../core/game_constants.js";
 
 export {BaseEnemy}
 
@@ -13,10 +14,11 @@ class BaseEnemy extends BaseEntity {
      * @param atlasName name of atlas loaded into AssetsManager
      * @param health initial health
      * @param damage collision's damage
+     * @param reward reward for killing an enemy
      */
-    constructor(body, atlasName, health, damage = 0) {
+    constructor(body, atlasName, health, damage = 0, reward = REWARD.BASE_ENEMY) {
         super(body, atlasName)
-
+        this.reward = reward
         this.health = health
         this.damage = damage
     }

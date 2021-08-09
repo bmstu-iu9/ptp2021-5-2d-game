@@ -67,6 +67,8 @@ class Game {
         this.state = Game.STATE_LOADING
 
         this.isPressed = {}
+
+        this.scoreDisplayed = 0
     }
 
     load() {
@@ -171,8 +173,11 @@ class Game {
                 if (destructionEffect !== null)
                     this.gameObjects.push(destructionEffect)
 
-                if (this.gameObjects[i] instanceof BaseEnemy)
+                if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.levelManager.enemiesKilled++
+                    this.levelManager.score += this.gameObjects[i].reward
+                }
+
 
                 this.gameObjects.splice(i, 1)
             }
@@ -193,7 +198,16 @@ class Game {
             ent.render(this.context)
         }
 
-        //Draw HP-bar
+        // Draw score counter
+        if (this.state !== Game.STATE_END) {
+            if (this.scoreDisplayed !== this.levelManager.score) {
+                this.scoreDisplayed += Math.min(5, this.levelManager.score - this.scoreDisplayed)
+            }
+            this.context.fillStyle = "orange";
+            this.context.fillText("Total score: " + this.scoreDisplayed, this.viewport.width - 200, 80)
+        }
+
+        // Draw HP-bar
         this.context.drawImage(AssetsManager.textures["player_hp_bar_back"].image, 20, 20, 274, 36)
 
         let barW = 260 * this.player.health / 100,
@@ -299,7 +313,6 @@ const GAME_LEVELS = [
         'boss': 'SpinningBoss',
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
     {
@@ -315,7 +328,6 @@ const GAME_LEVELS = [
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
     {
@@ -331,7 +343,6 @@ const GAME_LEVELS = [
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
     {
@@ -344,7 +355,6 @@ const GAME_LEVELS = [
         'boss': null,
         'boostersFrequency': 300,
         'allowedBooster': ['heal', 'laser', 'shield'],
-        'pointsReward': 666,
     },
 
 ]
@@ -360,7 +370,7 @@ class LevelManager {
         this.bossPushed = false
         this.enemiesKilled = 0
         this.availableEnemies = []
-        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
+        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
 
     }
 
@@ -440,7 +450,6 @@ class LevelManager {
 
         // Going to the next level
         if (this.enemiesKilled === this.enemiesTotalNum) {
-            this.score += this.currentLevel.pointsReward
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length)
                 this.nextLevel()
             else
@@ -461,7 +470,7 @@ class LevelManager {
         this.enemiesTotalNum = 0
         this.enemiesKilled = 0
         this.bossPushed = false
-        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon)
+        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
         setTimeout(function () {
             game.state = Game.STATE_RUNNING;
         }, 3000)

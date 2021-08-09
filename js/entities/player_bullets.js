@@ -2,10 +2,12 @@ import {BaseBullet} from "./base_bullet.js";
 import {game} from "../core/game.js";
 import Body from "../physics/body.js";
 import {ClipToTarget, ConstantSpeed, SpinAround} from "../components/movement_logic.js";
+
 import Vector from "../math/vector.js";
 import Lifetime from "../components/lifetime.js";
 import {BaseBoss} from "./base_boss.js";
 import {PLAYER} from "../core/game_constants.js";
+import {WEAPON_TYPE} from "../core/enums.js";
 
 export {PlayerBullet, SimplePlayerBullet, PlayerLaser, PlayerOrbitalShield}
 
@@ -50,7 +52,6 @@ class PlayerLaser extends PlayerBullet {
 
         this.pulsationRate = 0.2
 
-        this.lifetime = this.components.add(new Lifetime(PLAYER.POWERUPS.DURATION))
     }
 
     update() {
@@ -61,6 +62,9 @@ class PlayerLaser extends PlayerBullet {
         this.body.width += this.pulsationRate
         if (this.body.width < (PLAYER.POWERUPS.LASER.WIDTH - 5) || this.body.width > (PLAYER.POWERUPS.LASER.WIDTH + 5))
             this.pulsationRate = -this.pulsationRate
+        if (game.player.currentWeaponType !== WEAPON_TYPE.LASER) {
+            this.destroy()
+        }
     }
 
     hit(target) {

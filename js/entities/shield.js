@@ -39,9 +39,9 @@ export default class Shield extends BaseEntity {
     update() {
         super.update()
 
-        if (this.lifetime.remaining >= Shield.DURATION - Shield.IN_OUT_DURATION)
+        if (this.lifetime.remaining >= PLAYER.POWERUPS.DURATION - Shield.IN_OUT_DURATION)
             this.opacity = Easing.inOutCubic(
-                (Shield.DURATION - this.lifetime.remaining) / Shield.IN_OUT_DURATION)
+                (PLAYER.POWERUPS.DURATION - this.lifetime.remaining) / Shield.IN_OUT_DURATION)
         else if (this.lifetime.remaining <= Shield.IN_OUT_DURATION)
             this.opacity = Easing.inOutCubic(this.lifetime.remaining / Shield.IN_OUT_DURATION)
         else
