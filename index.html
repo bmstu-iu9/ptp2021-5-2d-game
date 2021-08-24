@@ -10,7 +10,7 @@
 <body>
 
 <div id="container">
-    <div id="pages" style="display: none">
+    <div class="fadeable hidden" id="pages">
         <div class="page active" id="menu">
             <div class="page-item button active" id="menu-play" onclick="switchToGame()"><p>PLAY</p></div>
             <div class="page-item button" id="menu-settings" onclick="switchPage('settings')"><p>SETTINGS</p></div>
@@ -28,26 +28,20 @@
         </div>
 
         <div class="page" id="credits">
-            <div class="page-item" id="credits-container">
-                <div class="page-title">
-                    <div class="button back" onclick="switchPage('menu')"><</div>
-                    <p>Credits</p>
-                </div>
+            <div class="page-item button active" onclick="switchPage('menu')"><p>< Credits</p></div>
 
-                <div class="page-item button"><p>Denis Pashkevich</p></div>
-                <div class="page-item button"><p>Stas Stafievskiy</p></div>
-                <div class="page-item button"><p>Anton Saykin</p></div>
-                <div class="page-item button"><p>Artem Yadrihinskiy</p></div>
-            </div>
+            <div class="page-item button"><p>Denis Pashkevich</p></div>
+            <div class="page-item button"><p>Stas Stafievskiy</p></div>
+            <div class="page-item button"><p>Anton Saykin</p></div>
+            <div class="page-item button"><p>Artem Yadrihinskiy</p></div>
         </div>
     </div>
 
-    <canvas id="gameViewport">
+    <canvas class="fadeable" id="gameViewport">
 
     </canvas>
 </div>
 
-<script src="jquery-3.6.0.min.js"></script>
 <script src="js/core/game.js" type="module"></script>
 
 <script type="module">

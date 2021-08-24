@@ -1,36 +1,69 @@
 import {game} from "./game.js";
 
+export {switchPage, switchToGame, switchToMenu}
+
 let settings = {}
 
-$(window).on("load", function () {
-    $('html').on('keydown', null, null, menuKeyboardControl)
+window.addEventListener('load', function () {
+    window.addEventListener('keydown', menuKeyboardControl)
 })
 
-export function switchPage(id) {
-    let currentPage = $('.page.active')
-    if (id === currentPage.attr('id'))
+/**
+ * Change current page to page with given id.<br>Elements of the current page will slide out to the right, elements
+ * of the
+ * next page will slide in from the left.
+ *
+ * @param id id attribute of the next page's HTMLElement
+ * @param transitionDuration duration of slide-out and slide-in transitions (in milliseconds). Total time taken to
+ * switch the page will be around double this number.
+ */
+function switchPage(id, transitionDuration = 600) {
+    const currentPage = document.querySelector('.page.active') || document.querySelector('.page:first-child'),
+        nextPage = document.getElementById(id)
+
+    if (id === currentPage.id)
         return
 
+    // If switching from settings, save settings
     if (currentPage.id === 'settings')
         saveSettings()
 
-    currentPage.children().css({right: 0, left: ''}).animate({right: "-150%"}, 600).promise().then(function () {
-        currentPage.removeClass('active')
+    let i = 0
+    for (let child of currentPage.children) {
+        child.style.left = ''
+        child.style.right = '-150%'
+        child.animate([{right: '0'}, {right: '-150%'}], {duration: transitionDuration + i * 100, easing: 'ease-in'})
 
-        let nextPage = $('#' + id)
-        nextPage.addClass('active')
+        i++
+    }
 
-        nextPage.children().css({left: "-150%", right: ''}).animate({left: 0})
-    })
+    setTimeout(function () {
+        currentPage.classList.remove('active')
+        nextPage.classList.add('active')
+
+        i = 0
+        for (let child of nextPage.children) {
+            child.style.right = ''
+            child.animate([{left: '-150%'}, {left: '0'}], {duration: transitionDuration + i * 100, easing: 'ease-out'})
+            i++
+        }
+    }, transitionDuration + i * 100 - 10)
 }
 
-export function switchToGame() {
-    game.start()
-    $('#pages').fadeOut(1000)
+/**
+ * Fade out menu and start the game.
+ */
+function switchToGame() {
+    let pagesElement = document.getElementById('pages')
+    fadeToggle(pagesElement, game.start.bind(game))
 }
 
-export function switchToMenu() {
-    $('#pages').fadeIn(1000)
+/**
+ * Hide the game and fade in menu.
+ */
+function switchToMenu() {
+    let pagesElement = document.getElementById('pages')
+    fadeToggle(pagesElement, null)
 }
 
 function getCookie(name) {
@@ -76,35 +109,35 @@ function loadSettings() {
 }
 
 function menuKeyboardControl(ev) {
-    let currentButton = $('.page.active > .page-item.active'),
+    let currentButton = document.querySelector('.page.active > .page-item.active'),
         nextButton, prevButton
 
-    if (currentButton.length === 0 || currentButton.next().length === 0)
-        nextButton = $('.page.active > .page-item:first-child')
+    if (!currentButton || !currentButton.nextElementSibling)
+        nextButton = document.querySelector('.page.active > .page-item:first-child')
     else
-        nextButton = currentButton.next()
+        nextButton = currentButton.nextElementSibling
 
-    if (currentButton.length === 0 || currentButton.prev().length === 0)
-        prevButton = $('.page.active > .page-item:last-child')
+    if (!currentButton || !currentButton.previousElementSibling)
+        prevButton = document.querySelector('.page.active > .page-item:last-child')
     else
-        prevButton = currentButton.prev()
+        prevButton = currentButton.previousElementSibling
 
     switch (ev.code) {
         case 'ArrowDown':
         case 'KeyS':
-            currentButton.removeClass('active')
-            nextButton.addClass('active')
+            currentButton.classList.remove('active')
+            nextButton.classList.add('active')
 
             break
         case 'ArrowUp':
         case 'KeyW':
-            currentButton.removeClass('active')
-            prevButton.addClass('active')
+            currentButton.classList.remove('active')
+            prevButton.classList.add('active')
 
             break
         case 'Enter':
         case 'Space':
-            currentButton.trigger('click')
+            currentButton.dispatchEvent(new Event('click'))
 
             break
         case 'Escape':
@@ -113,4 +146,24 @@ function menuKeyboardControl(ev) {
 
             break
     }
+}
+
+/**
+ * Toggle the visibility of given element.<br>
+ * This method animates element's opacity (animation speed is defined in style.css -> .fadeable). When opacity
+ * reaches 0 after hiding animation, the `display` style property is set to `none` to ensure that the element no
+ * longer affects the layout of the page.
+ *
+ * @param element {HTMLElement} element to fade in/out
+ * @param callback {function | null} function to execute once transition is over
+ */
+function fadeToggle(element, callback) {
+    element.style.display = ''
+
+    element.addEventListener('transitionend', function () {
+        this.style.display = this.classList.contains('hidden') ? 'none' : ''
+        if (callback) callback()
+    }, {once: true})
+
+    setTimeout(() => {element.classList.toggle('hidden')}, 20)
 }

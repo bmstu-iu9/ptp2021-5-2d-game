@@ -112,3 +112,14 @@ html, body {
     flex-direction: column;
 }
 
+.fadeable {
+    opacity: 1;
+    transition: opacity .5s ease-in;
+}
+
+.fadeable.hidden {
+    opacity: 0;
+    transition: opacity .5s ease-in;
+}
+
+

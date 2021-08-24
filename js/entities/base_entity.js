@@ -9,7 +9,7 @@ import TextureAtlas from "../textures/texture_atlas.js";
  * <p>Base class for every Entity in the game.
  * Provides some basic logic.
  *
- * <p>Should not be instantiated directly.</p>
+ * <p><b>Should not be instantiated directly.</b></p>
  */
 export default class BaseEntity {
     /**
@@ -112,6 +112,7 @@ export default class BaseEntity {
     /**
      * Changes entity's state to "destroyed". Game will render destruction animation if present
      * and then remove object from game.
+     *
      * <p>You should not override this method.
      */
     destroy() {
