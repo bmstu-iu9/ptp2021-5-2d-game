@@ -14,6 +14,7 @@ import {LightningEffect} from "../entities/effects.js";
 import Lifetime from "../components/lifetime.js";
 import {game} from "../core/game.js";
 import {Rotator} from "../components/rotator.js";
+import SoundManager from "../core/sound_manager.js";
 
 export function applyCollisionRules(obj1, obj2) {
     for (let rule of collisionRules) {
@@ -98,6 +99,7 @@ const collisionRules = [
     }),
     new CollisionRule(isBooster, isPlayer, function (boost, player) {
         boost.destroy()
+        SoundManager.gameSounds(boost.boosterType)
         switch (boost.boosterType) {
             case "heal":
                 player.heal(25)
@@ -112,7 +114,7 @@ const collisionRules = [
     }),
     new CollisionRule((x) => {return (isEnemyBullet(x) || isEnemy(x)) && !isBoss(x)},
         (x) => {return x instanceof Shield},
-        function (unfortunateVictim, shield) {
+        function (unfortunateVictim) {
             unfortunateVictim.destroy()
         })
 ]

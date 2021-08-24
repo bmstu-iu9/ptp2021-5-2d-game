@@ -15,6 +15,7 @@ import {PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBoss} from "../entities/base_boss.js";
 import Clock from "./clock.js";
 import {SpinningBoss} from "../entities/spinning_boss.js";
+import SoundManager from "./sound_manager.js";
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -176,6 +177,7 @@ class Game {
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.levelManager.enemiesKilled++
                     this.levelManager.score += this.gameObjects[i].reward
+                    SoundManager.gameSounds("explosion")
                 }
 
 

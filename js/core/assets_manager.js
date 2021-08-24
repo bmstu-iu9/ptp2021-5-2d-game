@@ -50,6 +50,9 @@ const ASSETS_LIST = [
     ["img/spinning_boss.png"],
     ["sounds/player_shot.mp3"],
     ["sounds/laser.mp3"],
+    ["sounds/explosion.wav"],
+    ["sounds/heal.mp3"],
+    ["sounds/shield.mp3"],
 ]
 
 /**

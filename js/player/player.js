@@ -39,6 +39,8 @@ export class Player extends BaseEntity {
 
         this.shield = new Shield(this)
         game.gameObjects.push(this.shield)
+
+        SoundManager.playerSounds("shield")
     }
 
     receiveDamage(damageAmount) {
@@ -52,6 +54,8 @@ export class Player extends BaseEntity {
     heal(healAmount) {
         this.health = Math.min(this.health + healAmount, PLAYER.MAX_HEALTH)
         game.gameObjects.push(new HealEffect(this))
+
+        SoundManager.playerSounds("heal")
     }
 
     changeWeapon(weaponType, permanent = false) {
