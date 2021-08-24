@@ -73,6 +73,7 @@ export class Player extends BaseEntity {
                 this.currentWeaponType = WEAPON_TYPE.LASER
                 this.fireBoosterDuration = PLAYER.POWERUPS.DURATION
                 game.gameObjects.push(new PlayerLaser(this.body.pos))
+                SoundManager.playerSounds("laser")
 
                 break
             case WEAPON_TYPE.ORBITAL_SHIELD:
@@ -105,6 +106,7 @@ export class Player extends BaseEntity {
                         new SimplePlayerBullet(bulletBody, "player_multi_bullet", bulletSpeed, 1.5))
                 }
 
+                SoundManager.playerSounds("multi_shot")
                 break
 
             case WEAPON_TYPE.LASER:
