@@ -8,6 +8,7 @@ import Vector from "../math/vector.js";
 import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
+import SoundManager from "../core/sound_manager.js";
 
 /**
  * Represents, well, player :D
@@ -90,6 +91,7 @@ export class Player extends BaseEntity {
                 game.gameObjects.push(
                     new SimplePlayerBullet(bulletBody, "player_regular_bullet", bulletSpeed))
 
+                SoundManager.playerSounds("player_shot")
                 break
 
             case WEAPON_TYPE.MULTI:

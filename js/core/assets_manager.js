@@ -48,6 +48,7 @@ const ASSETS_LIST = [
     ["img/player_ship.png"],
     ["img/spinning_boss_bullet.png"],
     ["img/spinning_boss.png"],
+    ["sounds/player_shot.mp3"],
 ]
 
 /**
@@ -87,7 +88,10 @@ export default class AssetsManager extends StaticClass {
                 break
 
             case ASSET_TYPE.SOUND:
-                throw "Sounds are not supported yet. Implement if you wish :)"
+                AssetsManager.sounds[assetName] = new Audio(assetSrc)
+                AssetsManager.sounds[assetName].volume = 0.3
+                callback()
+                break
         }
     }
 
