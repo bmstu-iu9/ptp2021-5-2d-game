@@ -6,8 +6,8 @@ export default class SoundManager extends StaticClass {
         AssetsManager.sounds[soundName].currentTime = 0
         AssetsManager.sounds[soundName].play()
     }
-    static playSoundAsync(src){
-        let sound = new Audio(src)
+    static playSoundAsync(soundName){
+        let sound = new Audio(AssetsManager.sounds[soundName].src)
         sound.volume = 0.1
         sound.play()
     }
@@ -25,7 +25,7 @@ export default class SoundManager extends StaticClass {
             case "multi_shot":
                 this.offSound("laser")
                 for (let i = 0; i < 6; i++){
-                    this.playSoundAsync(AssetsManager.sounds["player_shot"].src)
+                    this.playSoundAsync("multi_shot")
                 }
                 break
             case "laser":
@@ -56,8 +56,15 @@ export default class SoundManager extends StaticClass {
                 break
         }
     }
-    //That is, the sounds played inside enemy classes
+    //These are the sounds played inside enemy classes.
     static enemySounds(soundName) {
-
+        switch (soundName) {
+            case "shooting_enemy_shot":
+                this.playSoundAsync(soundName)
+                break
+            case "spinning_boss_shot":
+                this.playSoundAsync(soundName)
+                break
+        }
     }
 }

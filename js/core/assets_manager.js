@@ -53,6 +53,9 @@ const ASSETS_LIST = [
     ["sounds/explosion.wav"],
     ["sounds/heal.mp3"],
     ["sounds/shield.mp3"],
+    ["sounds/multi_shot.mp3"],
+    ["sounds/shooting_enemy_shot.mp3"],
+    ["sounds/spinning_boss_shot.mp3"],
 ]
 
 /**
