@@ -17,6 +17,10 @@ class ShootingEnemy extends BaseEnemy {
         this.movementLogic = this.components.add(new BounceHorizontally(3))
     }
 
+    get destructionSound() {
+        return "explosion"
+    }
+
     update() {
         super.update()
         this.fireState++;

@@ -112,8 +112,12 @@ const collisionRules = [
                 break
         }
     }),
-    new CollisionRule((x) => {return (isEnemyBullet(x) || isEnemy(x)) && !isBoss(x)},
-        (x) => {return x instanceof Shield},
+    new CollisionRule((x) => {
+            return (isEnemyBullet(x) || isEnemy(x)) && !isBoss(x)
+        },
+        (x) => {
+            return x instanceof Shield
+        },
         function (unfortunateVictim) {
             unfortunateVictim.destroy()
         })

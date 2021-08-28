@@ -88,7 +88,9 @@ class Game {
 
     gameover() {
         this.state = Game.STATE_END
-        setTimeout(function () {game.reset()}, 5000)
+        setTimeout(function () {
+            game.reset()
+        }, 5000)
     }
 
     /**
@@ -170,16 +172,21 @@ class Game {
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
                 let destructionEffect = this.gameObjects[i].destructionEffect
+                let destructionSound = this.gameObjects[i].destructionSound
 
                 if (destructionEffect !== null)
                     this.gameObjects.push(destructionEffect)
 
+                if (destructionSound !== null) {
+                    SoundManager.gameSounds(destructionSound)
+                } else {
+                    SoundManager.gameSounds("base_enemy_destruction")
+                }
+
                 if (this.gameObjects[i] instanceof BaseEnemy) {
                     this.levelManager.enemiesKilled++
                     this.levelManager.score += this.gameObjects[i].reward
-                    SoundManager.gameSounds("explosion")
                 }
-
 
                 this.gameObjects.splice(i, 1)
             }

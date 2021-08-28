@@ -6,15 +6,18 @@ export default class SoundManager extends StaticClass {
         AssetsManager.sounds[soundName].currentTime = 0
         AssetsManager.sounds[soundName].play()
     }
-    static playSoundAsync(soundName){
+
+    static playSoundAsync(soundName) {
         let sound = new Audio(AssetsManager.sounds[soundName].src)
         sound.volume = 0.1
         sound.play()
     }
-    static offSound(soundName){
+
+    static offSound(soundName) {
         AssetsManager.sounds[soundName].pause()
         AssetsManager.sounds[soundName].currentTime = 0
     }
+
     //playerSounds - sounds emitted inside player.js
     static playerSounds(soundName) {
         switch (soundName) {
@@ -24,14 +27,14 @@ export default class SoundManager extends StaticClass {
                 break
             case "multi_shot":
                 this.offSound("laser")
-                for (let i = 0; i < 6; i++){
+                for (let i = 0; i < 6; i++) {
                     this.playSoundAsync("multi_shot")
                 }
                 break
             case "laser":
-                AssetsManager.sounds["laser"].addEventListener('timeupdate', function(){
+                AssetsManager.sounds["laser"].addEventListener('timeupdate', function () {
                     let buffer = 0.1
-                    if(this.currentTime > this.duration - buffer){
+                    if (this.currentTime > this.duration - buffer) {
                         this.currentTime = 0
                         this.play()
                     }
@@ -46,6 +49,7 @@ export default class SoundManager extends StaticClass {
                 break
         }
     }
+
     //gameSounds - sounds processed by the game
     //for example, destroying enemies by the player
     //collisions with boosters activate player.js methods so their sounds are relative to playerSounds
@@ -56,6 +60,7 @@ export default class SoundManager extends StaticClass {
                 break
         }
     }
+
     //These are the sounds played inside enemy classes.
     static enemySounds(soundName) {
         switch (soundName) {
