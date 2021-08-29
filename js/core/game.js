@@ -81,7 +81,6 @@ class Game {
      */
     onLoaded() {
         game.state = Game.STATE_MENU
-        switchToMenu()
     }
 
     gameover() {
