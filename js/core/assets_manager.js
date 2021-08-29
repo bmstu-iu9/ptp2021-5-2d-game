@@ -27,6 +27,7 @@ const ASSETS_LIST = [
     ["effects/lightning_animation.png", 128, 512],
     ["effects/shield_animation.png", 192, 192],
     ["effects/thrust_animation.png", 192, 192],
+    ["img/menu_bg.png"],
     ["img/base_boss.png"],
     ["img/boss_hp_bar.png"],
     ["img/boss_hp_bar_back.png"],
