@@ -20,7 +20,7 @@ export class Player extends BaseEntity {
         let initialPos = new Vector((game.playArea.width - PLAYER.DIMENSIONS) / 2,
             (game.playArea.height - PLAYER.DIMENSIONS) / 2)
         super(new Body(initialPos, PLAYER.DIMENSIONS, PLAYER.DIMENSIONS), "player_ship")
-        this.components.add(new FlameRender(this, "thrust_animation"))
+        this.components.add(new FlameRender("thrust_animation"))
 
         this.health = PLAYER.MAX_HEALTH;
 
