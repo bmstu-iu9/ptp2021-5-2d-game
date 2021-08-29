@@ -4,35 +4,23 @@ import AssetsManager from "../core/assets_manager.js";
 export {FlameRender}
 
 class FlameRender extends Component {
-    constructor(owner, animationAtlasName, sx, sy, frameHeight, frameWidth, num, step) {
+    constructor(owner, animationAtlasName, flameHeight=120, flameWidth=70) {
         super("FlameRender", owner);
         this.atlas = AssetsManager.textures[animationAtlasName]
-        this.owner = owner
-        this.sx = sx
-        this.sy = sy
-        this.frameHeight = frameHeight
-        this.frameWidth = frameWidth
-        this.num = num
-        this.step = step
-        this.i = 0
+        this.body = owner.body
+        this.cellIndex = 0
+        this.flameHeight = flameHeight
+        this.flameWidth = flameWidth
     }
     preRender(ctx) {
         super.preRender(ctx)
-        let body = this.owner.body
-        let x = body.centerX
-        let y = body.centerY
         ctx.save()
-
-        ctx.translate(x, y)
+        ctx.translate(this.body.centerX, this.body.centerY)
         ctx.rotate(-90*Math.PI/180)
-
-        let sizeY = this.frameHeight/3
-        let sizeX = this.frameWidth/3
-        ctx.drawImage(this.atlas.image, this.sx + this.i*this.step, this.sy, this.frameWidth, this.frameHeight,
-            -sizeX, -sizeY/2, sizeX, sizeY);
-
+        let cell = this.atlas.cells[this.cellIndex]
+        ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h,  -this.flameHeight+this.body.width/2, -this.flameWidth/2,
+            this.flameHeight, this.flameWidth)
         ctx.restore();
-
-        this.i = (this.i+1)%this.num;
+        this.cellIndex = (this.cellIndex + 1)%this.atlas.cells.length;
     }
 }
