@@ -82,7 +82,7 @@ html, body {
 }
 
 #player {
-    background: url('/assets/img/player_ship.png') no-repeat center;
+    background: url('assets/img/player_ship.png') no-repeat center;
     background-size: cover;
 
     width: 70px;
