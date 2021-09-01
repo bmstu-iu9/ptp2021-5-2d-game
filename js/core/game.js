@@ -58,7 +58,6 @@ class Game {
 
         this.lastHBarWidth = 260
         this.backgroundObjects = new BackgroundScroller()
-            //.add('assets/img/bg.jpg', 0.5)
             .add('assets/img/stars1.png', 0.5)
             .add('assets/img/stars2.png', 1)
             .add('assets/img/nebula.png', 1)
@@ -83,7 +82,6 @@ class Game {
      */
     onLoaded() {
         game.state = Game.STATE_MENU
-        switchToMenu()
     }
 
     gameover() {
@@ -116,7 +114,7 @@ class Game {
 
         game.state = Game.STATE_RUNNING
 
-        window.requestAnimationFrame(game.gameLoop)
+        window.requestAnimationFrame(game.gameLoop.bind(game))
     }
 
     /**
@@ -125,12 +123,12 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     gameLoop(ts) {
-        if (game.state === Game.STATE_LOADING || game.state === Game.STATE_MENU)
+        if (this.state === Game.STATE_LOADING || this.state === Game.STATE_MENU)
             return
 
-        game.update(ts)
-        game.render()
-        window.requestAnimationFrame(game.gameLoop)
+        this.update(ts)
+        this.render()
+        window.requestAnimationFrame(game.gameLoop.bind(game))
     }
 
     processCollisions() {
