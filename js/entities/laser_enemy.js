@@ -16,10 +16,6 @@ class LaserEnemy extends BaseEnemy {
         this.movementLogic = this.components.add(new BounceHorizontally(5))
     }
 
-    get destructionSound() {
-        return "explosion"
-    }
-
     update() {
         super.update()
         this.fireState++;

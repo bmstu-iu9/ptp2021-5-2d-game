@@ -172,15 +172,13 @@ class Game {
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
                 let destructionEffect = this.gameObjects[i].destructionEffect
-                let destructionSound = this.gameObjects[i].destructionSound
+                let destructionSoundName = this.gameObjects[i].destructionSoundName
 
                 if (destructionEffect !== null)
                     this.gameObjects.push(destructionEffect)
 
-                if (destructionSound !== null) {
-                    SoundManager.gameSounds(destructionSound)
-                } else {
-                    SoundManager.gameSounds("base_enemy_destruction")
+                if (destructionSoundName !== null) {
+                    SoundManager.gameSounds(destructionSoundName)
                 }
 
                 if (this.gameObjects[i] instanceof BaseEnemy) {

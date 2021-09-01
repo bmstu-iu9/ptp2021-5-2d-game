@@ -18,10 +18,6 @@ class SpinningBoss extends BaseBoss {
         this.fireState = 0
     }
 
-    get destructionSound() {
-        return "explosion"
-    }
-
     update() {
         super.update()
         this.fireState++;

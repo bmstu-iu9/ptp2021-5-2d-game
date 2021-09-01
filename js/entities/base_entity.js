@@ -49,7 +49,7 @@ export default class BaseEntity {
         return null
     }
 
-    get destructionSound() {
+    get destructionSoundName() {
         return null
     }
 

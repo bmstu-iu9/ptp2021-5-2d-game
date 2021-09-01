@@ -27,9 +27,7 @@ export default class SoundManager extends StaticClass {
                 break
             case "multi_shot":
                 this.offSound("laser")
-                for (let i = 0; i < 6; i++) {
-                    this.playSoundAsync("multi_shot")
-                }
+                this.runAgain(soundName)
                 break
             case "laser":
                 AssetsManager.sounds["laser"].addEventListener('timeupdate', function () {
@@ -56,7 +54,7 @@ export default class SoundManager extends StaticClass {
     static gameSounds(soundName) {
         switch (soundName) {
             case "explosion":
-                this.runAgain(soundName)
+                this.runAgain('explosion')
                 break
         }
     }
