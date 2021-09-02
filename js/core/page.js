@@ -45,7 +45,13 @@ function setCurrentPage(id, transitionDuration = 600) {
 
         let lastAnimation
         if (!currentPage || !currentPage.children) {
-            lastAnimation = {finished: {then: (f) => {f()}}}
+            lastAnimation = {
+                finished: {
+                    then: (f) => {
+                        f()
+                    }
+                }
+            }
         } else {
             Array.from(currentPage.children).forEach(function (child, index) {
                 child.style.left = ''

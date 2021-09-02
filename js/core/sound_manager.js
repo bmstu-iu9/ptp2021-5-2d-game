@@ -11,7 +11,9 @@ export default class SoundManager extends StaticClass {
     static runAgain(soundName, volume) {
         let sound = new Audio(AssetsManager.sounds[soundName].src)
         sound.currentTime = 0
-        sound.volume = volume
+        if (volume) {
+            sound.volume = volume
+        }
         AssetsManager.sounds[soundName].play()
     }
 
@@ -23,14 +25,16 @@ export default class SoundManager extends StaticClass {
      */
     static playSoundAsync(soundName, volume) {
         let sound = new Audio(AssetsManager.sounds[soundName].src)
-        sound.volume = volume
+        if (volume) {
+            sound.volume = volume
+        }
         sound.play()
     }
 
     /**
      * turns off the sound and sets its playing time to 0
      * @param soundName
-      */
+     */
     static offSound(soundName) {
         AssetsManager.sounds[soundName].pause()
         AssetsManager.sounds[soundName].currentTime = 0
@@ -72,7 +76,7 @@ export default class SoundManager extends StaticClass {
     static gameSounds(soundName) {
         switch (soundName) {
             case "explosion":
-                this.runAgain('explosion')
+                this.playSoundAsync(soundName)
                 break
         }
     }
