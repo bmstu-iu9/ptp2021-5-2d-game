@@ -9,6 +9,7 @@ import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
 import SoundManager from "../core/sound_manager.js";
+import {FlameRender} from "../components/flame_render.js";
 
 /**
  * Represents, well, player :D
@@ -20,6 +21,7 @@ export class Player extends BaseEntity {
         let initialPos = new Vector((game.playArea.width - PLAYER.DIMENSIONS) / 2,
             (game.playArea.height - PLAYER.DIMENSIONS) / 2)
         super(new Body(initialPos, PLAYER.DIMENSIONS, PLAYER.DIMENSIONS), "player_ship")
+        this.components.add(new FlameRender("thrust_animation"))
 
         this.health = PLAYER.MAX_HEALTH;
 
@@ -44,6 +46,9 @@ export class Player extends BaseEntity {
     }
 
     receiveDamage(damageAmount) {
+        if (this.shield)
+            return
+
         this.health -= damageAmount
         if (this.health <= 0) {
             this.health = 0
