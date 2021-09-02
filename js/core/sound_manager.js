@@ -2,17 +2,35 @@ import AssetsManager from "./assets_manager.js";
 import StaticClass from "../util/static_class.js";
 
 export default class SoundManager extends StaticClass {
-    static runAgain(soundName) {
-        AssetsManager.sounds[soundName].currentTime = 0
+    /**
+     * runAgain() - runs sound from the beginning
+     * @param soundName - name of the sound
+     * @param volume - A number between 0 and 1. Adjusts the sound volume
+     *
+     */
+    static runAgain(soundName, volume) {
+        let sound = new Audio(AssetsManager.sounds[soundName].src)
+        sound.currentTime = 0
+        sound.volume = volume
         AssetsManager.sounds[soundName].play()
     }
 
-    static playSoundAsync(soundName) {
+    /**
+     * playSoundAsync(soundName, volume) - parameters are similar to  runAgain(soundName, volume)
+     * This method is used to play copies of one sound asynchronously
+     * @param soundName
+     * @param volume
+     */
+    static playSoundAsync(soundName, volume) {
         let sound = new Audio(AssetsManager.sounds[soundName].src)
-        sound.volume = 0.1
+        sound.volume = volume
         sound.play()
     }
 
+    /**
+     * turns off the sound and sets its playing time to 0
+     * @param soundName
+      */
     static offSound(soundName) {
         AssetsManager.sounds[soundName].pause()
         AssetsManager.sounds[soundName].currentTime = 0
