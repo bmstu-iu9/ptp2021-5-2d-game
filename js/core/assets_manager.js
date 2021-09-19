@@ -39,6 +39,8 @@ const ASSETS_LIST = [
     ["img/laser_bullet.png"],
     ["img/laser_enemy.png"],
     ["img/laser_orb.png"],
+    ["img/orbital_shield.png"],
+    ["img/orbital_shield_orb.png"],
     ["img/shield_orb.png"],
     ["img/player_hp_bar.png"],
     ["img/player_hp_bar_back.png"],

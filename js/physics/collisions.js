@@ -110,6 +110,9 @@ const collisionRules = [
             case "shield":
                 player.applyShield()
                 break
+            case "orbital_shield":
+                player.changeWeapon(WEAPON_TYPE.ORBITAL_SHIELD)
+                break
         }
     }),
     new CollisionRule((x) => {
