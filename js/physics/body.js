@@ -1,7 +1,7 @@
 import Vector from "../math/vector.js";
 
 /**
- * Represents physical position, dimensions and rotationSpeed.
+ * Represents physical position, dimensions and rotation.
  */
 export default class Body {
     /**
