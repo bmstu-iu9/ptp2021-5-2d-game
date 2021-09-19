@@ -21,9 +21,11 @@ function rnd(min, max) {
 }
 
 class MovementLogic extends Component {
-    constructor(name) {
+    constructor(name, maxSpeed) {
         super(name)
+
         this.speed = new Vector()
+        this.maxSpeed = maxSpeed || Infinity
     }
 
     /**
@@ -37,7 +39,8 @@ class MovementLogic extends Component {
      */
     update() {
         super.update()
-        this.owner.body.pos.add(this.speed)
+
+        this.owner.body.pos.add(this.speed.limit(this.maxSpeed))
     }
 
     /**
@@ -69,6 +72,7 @@ class MovementLogic extends Component {
 class ConstantSpeed extends MovementLogic {
     constructor(speed) {
         super("ConstantSpeed")
+
         this.speed = speed
     }
 }
@@ -87,19 +91,25 @@ class BounceHorizontally extends MovementLogic {
 }
 
 class FollowTarget extends MovementLogic {
-    constructor(target, settings = {}) {
-        super("FollowTarget")
+    /**
+     *
+     * @param target {BaseEntity} a BaseEntity to follow
+     * @param speed {Number} speed at which owner will follow target
+     * @param angularSpeed {Number} how fast should the speed vector change its angle. Value should be from 0
+     * (cannot turn) to 1 (instant turn).
+     */
+    constructor(target, speed = 5, angularSpeed = 0.065) {
+        super("FollowTarget", speed)
         this.target = target
 
-        this.maxSpeed = settings.maxSpeed || 5
-        this.turningSpeed = settings.turningSpeed || 0.065
+        this.maxAngularSpeed = angularSpeed
     }
 
     preUpdate() {
         let targetSpeed = this.target.body.center.subtract(this.owner.body.center)
         targetSpeed.length = this.maxSpeed
 
-        this.speed.lerp(targetSpeed, this.turningSpeed)
+        this.speed.lerp(targetSpeed, this.maxAngularSpeed)
         this.speed.length = this.maxSpeed
     }
 }
@@ -107,15 +117,14 @@ class FollowTarget extends MovementLogic {
 class KeyboardControl extends MovementLogic {
     /**
      *
-     * @param friction {Number} value describing how fast should the speed vector change .Value should be from 0
+     * @param friction {Number} value describing how fast should the speed vector change. Value should be from 0
      * (no impact on speed) to 1 (instant speed change)
      * @param maxSpeed {Number} maximum speed vector length
      */
     constructor(friction, maxSpeed) {
-        super("KeyboardControl")
+        super("KeyboardControl", maxSpeed)
 
         this.friction = friction
-        this.maxSpeed = maxSpeed
     }
 
     preUpdate() {
@@ -123,7 +132,7 @@ class KeyboardControl extends MovementLogic {
             game.isPressed.moveDown - game.isPressed.moveUp)
 
         acceleration.length = this.maxSpeed
-        this.speed.lerp(acceleration, this.friction).limit(this.maxSpeed)
+        this.speed.lerp(acceleration, this.friction)
     }
 
     postUpdate() {
@@ -195,27 +204,28 @@ class SpinAround extends MovementLogic {
 }
 
 class Spin extends MovementLogic {
-    constructor(target, rotation, name = "Spin") {
+    constructor(target, rotationSpeed, name = "Spin") {
         super(name)
+
         this.target = target
-        this.rotation = rotation
+        this.rotationSpeed = rotationSpeed
     }
 
     update() {
-        this.target.body.rotation += this.rotation
+        this.target.body.rotation += this.rotationSpeed
     }
 }
 
 class RandomSpin extends Spin {
-    constructor(target, rotation) {
-        super(target, rotation, "RandomSpin")
+    constructor(target, rotationSpeed) {
+        super(target, rotationSpeed, "RandomSpin")
     }
 
     update() {
-        super.update();
-        if (Math.abs(this.target.body.rotation) > Math.PI / 2 || rnd(0, 500) === 0) {
-            this.rotation = -this.rotation
-        }
+        super.update()
+
+        if (Math.abs(this.target.body.rotation) > Math.PI / 2 || rnd(0, 500) === 0)
+            this.rotationSpeed = -this.rotationSpeed
     }
 }
 
@@ -249,7 +259,7 @@ class Force extends MovementLogic {
      * @param duration {Number} number of frames after which the speed should decrease to zero
      */
     constructor(direction, initialForce = 10, easingFn = Easing.inOutCubic, duration = 60) {
-        super("Force")
+        super("Force", initialForce)
 
         this.speed = this.initialSpeed = direction.normalize().scale(initialForce)
 

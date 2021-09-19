@@ -85,7 +85,7 @@ export default class BaseEntity {
     }
 
     /**
-     * <p>Renders entity on canvas. This method handles opacity, rotation and other properties.
+     * <p>Renders entity on canvas. This method handles opacity, rotationSpeed and other properties.
      * <p>You **should not** override this method.
      * Override draw() instead.
      *

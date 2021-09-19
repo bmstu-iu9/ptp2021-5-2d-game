@@ -6,9 +6,9 @@ export {
 
 /**
  * <p>Base class for every bullet.
- * <br>**This class automatically handles its body rotation.**
- * <p>If this bullet's MovementLogic provides property "rotation" then bullet's body.rotation will
- * be set from bullet.movementLogic.rotation. Otherwise body.rotation will be set from speed vector angle.
+ * <br>**This class automatically handles its body rotationSpeed.**
+ * <p>If this bullet's MovementLogic provides property "rotationSpeed" then bullet's body.rotationSpeed will
+ * be set from bullet.movementLogic.rotationSpeed. Otherwise body.rotationSpeed will be set from speed vector angle.
  */
 class BaseBullet extends BaseEntity {
     /**
