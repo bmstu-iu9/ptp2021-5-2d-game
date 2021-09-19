@@ -7,6 +7,7 @@ import {ShootingEnemy} from "../entities/shooting_enemy.js";
 import {LaserEnemy} from "../entities/laser_enemy.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {game} from "./game.js";
+import {SpinningBoss} from "../entities/spinning_boss.js";
 
 const enemies = [
     {
@@ -19,7 +20,13 @@ const enemies = [
     },
     {
         name: 'LaserEnemy',
-        dropChance: 0.1
+        dropChance: 0.2
+    },
+];
+const bosses = [
+    {
+        name: 'SpinningBoss',
+        dropChance: 1
     },
 ];
 const boosters = [
@@ -33,7 +40,7 @@ const boosters = [
     },
     {
         name: 'orbital_shield',
-        dropChance: 0.2
+        dropChance: 0.3
     },
     {
         name: 'laser',
@@ -48,23 +55,27 @@ function rnd(min, max) {
 export default class InfinityModeManager {
     constructor() {
         this.score = 0;
-        this.enemiesTotalNum = 10
+        this.enemiesTotalNum = 3
         this.enemiesKilled = 0
         this.currentLevelIndex = 0
-        this.maxEnemyCount = 10
+        this.maxEnemyCount = 3
         this.availableEnemies = []
         this.boostersFrequency = 300
         this.framesTillNextBooster = 0
+        this.bossfight = false
     }
 
     nextLevel() {
         game.state = game.getStateNumber("STATE_BETWEEN_LEVELS")
         this.currentLevelIndex++
-        this.enemiesKilled = 0
-        if (this.maxEnemyCount < 30) {
-            this.maxEnemyCount += 5
+        if (this.currentLevelIndex % 5 === 1) {
+            this.bossfight = true
         }
-        this.enemiesTotalNum = this.maxEnemyCount
+        this.enemiesKilled = 0
+        if (this.maxEnemyCount < 30 && !this.bossfight) {
+            this.maxEnemyCount += 3
+        }
+        this.bossfight ? this.enemiesTotalNum = 1 : this.enemiesTotalNum = this.maxEnemyCount
         setTimeout(function () {
             game.state = game.getStateNumber("STATE_RUNNING");
         }, 3000)
@@ -72,7 +83,7 @@ export default class InfinityModeManager {
 
     update() {
         while (this.enemiesTotalNum > 0) {
-            name = SpawnRegulator.selector(enemies).name
+            this.bossfight ? name = SpawnRegulator.selector(bosses).name : name = SpawnRegulator.selector(enemies).name
             switch (name) {
                 case 'BaseEnemy':
                     let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
@@ -90,6 +101,13 @@ export default class InfinityModeManager {
                     this.availableEnemies.push(
                         new LaserEnemy(body2, "laser_enemy", 15, 10))
                     break
+                case 'SpinningBoss':
+                    let body4 = new Body(new Vector(game.playArea.width / 2 - 125, 20), 200, 150)
+                    let boss1 = new SpinningBoss(body4, "base_boss", 200, 10)
+
+                    this.availableEnemies.push(boss1)
+
+                    break
             }
             this.enemiesTotalNum--
         }
@@ -104,7 +122,8 @@ export default class InfinityModeManager {
 
         // Going to the next level
         console.log(this.enemiesKilled)
-        if (this.enemiesKilled === this.maxEnemyCount) {
+        if (this.enemiesKilled === this.maxEnemyCount || (this.enemiesKilled === 1 && this.bossfight)) {
+            this.bossfight = false
             if (this.score > 30000) {
                 game.gameover()
             } else {

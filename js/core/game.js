@@ -4,7 +4,7 @@ import {configureKeyWatchers} from "../player/keyboard_control.js";
 import AssetsManager from "./assets_manager.js";
 import Body from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
-import {ENTITY_STATE} from "./enums.js";
+import {ENTITY_STATE, WEAPON_TYPE} from "./enums.js";
 import Vector from "../math/vector.js";
 import {switchToMenu} from "./page.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
@@ -92,6 +92,8 @@ class Game {
 
     gameover() {
         this.state = Game.STATE_END
+        SoundManager.gameSounds("gameover")
+        this.player.changeWeapon(WEAPON_TYPE.REGULAR)
         setTimeout(function () {
             game.reset()
         }, 5000)

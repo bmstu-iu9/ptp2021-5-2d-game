@@ -78,6 +78,9 @@ export default class SoundManager extends StaticClass {
             case "explosion":
                 this.playSoundAsync(soundName)
                 break
+            case "gameover":
+                this.offSound("laser")
+                break
         }
     }
 
