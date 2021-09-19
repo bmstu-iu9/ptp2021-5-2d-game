@@ -3,8 +3,7 @@ import Body from "../physics/body.js";
 import Vector from "../math/vector.js";
 import {BaseEnemy} from "../entities/base_enemy.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
-import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {LaserEnemy} from "../entities/laser_enemy.js";
+import {HunterEnemy, LaserEnemy} from "../entities/armed_enemies.js";
 import {BaseBooster} from "../entities/base_booster.js";
 import {game} from "./game.js";
 
@@ -14,7 +13,7 @@ const enemies = [
         dropChance: 0.7
     },
     {
-        name: 'ShootingEnemy',
+        name: 'HunterEnemy',
         dropChance: 0.4
     },
     {
@@ -76,19 +75,17 @@ export default class InfinityModeManager {
             switch (name) {
                 case 'BaseEnemy':
                     let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
-                        enemy = new BaseEnemy(body, "enemy_ship", 10)
+                        enemy = new BaseEnemy(body, "base_enemy", 10)
                     enemy.movementLogic = enemy.components.add(new ConstantSpeed(new Vector(0, rnd(1, 6))))
                     this.availableEnemies.push(enemy)
                     break
-                case 'ShootingEnemy':
+                case 'HunterEnemy':
                     let body1 = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
-                    this.availableEnemies.push(
-                        new ShootingEnemy(body1, "enemy_ship", 15, 10))
+                    this.availableEnemies.push(new HunterEnemy(body1))
                     break
                 case 'LaserEnemy':
                     let body2 = new Body(new Vector(rnd(30, game.playArea.width), rnd(60, 300)), 50, 50)
-                    this.availableEnemies.push(
-                        new LaserEnemy(body2, "laser_enemy", 15, 10))
+                    this.availableEnemies.push(new LaserEnemy(body2))
                     break
             }
             this.enemiesTotalNum--
