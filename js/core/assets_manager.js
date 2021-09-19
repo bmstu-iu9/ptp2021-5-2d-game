@@ -34,7 +34,7 @@ const ASSETS_LIST = [
     ["img/dummy.png"],
     ["img/enemy_regular_bullet.png"],
     ["img/enemy_rocket.png"],
-    ["img/enemy_ship.png"],
+    ["img/base_enemy.png"],
     ["img/heal_orb.png"],
     ["img/laser_bullet.png"],
     ["img/laser_enemy.png"],
@@ -59,6 +59,10 @@ const ASSETS_LIST = [
     ["sounds/multi_shot.mp3"],
     ["sounds/shooting_enemy_shot.mp3"],
     ["sounds/spinning_boss_shot.mp3"],
+    ["img/base_enemy.png"],
+    ["img/hunter_enemy.png"],
+    ["img/laser_enemy.png"],
+    ["effects/slash_animation.png", 192, 192]
 ]
 
 /**

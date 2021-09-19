@@ -2,8 +2,7 @@ import Body from "../physics/body.js";
 import Vector from "../math/vector.js";
 import {BaseEnemy} from "../entities/base_enemy.js";
 import {ConstantSpeed} from "../components/movement_logic.js";
-import {ShootingEnemy} from "../entities/shooting_enemy.js";
-import {LaserEnemy} from "../entities/laser_enemy.js";
+import {HunterEnemy, LaserEnemy} from "../entities/armed_enemies.js";
 import {BaseBoss} from "../entities/base_boss.js";
 import {SpinningBoss} from "../entities/spinning_boss.js";
 import {BaseBooster} from "../entities/base_booster.js";
@@ -25,7 +24,7 @@ const GAME_LEVELS = [
                 ['BaseEnemy', 5]
             ],
             [
-                ['ShootingEnemy', 10]
+                ['HunterEnemy', 10]
             ]
         ],
         'default_weapon': WEAPON_TYPE.MULTI,
@@ -40,7 +39,7 @@ const GAME_LEVELS = [
                 ['BaseEnemy', 5]
             ],
             [
-                ['ShootingEnemy', 15]
+                ['HunterEnemy', 15]
             ]
         ],
         'default_weapon': WEAPON_TYPE.LASER,
@@ -93,23 +92,23 @@ export default class LevelManager {
                     case 'BaseEnemy':
                         for (let i = 0; i < amount; i++) {
                             let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
-                                enemy = new BaseEnemy(body, "enemy_ship", 10)
+                                enemy = new BaseEnemy(body, "base_enemy", 10)
                             enemy.movementLogic = enemy.components.add(new ConstantSpeed(new Vector(0, rnd(1, 6))))
                             this.availableEnemies.push(enemy)
                         }
                         break
-                    case 'ShootingEnemy':
+                    case 'HunterEnemy':
                         for (let i = 0; i < amount; i++) {
                             let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
                             this.availableEnemies.push(
-                                new ShootingEnemy(body, "enemy_ship", 15, 10))
+                                new HunterEnemy(body))
                         }
                         break
                     case 'LaserEnemy':
                         for (let i = 0; i < amount; i++) {
                             let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(60, 300)), 50, 50)
                             this.availableEnemies.push(
-                                new LaserEnemy(body, "laser_enemy", 15, 10))
+                                new LaserEnemy(body))
                         }
                         break
                 }

@@ -50,7 +50,7 @@ export const
 export const
     REWARD = {
         BASE_ENEMY: 50,
-        SHOOTING_ENEMY: 150,
+        HUNTER_ENEMY: 150,
         LASER_ENEMY: 300,
         BASE_BOSS: 500,
         SPINNING_BOSS: 1000
