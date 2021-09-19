@@ -39,6 +39,8 @@ const ASSETS_LIST = [
     ["img/laser_bullet.png"],
     ["img/laser_enemy.png"],
     ["img/laser_orb.png"],
+    ["img/orbital_shield.png"],
+    ["img/orbital_shield_orb.png"],
     ["img/shield_orb.png"],
     ["img/player_hp_bar.png"],
     ["img/player_hp_bar_back.png"],
@@ -49,6 +51,14 @@ const ASSETS_LIST = [
     ["img/player_ship.png"],
     ["img/spinning_boss_bullet.png"],
     ["img/spinning_boss.png"],
+    ["sounds/player_shot.mp3"],
+    ["sounds/laser.mp3"],
+    ["sounds/explosion.wav"],
+    ["sounds/heal.mp3"],
+    ["sounds/shield.mp3"],
+    ["sounds/multi_shot.mp3"],
+    ["sounds/shooting_enemy_shot.mp3"],
+    ["sounds/spinning_boss_shot.mp3"],
 ]
 
 /**
@@ -88,7 +98,11 @@ export default class AssetsManager extends StaticClass {
                 break
 
             case ASSET_TYPE.SOUND:
-                throw "Sounds are not supported yet. Implement if you wish :)"
+                AssetsManager.sounds[assetName] = new Audio(assetSrc)
+                AssetsManager.sounds[assetName].src = assetSrc
+                AssetsManager.sounds[assetName].volume = 0.3
+                callback()
+                break
         }
     }
 

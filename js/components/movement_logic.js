@@ -31,7 +31,9 @@ class MovementLogic extends Component {
     /**
      * Here the new speed should should be calculated.
      */
-    preUpdate() {super.preUpdate();}
+    preUpdate() {
+        super.preUpdate();
+    }
 
     /**
      * Apply speed to body (recalculate position).
@@ -46,7 +48,9 @@ class MovementLogic extends Component {
     /**
      *
      */
-    postUpdate() {super.postUpdate();}
+    postUpdate() {
+        super.postUpdate();
+    }
 
     /**
      * <p>Prevent Entity from leaving the screen.

@@ -3,6 +3,7 @@ import {game} from "../core/game.js";
 import {RandomSpin} from "../components/movement_logic.js";
 import {SpinningBossBullet} from "./enemy_bullets.js";
 import {REWARD, SPINNING_BOSS_FIRE_RATE} from "../core/game_constants.js";
+import SoundManager from "../core/sound_manager.js";
 
 export {
     SpinningBoss
@@ -23,6 +24,8 @@ class SpinningBoss extends BaseBoss {
         if (this.fireState === SPINNING_BOSS_FIRE_RATE) {
             this.fireState = 0
             game.gameObjects.push(new SpinningBossBullet(this))
+
+            SoundManager.enemySounds("spinning_boss_shot")
         }
     }
 }

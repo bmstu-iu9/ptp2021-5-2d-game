@@ -4,6 +4,7 @@ import {EnemyHauntingBullet} from "./enemy_bullets.js";
 import {BounceHorizontally} from "../components/movement_logic.js";
 import Vector from "../math/vector.js";
 import {REWARD} from "../core/game_constants.js";
+import SoundManager from "../core/sound_manager.js";
 
 export {ShootingEnemy}
 
@@ -23,6 +24,8 @@ class ShootingEnemy extends BaseEnemy {
             this.fireState = 0
             let bull = new EnemyHauntingBullet(new Vector(this.body.centerX, this.body.centerY))
             game.gameObjects.push(bull)
+
+            SoundManager.enemySounds("shooting_enemy_shot")
         }
     }
 }

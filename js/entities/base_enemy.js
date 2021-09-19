@@ -27,6 +27,10 @@ class BaseEnemy extends BaseEntity {
         return new ExplosionEffect(this, "explosion_orange", 500, 2)
     }
 
+    get destructionSoundName() {
+        return "explosion"
+    }
+
     receiveDamage(amount) {
         this.health -= amount
         if (this.health <= 0) {

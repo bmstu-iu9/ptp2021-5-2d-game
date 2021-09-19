@@ -8,6 +8,7 @@ import Vector from "../math/vector.js";
 import {KeyboardControl} from "../components/movement_logic.js";
 import {HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
+import SoundManager from "../core/sound_manager.js";
 import {FlameRender} from "../components/flame_render.js";
 
 /**
@@ -40,6 +41,8 @@ export class Player extends BaseEntity {
 
         this.shield = new Shield(this)
         game.gameObjects.push(this.shield)
+
+        SoundManager.playerSounds("shield")
     }
 
     receiveDamage(damageAmount) {
@@ -56,6 +59,8 @@ export class Player extends BaseEntity {
     heal(healAmount) {
         this.health = Math.min(this.health + healAmount, PLAYER.MAX_HEALTH)
         game.gameObjects.push(new HealEffect(this))
+
+        SoundManager.playerSounds("heal")
     }
 
     changeWeapon(weaponType, permanent = false) {
@@ -77,6 +82,7 @@ export class Player extends BaseEntity {
                 this.currentWeaponType = WEAPON_TYPE.LASER
                 this.fireBoosterDuration = PLAYER.POWERUPS.DURATION
                 game.gameObjects.push(new PlayerLaser(this.body.pos))
+                SoundManager.playerSounds("laser")
 
                 break
             case WEAPON_TYPE.ORBITAL_SHIELD:
@@ -95,6 +101,7 @@ export class Player extends BaseEntity {
                 game.gameObjects.push(
                     new SimplePlayerBullet(bulletBody, "player_regular_bullet", bulletSpeed))
 
+                SoundManager.playerSounds("player_shot")
                 break
 
             case WEAPON_TYPE.MULTI:
@@ -108,6 +115,7 @@ export class Player extends BaseEntity {
                         new SimplePlayerBullet(bulletBody, "player_multi_bullet", bulletSpeed, 1.5))
                 }
 
+                SoundManager.playerSounds("multi_shot")
                 break
 
             case WEAPON_TYPE.LASER:

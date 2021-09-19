@@ -49,6 +49,10 @@ export default class BaseEntity {
         return null
     }
 
+    get destructionSoundName() {
+        return null
+    }
+
     get opacity() {
         return this._opacity
     }

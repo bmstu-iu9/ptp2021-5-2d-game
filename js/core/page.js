@@ -45,7 +45,13 @@ function setCurrentPage(id, transitionDuration = 600) {
 
         let lastAnimation
         if (!currentPage || !currentPage.children) {
-            lastAnimation = {finished: {then: (f) => {f()}}}
+            lastAnimation = {
+                finished: {
+                    then: (f) => {
+                        f()
+                    }
+                }
+            }
         } else {
             Array.from(currentPage.children).forEach(function (child, index) {
                 child.style.left = ''
@@ -80,7 +86,7 @@ function setCurrentPage(id, transitionDuration = 600) {
 /**
  * Fade out menu and transition to menu.
  */
-function switchToGame() {
+function switchToGame(typeOfGame) {
     setCurrentPage(null).then(function () {
         let pagesElement = document.getElementById('pages'),
             playerElement = document.getElementById('player'),
@@ -105,7 +111,7 @@ function switchToGame() {
             {width: '0', height: '0', top: '50%', left: '50%'},
         ], {duration: transitionDuration - 500, delay: 500, easing: 'ease-in'}).finished.then(() => {
             pagesElement.style.display = 'none'
-            game.start()
+            game.start(typeOfGame)
         })
     })
 }
