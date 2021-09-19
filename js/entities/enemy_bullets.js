@@ -63,7 +63,7 @@ class EnemyLaserBullet extends EnemyBullet {
 
 /**
  * <p>Bullet fired by {@link SpinningBoss}.
- * <p>Just a simple bullet with constant speed, which is fired with respect to Boss's rotation.
+ * <p>Just a simple bullet with constant speed, which is fired with respect to Boss's rotationSpeed.
  */
 class SpinningBossBullet extends EnemyBullet {
     static SPEED = 12
