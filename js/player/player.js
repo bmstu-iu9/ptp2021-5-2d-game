@@ -6,7 +6,7 @@ import {PLAYER} from "../core/game_constants.js";
 import {ENTITY_STATE, WEAPON_TYPE} from "../core/enums.js";
 import Vector from "../math/vector.js";
 import {KeyboardControl} from "../components/movement_logic.js";
-import {HealEffect} from "../entities/effects.js";
+import {ExplosionEffect, HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
 import SoundManager from "../core/sound_manager.js";
 import {FlameRender} from "../components/flame_render.js";
@@ -31,6 +31,10 @@ export class Player extends BaseEntity {
         this.fireBoosterDuration = 0
         this.currentWeaponType = WEAPON_TYPE.REGULAR
         this.defaultWeaponType = WEAPON_TYPE.REGULAR
+    }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_orange', 1800, 2)
     }
 
     applyShield() {

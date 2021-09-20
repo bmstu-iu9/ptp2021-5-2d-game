@@ -8,6 +8,7 @@ import Lifetime from "../components/lifetime.js";
 import {BaseBoss} from "./base_boss.js";
 import {PLAYER} from "../core/game_constants.js";
 import {WEAPON_TYPE} from "../core/enums.js";
+import {ExplosionEffect} from "./effects.js";
 
 export {PlayerBullet, SimplePlayerBullet, PlayerLaser, PlayerOrbitalShield}
 
@@ -31,6 +32,10 @@ class PlayerBullet extends BaseBullet {
 class SimplePlayerBullet extends PlayerBullet {
     constructor(body, atlasName, speed, damage) {
         super(body, atlasName, new ConstantSpeed(speed), damage)
+    }
+
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_blue', 500, 0.75)
     }
 }
 
