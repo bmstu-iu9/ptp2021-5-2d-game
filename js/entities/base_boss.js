@@ -22,7 +22,7 @@ class BaseBoss extends BaseEnemy {
     }
 
     get destructionEffect() {
-        return new ExplosionEffect(this, 'explosion_boss', 1200, 1.2)
+        return new ExplosionEffect(this, 'explosion_boss', 1800, 1.5)
     }
 
     drawHpBar(ctx) {

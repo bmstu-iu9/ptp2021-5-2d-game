@@ -60,8 +60,6 @@ class BaseTargetedEffect extends BaseEffect {
         this.movementLogic = this.components.add(
             new ClipToTarget(target, ClipToTarget.MODE_CENTER, ClipToTarget.MODE_CENTER))
         this.target = target
-        this.target.onDestroyed.addListener(function () {
-            this.destroy()
-        }, this)
+        this.target.onDestroyed.addListener(function () {this.destroy() }, this)
     }
 }

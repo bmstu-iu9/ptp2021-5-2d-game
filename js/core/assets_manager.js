@@ -21,7 +21,8 @@ const ASSET_TYPE = Object.freeze({
  */
 const ASSETS_LIST = [
     ["effects/explosion_boss.png", 192, 192],
-    ["effects/explosion_orange.png", 100, 100],
+    ["effects/explosion_orange.png", 192, 192],
+    ["effects/laser.png", 512, 128],
     ["effects/explosion_purple.png", 100, 100],
     ["effects/heal_animation.png", 192, 192],
     ["effects/lightning_animation.png", 128, 512],
@@ -62,7 +63,8 @@ const ASSETS_LIST = [
     ["img/base_enemy.png"],
     ["img/hunter_enemy.png"],
     ["img/laser_enemy.png"],
-    ["effects/slash_animation.png", 192, 192]
+    ["effects/slash_animation.png", 192, 192],
+    ["effects/explosion_blue.png", 100, 100]
 ]
 
 /**

@@ -24,7 +24,7 @@ class BaseEnemy extends BaseEntity {
     }
 
     get destructionEffect() {
-        return new ExplosionEffect(this, "explosion_orange", 500, 2)
+        return new ExplosionEffect(this, "explosion_orange", 1200, 2)
     }
 
     get destructionSoundName() {
