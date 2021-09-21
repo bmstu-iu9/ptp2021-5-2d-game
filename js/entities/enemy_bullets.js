@@ -72,7 +72,7 @@ class SpinningBossBullet extends EnemyBullet {
     constructor(boss) {
         let angle = boss.body.rotation + Math.PI / 2,
             direction = new Vector(Math.cos(angle), Math.sin(angle)),
-            adjustedPos = boss.body.center.add(direction.clone().scale(boss.body.width / 2)),
+            adjustedPos = boss.body.center.add(direction.clone().scale(boss.body.width * 0.4)),
             speedVector = direction.clone().scale(SpinningBossBullet.SPEED)
 
         super(new Body(adjustedPos, 30, 60), "spinning_boss_bullet",

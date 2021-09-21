@@ -72,7 +72,7 @@ export default class PlayerSatisfactionModule {
         }
 
         // Many enemies -> give weapon to eliminate them
-        if ((this.manager.enemiesActive < 10 || this.additionalMultiCooldown < -BALANCE.ADDITIONAL_MULTI_COOLDOWN) &&
+        if ((this.manager.enemiesActive > 10 || this.additionalMultiCooldown < -BALANCE.ADDITIONAL_MULTI_COOLDOWN) &&
             player.currentWeaponType !== WEAPON_TYPE.MULTI &&
             player.currentWeaponType !== WEAPON_TYPE.LASER &&
             this.additionalMultiCooldown < 0
