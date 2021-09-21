@@ -1,5 +1,5 @@
 import Signal from "../core/signal.js";
-import Clock from "../core/clock.js";
+import Clock from "../util/clock.js";
 
 /**
  * An Animation contains info about single animation that is played using AnimationManager.

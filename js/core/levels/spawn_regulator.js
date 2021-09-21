@@ -1,4 +1,4 @@
-import StaticClass from "../util/static_class.js";
+import StaticClass from "../../util/static_class.js";
 
 /*
     Selects a set item according to the item's drop chances

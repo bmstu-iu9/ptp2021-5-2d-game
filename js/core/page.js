@@ -1,4 +1,5 @@
 import {game} from "./game.js"
+import {GAME_STATE} from "./enums.js";
 
 export {setCurrentPage, switchToGame, switchToMenu}
 
@@ -149,7 +150,7 @@ function switchToMenu() {
  * @param ev {KeyboardEvent} a KeyboardEvent passed by "`keydown`" event
  */
 function menuKeyboardControl(ev) {
-    if (game.state !== 1)
+    if (game.state !== GAME_STATE.MENU)
         return
 
     let currentButton = document.querySelector('.page.active > .page-item.active'),

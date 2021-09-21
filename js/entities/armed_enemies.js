@@ -12,6 +12,9 @@ export {
     LaserEnemy
 }
 
+/**
+ * Base class for every enemy which fires bullets.
+ */
 class ArmedEnemy extends BaseEnemy {
     constructor(body, atlasName, health, damage = 0, fireRate, reward = REWARD.HUNTER_ENEMY) {
         super(body, atlasName, health, damage, reward)
@@ -20,6 +23,9 @@ class ArmedEnemy extends BaseEnemy {
         this.fireState = 0
     }
 
+    /**
+     * Spawn this Enemy's bullet.
+     */
     fire() {
         throw "Not implemented!"
     }

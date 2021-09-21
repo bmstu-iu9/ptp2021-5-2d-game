@@ -1,10 +1,10 @@
 import {BaseBullet} from "./base_bullet.js";
-import {game} from "../core/game.js";
 import Body from "../physics/body.js";
 import {ConstantSpeed, FollowTarget, MoveTowards} from "../components/movement_logic.js";
 import Lifetime from "../components/lifetime.js";
 import {ExplosionEffect} from "./effects.js";
 import Vector from "../math/vector.js";
+import Shared from "../util/shared.js";
 
 export {EnemyBullet, EnemyHauntingBullet, EnemyLaserBullet, SpinningBossBullet}
 
@@ -38,7 +38,7 @@ class EnemyHauntingBullet extends EnemyBullet {
      */
     constructor(pos) {
         let body = new Body(pos, 50, 20)
-        super(body, "enemy_rocket", new FollowTarget(game.player), 10)
+        super(body, "enemy_rocket", new FollowTarget(Shared.player), 10)
         this.lifetime = this.components.add(new Lifetime(EnemyHauntingBullet.DURATION))
     }
 
@@ -57,7 +57,7 @@ class EnemyLaserBullet extends EnemyBullet {
      */
     constructor(pos) {
         let body = new Body(pos, 60, 30)
-        super(body, "laser_bullet", new MoveTowards(game.player, 9.5), 50)
+        super(body, "laser_bullet", new MoveTowards(Shared.player, 9.5), 50)
     }
 }
 
@@ -72,7 +72,7 @@ class SpinningBossBullet extends EnemyBullet {
     constructor(boss) {
         let angle = boss.body.rotation + Math.PI / 2,
             direction = new Vector(Math.cos(angle), Math.sin(angle)),
-            adjustedPos = boss.body.center.add(direction.clone().scale(boss.body.width / 2)),
+            adjustedPos = boss.body.center.add(direction.clone().scale(boss.body.width * 0.4)),
             speedVector = direction.clone().scale(SpinningBossBullet.SPEED)
 
         super(new Body(adjustedPos, 30, 60), "spinning_boss_bullet",
