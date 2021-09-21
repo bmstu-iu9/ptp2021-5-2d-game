@@ -10,54 +10,58 @@ import {game} from "./game.js";
 import {WEAPON_TYPE} from "./enums.js";
 
 const GAME_LEVELS = [
+
+    {
+        'waves': [
+            [
+                ['BaseEnemy', 6]
+            ],
+            [
+                ['HunterEnemy', 4]
+            ],
+            [
+                ['LaserEnemy', 4]
+            ]
+        ],
+        'default_weapon': WEAPON_TYPE.REGULAR,
+        'boss': null,
+        'boostersFrequency': 200,
+        'allowedBooster': ['heal', 'laser', 'shield', 'orbital_shield'],
+    },
+
+    {
+        'waves': [
+            [
+                ['BaseEnemy', 5], ['HunterEnemy', 6]
+            ],
+            [
+                ['BaseEnemy', 10], ['LaserEnemy', 5]
+            ]
+        ],
+        'default_weapon': WEAPON_TYPE.MULTI,
+        'boss': null,
+        'boostersFrequency': 300,
+        'allowedBooster': ['heal', 'laser', 'shield', 'orbital_shield'],
+    },
+
+    {
+        'waves': [
+            [
+                ['BaseEnemy', 100]
+            ]
+        ],
+        'default_weapon': WEAPON_TYPE.LASER,
+        'boss': null,
+        'boostersFrequency': 200,
+        'allowedBooster': ['heal', 'shield', 'orbital_shield'],
+    },
+
     {
         'waves': [],
         'default_weapon': WEAPON_TYPE.REGULAR,
         'boss': 'SpinningBoss',
         'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'shield'],
-    },
-
-    {
-        'waves': [
-            [
-                ['BaseEnemy', 5]
-            ],
-            [
-                ['HunterEnemy', 10]
-            ]
-        ],
-        'default_weapon': WEAPON_TYPE.MULTI,
-        'boss': null,
-        'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'shield'],
-    },
-
-    {
-        'waves': [
-            [
-                ['BaseEnemy', 5]
-            ],
-            [
-                ['HunterEnemy', 15]
-            ]
-        ],
-        'default_weapon': WEAPON_TYPE.LASER,
-        'boss': null,
-        'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'shield'],
-    },
-
-    {
-        'waves': [
-            [
-                ['BaseEnemy', 30]
-            ]
-        ],
-        'default_weapon': WEAPON_TYPE.MULTI,
-        'boss': null,
-        'boostersFrequency': 300,
-        'allowedBooster': ['heal', 'laser', 'shield'],
+        'allowedBooster': ['heal', 'laser', 'shield', 'orbital_shield'],
     },
 
 ]
@@ -85,13 +89,13 @@ export default class LevelManager {
     update() {
 
         // Push enemies from waves
-        if (this.availableEnemies.length === 0 && this.currentWave < this.currentLevel.waves.length) {
+        if (this.enemiesKilled === this.enemiesTotalNum && this.currentWave < this.currentLevel.waves.length) {
             for (let [name, amount] of this.currentLevel.waves[this.currentWave]) {
                 this.enemiesTotalNum += amount
                 switch (name) {
                     case 'BaseEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
+                            let body = new Body(new Vector(rnd(30, game.playArea.width-30), 0), 50, 50),
                                 enemy = new BaseEnemy(body, "base_enemy", 10)
                             enemy.movementLogic = enemy.components.add(new ConstantSpeed(new Vector(0, rnd(1, 6))))
                             this.availableEnemies.push(enemy)
@@ -99,14 +103,14 @@ export default class LevelManager {
                         break
                     case 'HunterEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
+                            let body = new Body(new Vector(rnd(30, game.playArea.width-30), rnd(100, 400)), 50, 50)
                             this.availableEnemies.push(
                                 new HunterEnemy(body))
                         }
                         break
                     case 'LaserEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(60, 300)), 50, 50)
+                            let body = new Body(new Vector(rnd(30, game.playArea.width-30), rnd(60, 300)), 50, 50)
                             this.availableEnemies.push(
                                 new LaserEnemy(body))
                         }
