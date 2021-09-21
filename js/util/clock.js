@@ -1,4 +1,4 @@
-import StaticClass from "../util/static_class.js";
+import StaticClass from "./static_class.js";
 
 /**
  * <p>A time management class for the Game.

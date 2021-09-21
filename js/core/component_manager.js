@@ -67,10 +67,12 @@ export default class ComponentManager {
      * @param duration {Number} the period of time after which the replaced component will be put back (in
      * milliseconds). If set to 0, then the replaced component will be put back only when the new component is
      * destroyed.
+     *
+     * @returns {Component} the Component that has been addded
      */
     replaceComponent(name, other, duration = 0) {
         if (this._components[name] === undefined)
-            return
+            return this.add(other)
 
         this._components[name].isActive = false
         this.add(other)
@@ -84,6 +86,8 @@ export default class ComponentManager {
             setTimeout(reversalFn, duration)
         else
             other.onDestroy.addListener(reversalFn)
+
+        return other
     }
 
     removeComponentByName(name) {

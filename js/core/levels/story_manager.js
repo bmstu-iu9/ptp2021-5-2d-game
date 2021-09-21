@@ -1,13 +1,15 @@
-import Body from "../physics/body.js";
-import Vector from "../math/vector.js";
-import {BaseEnemy} from "../entities/base_enemy.js";
-import {ConstantSpeed} from "../components/movement_logic.js";
-import {HunterEnemy, LaserEnemy} from "../entities/armed_enemies.js";
-import {BaseBoss} from "../entities/base_boss.js";
-import {SpinningBoss} from "../entities/spinning_boss.js";
-import {BaseBooster} from "../entities/base_booster.js";
-import {game} from "./game.js";
-import {WEAPON_TYPE} from "./enums.js";
+import Body from "../../physics/body.js";
+import Vector from "../../math/vector.js";
+import {BaseEnemy} from "../../entities/base_enemy.js";
+import {ConstantSpeed} from "../../components/movement_logic.js";
+import {HunterEnemy, LaserEnemy} from "../../entities/armed_enemies.js";
+import {BaseBoss} from "../../entities/base_boss.js";
+import {SpinningBoss} from "../../entities/spinning_boss.js";
+import {BaseBooster} from "../../entities/base_booster.js";
+import {game} from "../game.js";
+import {GAME_STATE, WEAPON_TYPE} from "../enums.js";
+import Shared from "../../util/shared.js";
+import Chance from "../../util/chance.js";
 
 const GAME_LEVELS = [
     {
@@ -62,10 +64,6 @@ const GAME_LEVELS = [
 
 ]
 
-function rnd(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 export default class LevelManager {
     constructor(index) {
         this.currentLevelIndex = index
@@ -77,7 +75,7 @@ export default class LevelManager {
         this.bossPushed = false
         this.enemiesKilled = 0
         this.availableEnemies = []
-        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
+        Shared.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
 
     }
 
@@ -91,22 +89,27 @@ export default class LevelManager {
                 switch (name) {
                     case 'BaseEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50),
+                            let body = new Body(new Vector(), 50, 50),
                                 enemy = new BaseEnemy(body, "base_enemy", 10)
-                            enemy.movementLogic = enemy.components.add(new ConstantSpeed(new Vector(0, rnd(1, 6))))
+                            enemy.movementLogic = enemy.components.add(
+                                new ConstantSpeed(new Vector(0, Chance.randomRange(1, 6))))
                             this.availableEnemies.push(enemy)
                         }
                         break
                     case 'HunterEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(100, 400)), 50, 50)
+                            let body = new Body(
+                                new Vector(Chance.randomRange(30, Shared.gameWidth), Chance.randomRange(100, 400)), 50,
+                                50)
                             this.availableEnemies.push(
                                 new HunterEnemy(body))
                         }
                         break
                     case 'LaserEnemy':
                         for (let i = 0; i < amount; i++) {
-                            let body = new Body(new Vector(rnd(30, game.playArea.width), rnd(60, 300)), 50, 50)
+                            let body = new Body(
+                                new Vector(Chance.randomRange(30, Shared.gameWidth), Chance.randomRange(60, 300)), 50,
+                                50)
                             this.availableEnemies.push(
                                 new LaserEnemy(body))
                         }
@@ -125,14 +128,14 @@ export default class LevelManager {
 
             switch (this.currentLevel.boss) {
                 case 'BaseBoss':
-                    body = new Body(new Vector(game.playArea.width / 2 - 100, 20), 200, 150)
+                    body = new Body(new Vector(Shared.gameWidth / 2 - 100, 20), 200, 150)
                     boss = new BaseBoss(body, "base_boss", 200, 10)
 
                     this.availableEnemies.push(boss)
 
                     break
                 case 'SpinningBoss':
-                    body = new Body(new Vector(game.playArea.width / 2 - 125, 20), 200, 150)
+                    body = new Body(new Vector(Shared.gameWidth / 2 - 125, 20), 200, 150)
                     boss = new SpinningBoss(body, "base_boss", 200, 10)
 
                     this.availableEnemies.push(boss)
@@ -145,10 +148,10 @@ export default class LevelManager {
 
 
         // Push boosters
-        if (this.framesTillNextBooster === 0 && game.state === game.getStateNumber("STATE_RUNNING")) {
+        if (this.framesTillNextBooster === 0 && game.state === GAME_STATE.RUNNING) {
             let boostName = GAME_LEVELS[this.currentLevelIndex].allowedBooster[Math.floor(
                 Math.random() * GAME_LEVELS[this.currentLevelIndex].allowedBooster.length)];
-            let body = new Body(new Vector(rnd(30, game.playArea.width), 0), 50, 50)
+            let body = new Body(new Vector(Chance.randomRange(30, Shared.gameWidth), 0), 50, 50)
             game.gameObjects.push(new BaseBooster(body, boostName + "_orb", boostName))
             this.framesTillNextBooster = this.currentLevel.boostersFrequency
         }
@@ -165,21 +168,21 @@ export default class LevelManager {
 
 
         // Spawn enemies
-        if (rnd(1, 100) > 95 && this.availableEnemies.length > 0 && game.state === game.getStateNumber("STATE_RUNNING")) {
+        if (Chance.oneIn(20) && this.availableEnemies.length > 0 && game.state === GAME_STATE.RUNNING) {
             game.gameObjects.push(this.availableEnemies.shift())
         }
     }
 
     nextLevel() {
-        game.state = game.getStateNumber("STATE_BETWEEN_LEVELS")
+        game.state = GAME_STATE.BETWEEN_LEVELS
         this.currentLevel = GAME_LEVELS[++this.currentLevelIndex]
         this.currentWave = 0
         this.enemiesTotalNum = 0
         this.enemiesKilled = 0
         this.bossPushed = false
-        game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
+        Shared.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
         setTimeout(function () {
-            game.state = game.getStateNumber("STATE_RUNNING");
+            game.state = GAME_STATE.RUNNING;
         }, 3000)
     }
 }

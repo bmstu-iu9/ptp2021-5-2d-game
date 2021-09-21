@@ -14,4 +14,11 @@ export const
         ACTIVE: 0,
         UNDER_FIRE: 1,
         DESTROYED: 13
+    }),
+    GAME_STATE = Object.freeze({
+        LOADING: 0,
+        MENU: 1,
+        RUNNING: 2,
+        BETWEEN_LEVELS: 3,
+        END: 4
     })

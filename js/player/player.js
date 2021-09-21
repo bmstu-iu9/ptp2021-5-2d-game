@@ -3,13 +3,15 @@ import BaseEntity from "../entities/base_entity.js";
 import Body from "../physics/body.js"
 import {PlayerLaser, PlayerOrbitalShield, SimplePlayerBullet} from "../entities/player_bullets.js";
 import {PLAYER} from "../core/game_constants.js";
-import {ENTITY_STATE, WEAPON_TYPE} from "../core/enums.js";
+import {ENTITY_STATE, GAME_STATE, WEAPON_TYPE} from "../core/enums.js";
 import Vector from "../math/vector.js";
 import {KeyboardControl} from "../components/movement_logic.js";
 import {ExplosionEffect, HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
 import SoundManager from "../core/sound_manager.js";
 import {FlameRender} from "../components/flame_render.js";
+import Shared from "../util/shared.js";
+import Signal from "../core/signal.js";
 
 /**
  * Represents, well, player :D
@@ -18,8 +20,8 @@ export class Player extends BaseEntity {
     shield
 
     constructor() {
-        let initialPos = new Vector((game.playArea.width - PLAYER.DIMENSIONS) / 2,
-            (game.playArea.height - PLAYER.DIMENSIONS) / 2)
+        let initialPos = new Vector((Shared.gameWidth - PLAYER.DIMENSIONS) / 2,
+            (Shared.gameHeight - PLAYER.DIMENSIONS) / 2)
         super(new Body(initialPos, PLAYER.DIMENSIONS, PLAYER.DIMENSIONS), "player_ship")
         this.components.add(new FlameRender("thrust_animation"))
 
@@ -31,6 +33,7 @@ export class Player extends BaseEntity {
         this.fireBoosterDuration = 0
         this.currentWeaponType = WEAPON_TYPE.REGULAR
         this.defaultWeaponType = WEAPON_TYPE.REGULAR
+        this.onWeaponChanged = new Signal()
     }
 
     get destructionEffect() {
@@ -68,9 +71,11 @@ export class Player extends BaseEntity {
     }
 
     changeWeapon(weaponType, permanent = false) {
-        if (permanent) {
+        this.onWeaponChanged.dispatch(weaponType)
+
+        if (permanent)
             this.defaultWeaponType = weaponType
-        }
+
         switch (weaponType) {
             case WEAPON_TYPE.REGULAR:
                 this.currentWeaponType = WEAPON_TYPE.REGULAR
@@ -95,6 +100,9 @@ export class Player extends BaseEntity {
     }
 
     fire() {
+        if (game.state === GAME_STATE.BETWEEN_LEVELS)
+            return
+
         switch (this.currentWeaponType) {
             case WEAPON_TYPE.REGULAR:
                 let bx = this.body.centerX - PLAYER.BULLET.WIDTH / 2,
