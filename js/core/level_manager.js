@@ -77,6 +77,7 @@ export default class LevelManager {
         this.enemiesTotalNum = 0
         this.bossPushed = false
         this.enemiesKilled = 0
+        this.enemiesDestroyed = 0
         this.availableEnemies = []
         game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
 
@@ -157,7 +158,7 @@ export default class LevelManager {
 
 
         // Going to the next level
-        if (this.enemiesKilled === this.enemiesTotalNum) {
+        if (this.enemiesDestroyed === this.enemiesTotalNum) {
             if (this.currentLevelIndex + 1 < GAME_LEVELS.length)
                 this.nextLevel()
             else
@@ -177,6 +178,7 @@ export default class LevelManager {
         this.currentWave = 0
         this.enemiesTotalNum = 0
         this.enemiesKilled = 0
+        this.enemiesDestroyed = 0
         this.bossPushed = false
         game.player.changeWeapon(GAME_LEVELS[this.currentLevelIndex].default_weapon, true)
         setTimeout(function () {

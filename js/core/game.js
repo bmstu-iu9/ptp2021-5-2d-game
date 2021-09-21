@@ -4,7 +4,7 @@ import {configureKeyWatchers} from "../player/keyboard_control.js";
 import AssetsManager from "./assets_manager.js";
 import Body from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
-import {ENTITY_STATE, WEAPON_TYPE} from "./enums.js";
+import {ENTITY_STATE, WEAPON_TYPE, DESTRUCTION_REASONS} from "./enums.js";
 import Vector from "../math/vector.js";
 import {switchToMenu} from "./page.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
@@ -174,7 +174,7 @@ class Game {
         // Destroy entities which left the screen
         for (let obj of this.gameObjects) {
             if (!obj.body.collidesWith(this.playArea) && !(obj instanceof PlayerOrbitalShield))
-                obj.destroy()
+                obj.destroy(DESTRUCTION_REASONS.OUT_OF_BOUNDS)
         }
 
         this.processCollisions()
@@ -184,15 +184,18 @@ class Game {
             if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
                 let destructionEffect = this.gameObjects[i].destructionEffect
                 let destructionSoundName = this.gameObjects[i].destructionSoundName
+                let destructionReason = this.gameObjects[i].destructionReason
 
-                if (destructionEffect !== null)
+                if (destructionEffect !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
                     this.gameObjects.push(destructionEffect)
 
-                if (destructionSoundName !== null) {
+                if (destructionSoundName !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS) {
                     SoundManager.gameSounds(destructionSoundName)
                 }
-
-                if (this.gameObjects[i] instanceof BaseEnemy) {
+                if (this.gameObjects[i] instanceof BaseEnemy){
+                    this.gameModeManager.enemiesDestroyed++
+                }
+                if (this.gameObjects[i] instanceof BaseEnemy && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS) {
                     this.gameModeManager.enemiesKilled++
                     this.gameModeManager.score += this.gameObjects[i].reward
                 }

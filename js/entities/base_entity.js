@@ -1,4 +1,4 @@
-import {ENTITY_STATE} from "../core/enums.js";
+import {ENTITY_STATE, DESTRUCTION_REASONS} from "../core/enums.js";
 import AnimationManager from "../components/animation_manager.js";
 import ComponentManager from "../core/component_manager.js";
 import Signal from "../core/signal.js";
@@ -22,6 +22,7 @@ export default class BaseEntity {
 
         this.components = new ComponentManager(this)
         this.onDestroyed = new Signal()
+        this.destructionReason = DESTRUCTION_REASONS.UNDEFINED
 
         this.atlas = AssetsManager.textures[atlasName]
         this.cellIndex = this.atlas.cellIndex
@@ -119,7 +120,9 @@ export default class BaseEntity {
      *
      * <p>You should not override this method.
      */
-    destroy() {
+    destroy(destructionReason) {
+        if (destructionReason !== null)
+            this.destructionReason = destructionReason
         this.state = ENTITY_STATE.DESTROYED
         this.onDestroyed.dispatch()
     }

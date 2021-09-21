@@ -4,7 +4,7 @@ import {PLAYER} from "../core/game_constants.js";
 import {EnemyBullet} from "../entities/enemy_bullets.js";
 import {PlayerBullet, PlayerOrbitalShield} from "../entities/player_bullets.js";
 import {BaseBooster} from "../entities/base_booster.js";
-import {WEAPON_TYPE} from "../core/enums.js";
+import {WEAPON_TYPE, DESTRUCTION_REASONS} from "../core/enums.js";
 import {Force} from "../components/movement_logic.js";
 import {BaseBoss} from "../entities/base_boss.js";
 import Shield from "../entities/shield.js";
@@ -85,7 +85,7 @@ const collisionRules = [
     }),
     new CollisionRule(isPlayer, isEnemy, function (player, enemy) {
         player.receiveDamage(enemy.damage * 2 || PLAYER.COLLISION_DAMAGE)
-        enemy.destroy()
+        enemy.destroy(DESTRUCTION_REASONS.DESTROYED_BY_PLAYER)
     }),
     new CollisionRule(isPlayerBullet, isEnemy, function (myBullet, enemy) {
         myBullet.hit(enemy)

@@ -14,4 +14,10 @@ export const
         ACTIVE: 0,
         UNDER_FIRE: 1,
         DESTROYED: 13
+    }),
+    DESTRUCTION_REASONS = Object.freeze({
+        DESTROYED_BY_PLAYER: 0,
+        OUT_OF_BOUNDS: 1,
+        LIFETIME_ENDED: 2,
+        UNDEFINED: 3
     })

@@ -1,4 +1,5 @@
 import Component from "../core/component.js";
+import {DESTRUCTION_REASONS} from "../core/enums.js";
 
 export default class Lifetime extends Component {
     constructor(lifetime) {
@@ -8,6 +9,6 @@ export default class Lifetime extends Component {
 
     update() {
         if (--this.remaining <= 0)
-            this.owner.destroy()
+            this.owner.destroy(DESTRUCTION_REASONS.LIFETIME_ENDED)
     }
 }

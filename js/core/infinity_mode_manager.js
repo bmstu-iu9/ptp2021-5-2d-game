@@ -12,11 +12,11 @@ import {SpinningBoss} from "../entities/spinning_boss.js";
 const enemies = [
     {
         name: 'BaseEnemy',
-        dropChance: 0.7
+        dropChance: 0.5
     },
     {
         name: 'ShootingEnemy',
-        dropChance: 0.4
+        dropChance: 0.3
     },
     {
         name: 'LaserEnemy',
@@ -32,11 +32,11 @@ const bosses = [
 const boosters = [
     {
         name: 'heal',
-        dropChance: 0.7
+        dropChance: 0.5
     },
     {
         name: 'shield',
-        dropChance: 0.2
+        dropChance: 0.1
     },
     {
         name: 'orbital_shield',
@@ -55,25 +55,31 @@ function rnd(min, max) {
 export default class InfinityModeManager {
     constructor() {
         this.score = 0;
-        this.enemiesTotalNum = 3
+        this.enemiesTotalNum = 5
         this.enemiesKilled = 0
+        this.enemiesDestroyed = 0
         this.currentLevelIndex = 0
-        this.maxEnemyCount = 3
+        this.maxEnemyCount = 5
         this.availableEnemies = []
         this.boostersFrequency = 300
-        this.framesTillNextBooster = 0
+        this.framesTillNextBooster = 300
         this.bossfight = false
     }
 
     nextLevel() {
         game.state = game.getStateNumber("STATE_BETWEEN_LEVELS")
         this.currentLevelIndex++
-        if (this.currentLevelIndex % 5 === 1) {
+        if (this.currentLevelIndex % 5 === 4) {
             this.bossfight = true
         }
         this.enemiesKilled = 0
-        if (this.maxEnemyCount < 30 && !this.bossfight) {
-            this.maxEnemyCount += 3
+        this.enemiesDestroyed = 0
+
+        if (this.maxEnemyCount < 60 && !this.bossfight) {
+            this.maxEnemyCount += 5
+        }
+        if (this.boostersFrequency > 100 && !this.bossfight) {
+            this.boostersFrequency -= 10
         }
         this.bossfight ? this.enemiesTotalNum = 1 : this.enemiesTotalNum = this.maxEnemyCount
         setTimeout(function () {
@@ -122,7 +128,7 @@ export default class InfinityModeManager {
 
         // Going to the next level
         console.log(this.enemiesKilled)
-        if (this.enemiesKilled === this.maxEnemyCount || (this.enemiesKilled === 1 && this.bossfight)) {
+        if (this.enemiesDestroyed === this.maxEnemyCount || (this.enemiesDestroyed === 1 && this.bossfight)) {
             this.bossfight = false
             if (this.score > 30000) {
                 game.gameover()
