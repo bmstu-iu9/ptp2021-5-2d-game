@@ -31,6 +31,11 @@ class BaseEnemy extends BaseEntity {
         return "explosion"
     }
 
+    /**
+     * Reduce this enemy's health by given amount.
+     *
+     * @param amount {Number} amount to subtract from this enemy's health.
+     */
     receiveDamage(amount) {
         this.health -= amount
         if (this.health <= 0) {

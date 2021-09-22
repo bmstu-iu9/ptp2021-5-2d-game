@@ -1,7 +1,8 @@
 import Signal from "./signal.js";
 
 /**
- * Base class for all components.
+ * A Component is a pluggable behaviour that can be switched on and off, replaced and removed during the lifetime of
+ * the game object.
  */
 export default class Component {
     /**

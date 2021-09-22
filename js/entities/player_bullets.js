@@ -29,6 +29,9 @@ class PlayerBullet extends BaseBullet {
     }
 }
 
+/**
+ * Just regular Player's bullet.
+ */
 class SimplePlayerBullet extends PlayerBullet {
     constructor(body, atlasName, speed, damage) {
         super(body, atlasName, new ConstantSpeed(speed), damage)
@@ -41,8 +44,8 @@ class SimplePlayerBullet extends PlayerBullet {
 
 /**
  * <p>Player's laser ray.
- * <p>The Laser is attached to Player's front and deals continuous damage to
- * all targets hit by the Laser.
+ * <p>The Laser is attached to Player's front and destroys all targets hit by Laser. The Laser does not destroy boss
+ * immediately, instead it deals a continuous damage to it.
  */
 class PlayerLaser extends PlayerBullet {
     constructor(pos) {
@@ -72,6 +75,10 @@ class PlayerLaser extends PlayerBullet {
         }
     }
 
+    /**
+     * Hit target
+     * @param target {BaseEntity} a target to be hit. If target is not a boss, it will be destroyed immediately.
+     */
     hit(target) {
         if (target instanceof BaseBoss) {
             target.receiveDamage(this.damage)

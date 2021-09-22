@@ -143,9 +143,10 @@ function determineAssetType(fName) {
         throw "Unknown file extension: " + fileExt
 }
 
-/** Returns filename without extension.
+/**
+ * Get filename without extension.
  *
- * @param fPath{string}
+ * @param fPath {string}
  * @returns {string}
  */
 function extractFilename(fPath) {

@@ -57,9 +57,14 @@ export default class Body {
         return new Vector(this.centerX, this.centerY)
     }
 
-    set center(v) {
-        this.centerX = v.x
-        this.centerY = v.y
+    /**
+     * Set center of this Body to given point.
+     *
+     * @param p {Vector} the point to set the center of this Body to.
+     */
+    set center(p) {
+        this.centerX = p.x
+        this.centerY = p.y
     }
 
     /**

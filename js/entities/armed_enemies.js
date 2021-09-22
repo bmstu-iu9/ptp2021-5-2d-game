@@ -43,6 +43,9 @@ class ArmedEnemy extends BaseEnemy {
     }
 }
 
+/**
+ * This enemy fires EnemyHauntingBullet.
+ */
 class HunterEnemy extends ArmedEnemy {
     constructor(body) {
         super(body, 'hunter_enemy', 15, 10, 150, REWARD.HUNTER_ENEMY)
@@ -56,6 +59,9 @@ class HunterEnemy extends ArmedEnemy {
     }
 }
 
+/**
+ * This enemy fires EnemyLaserBullet.
+ */
 class LaserEnemy extends ArmedEnemy {
     constructor(body) {
         super(body, 'laser_enemy', 10, 25, 150, REWARD.LASER_ENEMY)

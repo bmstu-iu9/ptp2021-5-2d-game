@@ -27,6 +27,7 @@ export const
 
         DIMENSIONS: 70,
         MAX_HEALTH: 100,
+        HEALING_AMOUNT: 40,
         FIRE_RATE: 8,
         FRICTION: 0.07,
         MAX_SPEED: 7,

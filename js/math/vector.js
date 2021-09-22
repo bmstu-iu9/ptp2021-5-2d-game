@@ -50,6 +50,12 @@ export default class Vector {
         this.y = this.length * accurate(Math.sin(angle))
     }
 
+    /**
+     * Make this vector have the given coordinates.
+     *
+     * @param x {Number}
+     * @param y {Number}
+     */
     setTo(x, y) {
         this.x = x
         this.y = y

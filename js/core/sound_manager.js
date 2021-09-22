@@ -1,6 +1,9 @@
 import AssetsManager from "./assets_manager.js";
 import StaticClass from "../util/static_class.js";
 
+/**
+ * This class handles all sounds played in the game.
+ */
 export default class SoundManager extends StaticClass {
     /**
      * runAgain() - runs sound from the beginning

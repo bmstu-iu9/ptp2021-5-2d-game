@@ -1,5 +1,8 @@
 import TextureAtlas from "./texture_atlas.js";
 
+/**
+ * This class represents the texture of static(non-animated) game object.
+ */
 export default class SingleImage extends TextureAtlas {
     constructor(name, image, width, height, offsetX, offsetY) {
         super(name, TextureAtlas.SINGLE_IMAGE, image)

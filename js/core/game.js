@@ -45,6 +45,9 @@ class Game {
         this.scoreDisplayed = 0
     }
 
+    /**
+     * Load this Game's assets and prepare to start.
+     */
     load() {
         configureKeyWatchers()
         AssetsManager.loadAssets(this.onLoaded)
@@ -58,6 +61,9 @@ class Game {
         game.state = GAME_STATE.MENU
     }
 
+    /**
+     * End this game and display "GAME OVER" text. Should be called when Player is destroyed.
+     */
     gameover() {
         this.state = GAME_STATE.END
         setTimeout(function () {
@@ -112,6 +118,9 @@ class Game {
         window.requestAnimationFrame(game.gameLoop.bind(game))
     }
 
+    /**
+     * Find all colliding objects and apply the corresponding collision rules to them.
+     */
     processCollisions() {
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (!this.gameObjects[i].body.canCollide) continue
@@ -173,8 +182,8 @@ class Game {
             game.gameModeManager.update()
     }
 
-    /**Draws background and calls render() for every entity
-     *
+    /**
+     * Draw background, UI and call render() for every entity.
      */
     render() {
         this.backgroundObjects.render(this.context)
@@ -243,6 +252,9 @@ class Game {
         }
     }
 
+    /**
+     * Resize canvas and update sizes when window is resized
+     */
     onResize() {
         let ww = window.innerWidth, wh = window.innerHeight
 
@@ -254,6 +266,9 @@ class Game {
     }
 }
 
+/**
+ * This class draws background and provides smooth continuous scrolling of stars and nebulas.
+ */
 class BackgroundScroller {
     constructor() {
         this._objects = {}
