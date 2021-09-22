@@ -4,14 +4,13 @@ import {configureKeyWatchers} from "../player/keyboard_control.js";
 import AssetsManager from "./assets_manager.js";
 import Body from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
-import {ENTITY_STATE, GAME_STATE, DESTRUCTION_REASONS} from "./enums.js";
+import {DESTRUCTION_REASONS, ENTITY_STATE, GAME_STATE} from "./enums.js";
 import Vector from "../math/vector.js";
 import {switchToMenu} from "./page.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
 import Clock from "../util/clock.js";
 import SoundManager from "./sound_manager.js";
 import InfiniteModeManager from "./levels/infinite_mode_manager.js";
-import LevelManager from "./levels/story_manager.js";
 import Shared from "../util/shared.js";
 
 class Game {
@@ -83,7 +82,7 @@ class Game {
     /**
      * Start the game.
      */
-    start(typeOfGame) {
+    start() {
         if (this.state !== GAME_STATE.MENU)
             return
 
@@ -92,13 +91,7 @@ class Game {
         Shared.player = new Player()
         game.gameObjects.push(Shared.player)
 
-        if (typeOfGame === "Infinite") {
-            this.gameModeManager = new InfiniteModeManager(this)
-        } else if (typeOfGame === "Level") {
-            this.gameModeManager = new LevelManager(0)
-        } else {
-            game.reset()
-        }
+        this.levelManager = new InfiniteModeManager(this)
         game.state = GAME_STATE.RUNNING
 
         window.requestAnimationFrame(game.gameLoop.bind(game))
@@ -159,29 +152,30 @@ class Game {
         // Process destroyed objects
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i].state === ENTITY_STATE.DESTROYED) {
-                let destructionEffect = this.gameObjects[i].destructionEffect
-                let destructionSoundName = this.gameObjects[i].destructionSoundName
-                let destructionReason = this.gameObjects[i].destructionReason
+                let destructionEffect = this.gameObjects[i].destructionEffect,
+                    destructionSoundName = this.gameObjects[i].destructionSoundName,
+                    destructionReason = this.gameObjects[i].destructionReason;
 
-                if (destructionEffect !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
-                    this.gameObjects.push(destructionEffect)
+                if (destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS) {
+                    if (destructionEffect !== null)
+                        this.gameObjects.push(destructionEffect)
 
-                if (destructionSoundName !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
-                    SoundManager.gameSounds(destructionSoundName)
+                    if (destructionSoundName !== null)
+                        SoundManager.gameSounds(destructionSoundName)
+
+                    if (this.gameObjects[i].reward)
+                        this.levelManager.score += this.gameObjects[i].reward
+                }
 
                 if (this.gameObjects[i] instanceof BaseEnemy)
-                    this.gameModeManager.enemiesDestroyed++
-
-                if (this.gameObjects[i] instanceof BaseEnemy && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
-                    this.gameModeManager.enemiesKilled++
-                    this.gameModeManager.score += this.gameObjects[i].reward
+                    this.levelManager.enemiesKilled++
 
                 this.gameObjects.splice(i, 1)
             }
         }
 
         if (game.state === GAME_STATE.RUNNING)
-            game.gameModeManager.update()
+            game.levelManager.update()
     }
 
     /**
@@ -197,8 +191,8 @@ class Game {
 
         // Draw score counter
         if (this.state !== GAME_STATE.END) {
-            if (this.scoreDisplayed !== this.gameModeManager.score) {
-                this.scoreDisplayed += Math.min(5, this.gameModeManager.score - this.scoreDisplayed)
+            if (this.scoreDisplayed !== this.levelManager.score) {
+                this.scoreDisplayed += Math.min(8, this.levelManager.score - this.scoreDisplayed)
             }
             this.context.fillStyle = "orange";
             this.context.fillText("Total score: " + this.scoreDisplayed, this.viewport.width - 200, 80)
@@ -223,7 +217,7 @@ class Game {
             if (this.state === GAME_STATE.BETWEEN_LEVELS) {
                 this.context.fillStyle = "orange";
 
-                this.context.fillText("Level " + this.gameModeManager.currentLevelIndex + " passed!", textX, textY)
+                this.context.fillText("Level " + this.levelManager.currentLevelIndex + " passed!", textX, textY)
             } else {
                 if (!this.stop1) {
                     this.stop1 = 0
@@ -249,7 +243,7 @@ class Game {
                 this.grad.addColorStop(this.stop3, "red");
 
                 this.context.fillStyle = this.grad
-                this.context.fillText("Game over. Total score: " + this.gameModeManager.score, textX, textY)
+                this.context.fillText("Game over. Total score: " + this.levelManager.score, textX, textY)
             }
         }
     }
