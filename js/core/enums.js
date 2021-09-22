@@ -15,6 +15,13 @@ export const
         UNDER_FIRE: 1,
         DESTROYED: 13
     }),
+    GAME_STATE = Object.freeze({
+        LOADING: 0,
+        MENU: 1,
+        RUNNING: 2,
+        BETWEEN_LEVELS: 3,
+        END: 4
+    }),
     DESTRUCTION_REASONS = Object.freeze({
         DESTROYED_BY_PLAYER: 0,
         OUT_OF_BOUNDS: 1,

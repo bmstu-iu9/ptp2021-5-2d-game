@@ -102,7 +102,7 @@ const collisionRules = [
         SoundManager.gameSounds(boost.boosterType)
         switch (boost.boosterType) {
             case "heal":
-                player.heal(25)
+                player.heal(PLAYER.HEALING_AMOUNT)
                 break
             case "laser":
                 player.changeWeapon(WEAPON_TYPE.LASER)
@@ -111,7 +111,7 @@ const collisionRules = [
                 player.applyShield()
                 break
             case "orbital_shield":
-                player.changeWeapon(WEAPON_TYPE.ORBITAL_SHIELD)
+                player.changeWeapon(WEAPON_TYPE.MULTI)
                 break
         }
     }),

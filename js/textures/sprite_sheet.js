@@ -1,6 +1,9 @@
 import TextureAtlas from "./texture_atlas.js";
 import Sequence from "../animations/sequence.js";
 
+/**
+ * This class represents animation frames of animated game object.
+ */
 export default class SpriteSheet extends TextureAtlas {
     constructor(name, texture, cellWidth, cellHeight, cellsCount, rows, cols, sheetOffsetX, sheetOffsetY, cellOffsetX, cellOffsetY) {
         super(name, TextureAtlas.SPRITE_SHEET, texture)
@@ -21,6 +24,9 @@ export default class SpriteSheet extends TextureAtlas {
         this.generateAtlasCells()
     }
 
+    /**
+     * Associate particular frames with cells in spritesheet.
+     */
     generateAtlasCells() {
         let cellNumeric = []
 

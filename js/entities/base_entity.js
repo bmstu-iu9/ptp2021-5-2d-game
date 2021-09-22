@@ -4,6 +4,8 @@ import ComponentManager from "../core/component_manager.js";
 import Signal from "../core/signal.js";
 import AssetsManager from "../core/assets_manager.js";
 import TextureAtlas from "../textures/texture_atlas.js";
+import Chance from "../util/chance.js";
+import Shared from "../util/shared.js";
 
 /**
  * <p>Base class for every Entity in the game.
@@ -14,11 +16,17 @@ import TextureAtlas from "../textures/texture_atlas.js";
 export default class BaseEntity {
     /**
      *
-     * @param body {Body} Body representing physical position and properties
+     * @param body {Body} Body representing physical position and properties. If Body's position is Vector(0, 0), it
+     * is assumed that Entity wants to be spawned at random point and slowly enter the screen.
      * @param atlasName {String} name of atlas loaded into AssetsManager
      */
     constructor(body, atlasName) {
         this.body = body
+
+        if (this.body.pos.x === 0 && this.body.pos.y === 0) {
+            this.body.pos.y = -this.body.height
+            this.body.pos.x = Chance.randomRange(0, Shared.gameWidth - this.body.width)
+        }
 
         this.components = new ComponentManager(this)
         this.onDestroyed = new Signal()
@@ -44,20 +52,35 @@ export default class BaseEntity {
      *   return new ExplosionEffect(this, "explosion_orange", 500, 2)
      * }
      *
-     * @returns {BaseEffect}
+     * @returns {null|BaseEffect}
      */
     get destructionEffect() {
         return null
     }
 
+    /**
+     * The name of the sound that should be played when this Entity is destroyed.
+     *
+     * @return {null|string}
+     */
     get destructionSoundName() {
         return null
     }
 
+    /**
+     * The opacity of this object.
+     *
+     * @return {number} opacity of this object ranging from 0 to 1 (inclusive).
+     */
     get opacity() {
         return this._opacity
     }
 
+    /**
+     * Set the opacity of this object.
+     *
+     * @param v {Number} desired opacity value. Should range from 0 to 1 (inclusive).
+     */
     set opacity(v) {
         let opacityValue = v
 

@@ -24,13 +24,18 @@ class BaseEnemy extends BaseEntity {
     }
 
     get destructionEffect() {
-        return new ExplosionEffect(this, "explosion_orange", 500, 2)
+        return new ExplosionEffect(this, "explosion_orange", 1200, 1.5)
     }
 
     get destructionSoundName() {
         return "explosion"
     }
 
+    /**
+     * Reduce this enemy's health by given amount.
+     *
+     * @param amount {Number} amount to subtract from this enemy's health.
+     */
     receiveDamage(amount) {
         this.health -= amount
         if (this.health <= 0) {

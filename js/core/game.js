@@ -4,34 +4,17 @@ import {configureKeyWatchers} from "../player/keyboard_control.js";
 import AssetsManager from "./assets_manager.js";
 import Body from "../physics/body.js";
 import {applyCollisionRules} from "../physics/collisions.js";
-import {ENTITY_STATE, WEAPON_TYPE, DESTRUCTION_REASONS} from "./enums.js";
+import {ENTITY_STATE, GAME_STATE, DESTRUCTION_REASONS} from "./enums.js";
 import Vector from "../math/vector.js";
 import {switchToMenu} from "./page.js";
 import {PlayerOrbitalShield} from "../entities/player_bullets.js";
-import Clock from "./clock.js";
+import Clock from "../util/clock.js";
 import SoundManager from "./sound_manager.js";
-import InfinityModeManager from "./infinity_mode_manager.js";
-import LevelManager from "./level_manager.js";
-
-CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
-    if (width < 2 * radius) radius = width / 2;
-    if (height < 2 * radius) radius = height / 2;
-    this.beginPath();
-    this.moveTo(x + radius, y);
-    this.arcTo(x + width, y, x + width, y + height, radius);
-    this.arcTo(x + width, y + height, x, y + height, radius);
-    this.arcTo(x, y + height, x, y, radius);
-    this.arcTo(x, y, x + width, y, radius);
-    this.closePath();
-    return this;
-}
+import InfiniteModeManager from "./levels/infinite_mode_manager.js";
+import LevelManager from "./levels/story_manager.js";
+import Shared from "../util/shared.js";
 
 class Game {
-    static STATE_LOADING = 0
-    static STATE_MENU = 1
-    static STATE_RUNNING = 2
-    static STATE_BETWEEN_LEVELS = 3
-    static STATE_END = 4
     player
 
     constructor() {
@@ -45,7 +28,7 @@ class Game {
         this.context.font = "bold 48px shadows into light"
         this.context.textAlign = "center"
 
-        this.playArea = new Body(new Vector(0, 0), window.innerWidth, window.innerHeight)
+        this.playArea = new Body(new Vector(), window.innerWidth, window.innerHeight)
 
         this.lastHBarWidth = 260
         this.backgroundObjects = new BackgroundScroller()
@@ -55,28 +38,16 @@ class Game {
 
         this.gameObjects = []
 
-        this.state = Game.STATE_LOADING
+        this.state = GAME_STATE.LOADING
 
         this.isPressed = {}
 
         this.scoreDisplayed = 0
     }
 
-    getStateNumber(name) {
-        switch (name) {
-            case "STATE_LOADING":
-                return Game.STATE_LOADING
-            case "STATE_MENU":
-                return Game.STATE_MENU
-            case "STATE_RUNNING":
-                return Game.STATE_RUNNING
-            case "STATE_BETWEEN_LEVELS":
-                return Game.STATE_BETWEEN_LEVELS
-            case "STATE_END":
-                return Game.STATE_END
-        }
-    }
-
+    /**
+     * Load this Game's assets and prepare to start.
+     */
     load() {
         configureKeyWatchers()
         AssetsManager.loadAssets(this.onLoaded)
@@ -87,13 +58,14 @@ class Game {
      * Shows the game menu.
      */
     onLoaded() {
-        game.state = Game.STATE_MENU
+        game.state = GAME_STATE.MENU
     }
 
+    /**
+     * End this game and display "GAME OVER" text. Should be called when Player is destroyed.
+     */
     gameover() {
-        this.state = Game.STATE_END
-        SoundManager.gameSounds("gameover")
-        this.player.changeWeapon(WEAPON_TYPE.REGULAR)
+        this.state = GAME_STATE.END
         setTimeout(function () {
             game.reset()
         }, 5000)
@@ -104,7 +76,7 @@ class Game {
      */
     reset() {
         this.gameObjects = []
-        this.state = Game.STATE_MENU
+        this.state = GAME_STATE.MENU
         switchToMenu()
     }
 
@@ -112,20 +84,22 @@ class Game {
      * Start the game.
      */
     start(typeOfGame) {
-        if (this.state !== Game.STATE_MENU)
+        if (this.state !== GAME_STATE.MENU)
             return
 
-        game.player = new Player()
-        game.gameObjects.push(game.player)
+        Shared.gameWidth = game.playArea.width
+        Shared.gameHeight = game.playArea.height
+        Shared.player = new Player()
+        game.gameObjects.push(Shared.player)
 
-        if (typeOfGame === "Infinity") {
-            this.gameModeManager = new InfinityModeManager()
+        if (typeOfGame === "Infinite") {
+            this.gameModeManager = new InfiniteModeManager(this)
         } else if (typeOfGame === "Level") {
             this.gameModeManager = new LevelManager(0)
         } else {
             game.reset()
         }
-        game.state = Game.STATE_RUNNING
+        game.state = GAME_STATE.RUNNING
 
         window.requestAnimationFrame(game.gameLoop.bind(game))
     }
@@ -136,7 +110,7 @@ class Game {
      * @param ts timestamp passed by requestAnimationFrame()
      */
     gameLoop(ts) {
-        if (this.state === Game.STATE_LOADING || this.state === Game.STATE_MENU)
+        if (this.state === GAME_STATE.LOADING || this.state === GAME_STATE.MENU)
             return
 
         this.update(ts)
@@ -144,6 +118,9 @@ class Game {
         window.requestAnimationFrame(game.gameLoop.bind(game))
     }
 
+    /**
+     * Find all colliding objects and apply the corresponding collision rules to them.
+     */
     processCollisions() {
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (!this.gameObjects[i].body.canCollide) continue
@@ -189,27 +166,26 @@ class Game {
                 if (destructionEffect !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
                     this.gameObjects.push(destructionEffect)
 
-                if (destructionSoundName !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS) {
+                if (destructionSoundName !== null && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
                     SoundManager.gameSounds(destructionSoundName)
-                }
-                if (this.gameObjects[i] instanceof BaseEnemy){
+
+                if (this.gameObjects[i] instanceof BaseEnemy)
                     this.gameModeManager.enemiesDestroyed++
-                }
-                if (this.gameObjects[i] instanceof BaseEnemy && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS) {
+
+                if (this.gameObjects[i] instanceof BaseEnemy && destructionReason !== DESTRUCTION_REASONS.OUT_OF_BOUNDS)
                     this.gameModeManager.enemiesKilled++
                     this.gameModeManager.score += this.gameObjects[i].reward
-                }
 
                 this.gameObjects.splice(i, 1)
             }
         }
 
-        if (game.state === Game.STATE_RUNNING)
+        if (game.state === GAME_STATE.RUNNING)
             game.gameModeManager.update()
     }
 
-    /**Draws background and calls render() for every entity
-     *
+    /**
+     * Draw background, UI and call render() for every entity.
      */
     render() {
         this.backgroundObjects.render(this.context)
@@ -220,7 +196,7 @@ class Game {
         }
 
         // Draw score counter
-        if (this.state !== Game.STATE_END) {
+        if (this.state !== GAME_STATE.END) {
             if (this.scoreDisplayed !== this.gameModeManager.score) {
                 this.scoreDisplayed += Math.min(5, this.gameModeManager.score - this.scoreDisplayed)
             }
@@ -231,7 +207,7 @@ class Game {
         // Draw HP-bar
         this.context.drawImage(AssetsManager.textures["player_hp_bar_back"].image, 20, 20, 274, 36)
 
-        let barW = 260 * this.player.health / 100,
+        let barW = 260 * Shared.player.health / 100,
             diff = barW - this.lastHBarWidth
         if (diff !== 0) {
             barW = this.lastHBarWidth + diff * 0.1;
@@ -240,11 +216,11 @@ class Game {
 
         this.context.drawImage(AssetsManager.textures["player_hp_bar"].image, 0, 0, 260, 20, 27, 28, barW, 20)
 
-        if (this.state === Game.STATE_BETWEEN_LEVELS || this.state === Game.STATE_END) {
+        if (this.state === GAME_STATE.BETWEEN_LEVELS || this.state === GAME_STATE.END) {
             let textX = this.viewport.width / 2,
                 textY = this.viewport.height / 2;
 
-            if (this.state === Game.STATE_BETWEEN_LEVELS) {
+            if (this.state === GAME_STATE.BETWEEN_LEVELS) {
                 this.context.fillStyle = "orange";
 
                 this.context.fillText("Level " + this.gameModeManager.currentLevelIndex + " passed!", textX, textY)
@@ -278,17 +254,23 @@ class Game {
         }
     }
 
+    /**
+     * Resize canvas and update sizes when window is resized
+     */
     onResize() {
         let ww = window.innerWidth, wh = window.innerHeight
 
         game.viewport.style.width = ww.toString()
         game.viewport.style.height = wh.toString()
 
-        game.playArea.width = ww
-        game.playArea.height = wh
+        Shared.gameWidth = game.playArea.width = ww
+        Shared.gameHeight = game.playArea.height = wh
     }
 }
 
+/**
+ * This class draws background and provides smooth continuous scrolling of stars and nebulas.
+ */
 class BackgroundScroller {
     constructor() {
         this._objects = {}

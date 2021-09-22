@@ -1,5 +1,6 @@
 import {game} from "../core/game.js";
 import {WEAPON_TYPE} from "../core/enums.js";
+import Shared from "../util/shared.js";
 
 export {configureKeyWatchers}
 
@@ -32,22 +33,22 @@ function configureKeyWatchers() {
             // Here the cheats go
             case 'F1':
                 ev.preventDefault()
-                game.player.heal(100)
+                Shared.player.heal(100)
 
                 break
             case 'F2':
                 ev.preventDefault()
-                game.player.changeWeapon(WEAPON_TYPE.MULTI)
+                Shared.player.changeWeapon(WEAPON_TYPE.MULTI)
 
                 break
             case 'F3':
                 ev.preventDefault()
-                game.player.changeWeapon(WEAPON_TYPE.LASER)
+                Shared.player.changeWeapon(WEAPON_TYPE.LASER)
 
                 break
             case 'F4':
                 ev.preventDefault()
-                game.player.applyShield()
+                Shared.player.applyShield()
 
                 break
         }

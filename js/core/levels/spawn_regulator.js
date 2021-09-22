@@ -1,7 +1,7 @@
-import StaticClass from "../util/static_class.js";
+import StaticClass from "../../util/static_class.js";
 
-/*
-    Selects a set item according to the item's drop chances
+/**
+ * Select an item from set according to the item's drop chances.
  */
 export default class SpawnRegulator extends StaticClass {
     static lerp(min, max, value) {

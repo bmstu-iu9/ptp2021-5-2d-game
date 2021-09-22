@@ -3,13 +3,15 @@ import BaseEntity from "../entities/base_entity.js";
 import Body from "../physics/body.js"
 import {PlayerLaser, PlayerOrbitalShield, SimplePlayerBullet} from "../entities/player_bullets.js";
 import {PLAYER} from "../core/game_constants.js";
-import {ENTITY_STATE, WEAPON_TYPE} from "../core/enums.js";
+import {ENTITY_STATE, GAME_STATE, WEAPON_TYPE} from "../core/enums.js";
 import Vector from "../math/vector.js";
 import {KeyboardControl} from "../components/movement_logic.js";
-import {HealEffect} from "../entities/effects.js";
+import {ExplosionEffect, HealEffect} from "../entities/effects.js";
 import Shield from "../entities/shield.js";
 import SoundManager from "../core/sound_manager.js";
 import {FlameRender} from "../components/flame_render.js";
+import Shared from "../util/shared.js";
+import Signal from "../core/signal.js";
 
 /**
  * Represents, well, player :D
@@ -18,8 +20,8 @@ export class Player extends BaseEntity {
     shield
 
     constructor() {
-        let initialPos = new Vector((game.playArea.width - PLAYER.DIMENSIONS) / 2,
-            (game.playArea.height - PLAYER.DIMENSIONS) / 2)
+        let initialPos = new Vector((Shared.gameWidth - PLAYER.DIMENSIONS) / 2,
+            (Shared.gameHeight - PLAYER.DIMENSIONS) / 2)
         super(new Body(initialPos, PLAYER.DIMENSIONS, PLAYER.DIMENSIONS), "player_ship")
         this.components.add(new FlameRender("thrust_animation"))
 
@@ -31,8 +33,18 @@ export class Player extends BaseEntity {
         this.fireBoosterDuration = 0
         this.currentWeaponType = WEAPON_TYPE.REGULAR
         this.defaultWeaponType = WEAPON_TYPE.REGULAR
+        this.onWeaponChanged = new Signal()
     }
 
+    get destructionEffect() {
+        return new ExplosionEffect(this, 'explosion_orange', 1800, 2)
+    }
+
+    /**
+     * Give this Player a shield booster.
+     * <p>If the player already has an active shield, new shield won't be created. Instead the lifetime of existing
+     * shield will be prolonged to the maximum.
+     */
     applyShield() {
         if (this.hasOwnProperty("shield") && this.shield instanceof Shield) {
             this.shield.extend()
@@ -45,6 +57,12 @@ export class Player extends BaseEntity {
         SoundManager.playerSounds("shield")
     }
 
+    /**
+     * Reduce this Player's health by given amount.
+     * <p>Note: if Player has an active shield, it won't take any damage.
+     *
+     * @param damageAmount {Number} how much health to deduct from this Player.
+     */
     receiveDamage(damageAmount) {
         if (this.shield)
             return
@@ -56,6 +74,12 @@ export class Player extends BaseEntity {
         }
     }
 
+    /**
+     * Increase this Player's health by given amount.
+     * <p>Note: Player's health won't be increased over the maximum amount {@link PLAYER.MAX_HEALTH}.
+     *
+     * @param healAmount
+     */
     heal(healAmount) {
         this.health = Math.min(this.health + healAmount, PLAYER.MAX_HEALTH)
         game.gameObjects.push(new HealEffect(this))
@@ -63,10 +87,19 @@ export class Player extends BaseEntity {
         SoundManager.playerSounds("heal")
     }
 
+    /**
+     * Change Player's weapon to the given type.
+     *
+     * @param weaponType {WEAPON_TYPE} type of weapon to be installed.
+     * @param permanent {boolean} if this weapon type has limited duration. If set to false, Player's weapon will be
+     * changed to default after {@link PLAYER.POWERUPS.DURATION}
+     */
     changeWeapon(weaponType, permanent = false) {
-        if (permanent) {
+        this.onWeaponChanged.dispatch(weaponType)
+
+        if (permanent)
             this.defaultWeaponType = weaponType
-        }
+
         switch (weaponType) {
             case WEAPON_TYPE.REGULAR:
                 this.currentWeaponType = WEAPON_TYPE.REGULAR
@@ -90,7 +123,13 @@ export class Player extends BaseEntity {
         }
     }
 
+    /**
+     * Spawn this Player's bullets according to current weapon type.
+     */
     fire() {
+        if (game.state === GAME_STATE.BETWEEN_LEVELS)
+            return
+
         switch (this.currentWeaponType) {
             case WEAPON_TYPE.REGULAR:
                 let bx = this.body.centerX - PLAYER.BULLET.WIDTH / 2,

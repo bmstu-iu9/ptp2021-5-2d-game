@@ -16,7 +16,7 @@ class ExplosionEffect extends BaseTargetedEffect {
      * @param duration the duration of Effect's animation
      * @param dimFactor the number to multiply target's dimensions by
      */
-    constructor(target, atlasName = 'explosion_orange', duration = 500, dimFactor = 2) {
+    constructor(target, atlasName = 'explosion_orange', duration = 1200, dimFactor = 2) {
         super(target, atlasName, duration, dimFactor)
     }
 }

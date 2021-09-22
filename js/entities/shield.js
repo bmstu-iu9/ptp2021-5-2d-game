@@ -6,7 +6,8 @@ import {PLAYER} from "../core/game_constants.js";
 
 /**
  * <p>Player's shield.
- * <p>The Shield is attached to Player and protects Player from any damage.
+ * <p>The Shield is attached to Player and protects Player from any damage. The shield would destroy any enemy's
+ * bullet or enemy (except boss) it hits.
  *
  */
 export default class Shield extends BaseEntity {

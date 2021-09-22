@@ -67,10 +67,12 @@ export default class ComponentManager {
      * @param duration {Number} the period of time after which the replaced component will be put back (in
      * milliseconds). If set to 0, then the replaced component will be put back only when the new component is
      * destroyed.
+     *
+     * @returns {Component} the Component that has been addded
      */
     replaceComponent(name, other, duration = 0) {
         if (this._components[name] === undefined)
-            return
+            return this.add(other)
 
         this._components[name].isActive = false
         this.add(other)
@@ -84,13 +86,22 @@ export default class ComponentManager {
             setTimeout(reversalFn, duration)
         else
             other.onDestroy.addListener(reversalFn)
+
+        return other
     }
 
+    /**
+     * Remove Component given its name.
+     * @param name {String} the name of Component to be removed.
+     */
     removeComponentByName(name) {
         if (this._components[name])
             delete this._components[name]
     }
 
+    /**
+     * Execute preUpdate() on all underlying active Components.
+     */
     preUpdate() {
         for (let component of Object.values(this._components)) {
             if (component.isActive)
@@ -98,6 +109,9 @@ export default class ComponentManager {
         }
     }
 
+    /**
+     * Execute update() on all underlying active Components.
+     */
     update() {
         for (let component of Object.values(this._components)) {
             if (component.isActive)
@@ -105,6 +119,9 @@ export default class ComponentManager {
         }
     }
 
+    /**
+     * Execute postUpdate() on all underlying active Components.
+     */
     postUpdate() {
         for (let component of Object.values(this._components)) {
             if (component.isActive)
@@ -112,6 +129,11 @@ export default class ComponentManager {
         }
     }
 
+    /**
+     * Execute preRender() on all underlying active Components.
+     *
+     * @param ctx {CanvasRenderingContext2D} canvas context passed by Game.render()
+     */
     preRender(ctx) {
         for (let component of Object.values(this._components)) {
             if (component.isActive)
@@ -119,6 +141,11 @@ export default class ComponentManager {
         }
     }
 
+    /**
+     * Execute postRender() on all underlying active Components.
+     *
+     * @param ctx {CanvasRenderingContext2D} canvas context passed by Game.render()
+     */
     postRender(ctx) {
         for (let component of Object.values(this._components)) {
             if (component.isActive)

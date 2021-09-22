@@ -2,6 +2,8 @@ import Component from "../core/component.js";
 import Vector from "../math/vector.js";
 import {game} from "../core/game.js";
 import Easing from "../util/easing.js";
+import Shared from "../util/shared.js";
+import Chance from "../util/chance.js";
 
 export {
     ConstantSpeed,
@@ -16,10 +18,9 @@ export {
     RandomSpin
 }
 
-function rnd(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
+/**
+ * Base class for all components that define the entity's movement logic.
+ */
 class MovementLogic extends Component {
     constructor(name, maxSpeed) {
         super(name)
@@ -42,7 +43,7 @@ class MovementLogic extends Component {
     update() {
         super.update()
 
-        this.owner.body.pos.add(this.speed.limit(this.maxSpeed))
+        this.owner.body.pos.add(this.speed.limit(this.maxSpeed).clone().scale(Shared.speedMultiplier))
     }
 
     /**
@@ -61,18 +62,21 @@ class MovementLogic extends Component {
             w = this.owner.body.width,
             h = this.owner.body.height;
 
-        if (pos.x < 0 || pos.x + w > game.playArea.width) {
+        if (pos.x < 0 || pos.x + w > Shared.gameWidth) {
             this.owner.body.pos.x -= this.speed.x
             this.speed.x = 0
         }
 
-        if (pos.y < 0 || pos.y + h > game.playArea.height) {
+        if (pos.y < 0 || pos.y + h > Shared.gameHeight) {
             this.owner.body.pos.y -= this.speed.y
             this.speed.y = 0
         }
     }
 }
 
+/**
+ * Simply move in the given direction with given speed.
+ */
 class ConstantSpeed extends MovementLogic {
     constructor(speed) {
         super("ConstantSpeed")
@@ -89,11 +93,14 @@ class BounceHorizontally extends MovementLogic {
     }
 
     postUpdate() {
-        if (this.owner.body.pos.x < 0 || this.owner.body.pos.x + this.owner.body.width > game.playArea.width)
+        if (this.owner.body.pos.x < 0 || this.owner.body.pos.x + this.owner.body.width > Shared.gameWidth)
             this.owner.body.pos.add(this.speed.negate())
     }
 }
 
+/**
+ * Follow the given target with specified speed and turning speed.
+ */
 class FollowTarget extends MovementLogic {
     /**
      *
@@ -118,6 +125,9 @@ class FollowTarget extends MovementLogic {
     }
 }
 
+/**
+ * Keyboard control. Obviously is used only for Player.
+ */
 class KeyboardControl extends MovementLogic {
     /**
      *
@@ -197,7 +207,7 @@ class SpinAround extends MovementLogic {
         this.target = target
         this.radius = radius
         this.rotationSpeed = rotationSpeed
-        this.rotation = 0
+        this.rotation = Math.PI
     }
 
     update() {
@@ -228,7 +238,7 @@ class RandomSpin extends Spin {
     update() {
         super.update()
 
-        if (Math.abs(this.target.body.rotation) > Math.PI / 2 || rnd(0, 500) === 0)
+        if (Math.abs(this.target.body.rotation) > Math.PI * 0.45 || Chance.oneIn(500))
             this.rotationSpeed = -this.rotationSpeed
     }
 }
