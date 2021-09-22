@@ -16,9 +16,9 @@ function pageLoaded() {
     pagesElement.animate([
         {opacity: 0},
         {opacity: 1}
-    ], {duration: 1000})
+    ], {duration: 500})
 
-    setCurrentPage('menu', 900).then(() => {
+    setCurrentPage('menu').then(() => {
         window.addEventListener('keydown', menuKeyboardControl)
     })
 }
@@ -36,7 +36,7 @@ function pageLoaded() {
  *
  * @returns {Promise} a Promise object which will resolve once the transition has finished.
  */
-function setCurrentPage(id, transitionDuration = 600) {
+function setCurrentPage(id, transitionDuration = 300) {
     return new Promise(function (resolve, reject) {
         const currentPage = document.querySelector('.page.active'),
             nextPage = id ? document.getElementById(id) : null
@@ -56,10 +56,13 @@ function setCurrentPage(id, transitionDuration = 600) {
         } else {
             Array.from(currentPage.children).forEach(function (child, index) {
                 child.style.left = ''
-                child.style.right = '-150%'
+                child.style.right = '-50%'
+                child.style.opacity = '0'
 
-                lastAnimation = child.animate([{right: '0'}, {right: '-150%'}],
-                    {duration: transitionDuration + index * 100, easing: 'ease-in'})
+                lastAnimation = child.animate([
+                    {right: '0', opacity: 1},
+                    {right: '-50%', opacity: 0}
+                ], {duration: transitionDuration + index * 100, easing: 'ease-in'})
             })
         }
 
@@ -74,8 +77,11 @@ function setCurrentPage(id, transitionDuration = 600) {
 
             Array.from(nextPage.children).forEach(function (child, index) {
                 child.style.right = ''
-                lastAnimation = child.animate([{left: '-150%'}, {left: '0'}],
-                    {duration: transitionDuration + index * 100, easing: 'ease-out'})
+                child.style.opacity = '1'
+                lastAnimation = child.animate([
+                    {left: '-70%', opacity: '0'},
+                    {left: '0', opacity: '1'}
+                ], {duration: transitionDuration + 200 + index * 100, easing: 'ease-out'})
             })
 
             lastAnimation.finished.then(resolve)
@@ -92,7 +98,7 @@ function switchToGame(typeOfGame) {
         let pagesElement = document.getElementById('pages'),
             playerElement = document.getElementById('player'),
             planetElement = document.getElementById('planet')
-        const transitionDuration = 2200
+        const transitionDuration = 1400
 
         playerElement.style.display = ''
         playerElement.animate([
@@ -110,7 +116,7 @@ function switchToGame(typeOfGame) {
         planetElement.animate([
             {width: '90%', height: '90%', top: '5%', left: '5%'},
             {width: '0', height: '0', top: '50%', left: '50%'},
-        ], {duration: transitionDuration - 500, delay: 500, easing: 'ease-in'}).finished.then(() => {
+        ], {duration: transitionDuration, easing: 'ease-in'}).finished.then(() => {
             pagesElement.style.display = 'none'
             game.start(typeOfGame)
         })
@@ -123,7 +129,7 @@ function switchToGame(typeOfGame) {
 function switchToMenu() {
     let pagesElement = document.getElementById('pages'),
         playerElement = document.getElementById('player')
-    const transitionDuration = 2200
+    const transitionDuration = 1400
 
     pagesElement.style.display = ''
     playerElement.style.display = 'none'
