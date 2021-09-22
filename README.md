@@ -1,4 +1,4 @@
-# ptp2021-5-2d-game
+# Alien Buster
 
 ## Управление
 
