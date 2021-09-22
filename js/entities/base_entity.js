@@ -51,20 +51,35 @@ export default class BaseEntity {
      *   return new ExplosionEffect(this, "explosion_orange", 500, 2)
      * }
      *
-     * @returns {BaseEffect}
+     * @returns {null|BaseEffect}
      */
     get destructionEffect() {
         return null
     }
 
+    /**
+     * The name of the sound that should be played when this Entity is destroyed.
+     *
+     * @return {null|string}
+     */
     get destructionSoundName() {
         return null
     }
 
+    /**
+     * The opacity of this object.
+     *
+     * @return {number} opacity of this object ranging from 0 to 1 (inclusive).
+     */
     get opacity() {
         return this._opacity
     }
 
+    /**
+     * Set the opacity of this object.
+     *
+     * @param v {Number} desired opacity value. Should range from 0 to 1 (inclusive).
+     */
     set opacity(v) {
         let opacityValue = v
 

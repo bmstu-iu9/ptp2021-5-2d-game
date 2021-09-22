@@ -13,7 +13,7 @@ export {
 }
 
 /**
- * Base class for boosters.
+ * Base class for Player's boosters.
  */
 class BaseBooster extends BaseEntity {
     /**
@@ -35,19 +35,41 @@ class BaseBooster extends BaseEntity {
     }
 }
 
+/**
+ * Booster that provides healing effect.
+ * <p>Healing amount is controlled by {@link PLAYER.HEALING_AMOUNT}.
+ */
 class HealBooster extends BaseBooster {
+    /**
+     *
+     * @param aimAtPlayer {Boolean} if this booster should chase player
+     */
     constructor(aimAtPlayer = false) {
         super(new Body(new Vector(), 50, 50), 'heal_orb', 'heal', aimAtPlayer)
     }
 }
 
+/**
+ * Booster that changes Player's weapon to WEAPON_TYPE.MULTI.
+ */
 class MultiBooster extends BaseBooster {
+    /**
+     *
+     * @param aimAtPlayer {Boolean} if this booster should chase player
+     */
     constructor(aimAtPlayer = false) {
         super(new Body(new Vector(), 50, 50), 'orbital_shield_orb', 'orbital_shield', aimAtPlayer)
     }
 }
 
+/**
+ * Booster that provides Player with Shield.
+ */
 class ShieldBooster extends BaseBooster {
+    /**
+     *
+     * @param aimAtPlayer {Boolean} if this booster should chase player
+     */
     constructor(aimAtPlayer = false) {
         super(new Body(new Vector(), 50, 50), 'shield_orb', 'shield', aimAtPlayer)
     }

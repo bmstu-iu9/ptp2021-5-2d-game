@@ -2,7 +2,8 @@ import Signal from "../core/signal.js";
 import Clock from "../util/clock.js";
 
 /**
- * An Animation contains info about single animation that is played using AnimationManager.
+ * An Animation class contains information about single animation that is controlled by AnimationManager.
+ * <p>Note that animations are <b>time-based</b> unlike any other things in the game which are frame-based.
  */
 export default class Animation {
     /**

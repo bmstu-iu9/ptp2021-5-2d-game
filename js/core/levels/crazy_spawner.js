@@ -20,6 +20,8 @@ export default class CrazySpawner {
 
     /**
      * Activate this spawner. Regular spawner should be deactivated first.
+     * <p>There is a chance of 33.3% that this spawner won't spawn anything and will let Player to kill the existing
+     * enemies.
      */
     activate() {
         this.isActive = true

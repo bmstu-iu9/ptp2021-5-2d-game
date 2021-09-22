@@ -2,6 +2,10 @@ import Sequence from "../animations/sequence.js";
 import Component from "../core/component.js";
 import Animation from "../animations/animation.js";
 
+/**
+ * This component manages the animation frames for animated entities.
+ * <p>Note that animations are <b>time-based</b> unlike any other things in the game which are frame-based.
+ */
 export default class AnimationManager extends Component {
     constructor(entity, inheritSequences = true) {
         super("AnimationManager", entity)

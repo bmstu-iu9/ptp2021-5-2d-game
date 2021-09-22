@@ -11,6 +11,9 @@ import CrazySpawner from "./crazy_spawner.js";
 
 const possible_enemy_caps = [7, 10, 17, 25]
 
+/**
+ * This is a level manager.
+ */
 export default class InfiniteModeManager {
     constructor(game) {
         this.game = game
@@ -31,6 +34,11 @@ export default class InfiniteModeManager {
         Shared.player.onWeaponChanged.addListener(this.weaponChangedHandler, this)
     }
 
+    /**
+     * Get the number of enemies alive.
+     *
+     * @return {number} the number of enemies alive.
+     */
     get enemiesActive() {
         return this.enemiesSpawned - this.enemiesKilled
     }
@@ -39,6 +47,11 @@ export default class InfiniteModeManager {
         this.enemiesKilled++
     }
 
+    /**
+     * React to Player changing his weapon. Launch crazy spawner
+     *
+     * @param weaponType {WEAPON_TYPE} the type of weapon that Player currently has
+     */
     weaponChangedHandler(weaponType) {
         if (weaponType === WEAPON_TYPE.LASER || weaponType === WEAPON_TYPE.MULTI) {
             this.crazySpawner.activate()
@@ -47,6 +60,10 @@ export default class InfiniteModeManager {
 
     }
 
+    /**
+     * Go to the next level.
+     * <p>Second level and every 5-th level contains a boss.
+     */
     nextLevel() {
         this.game.state = GAME_STATE.BETWEEN_LEVELS
         this.currentLevelIndex++
@@ -74,6 +91,9 @@ export default class InfiniteModeManager {
         }.bind(this), 3000)
     }
 
+    /**
+     * Push the passes objects into the game and update statistics.
+     */
     spawn() {
         for (let i = 0; i < arguments.length; i++) {
             this.game.gameObjects.push(arguments[i])
@@ -83,6 +103,9 @@ export default class InfiniteModeManager {
         }
     }
 
+    /**
+     * Update all modules.
+     */
     update() {
         if (this.game.state !== GAME_STATE.RUNNING || this.isBossFight)
             return

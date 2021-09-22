@@ -18,6 +18,9 @@ export {
     RandomSpin
 }
 
+/**
+ * Base class for all components that define the entity's movement logic.
+ */
 class MovementLogic extends Component {
     constructor(name, maxSpeed) {
         super(name)
@@ -71,6 +74,9 @@ class MovementLogic extends Component {
     }
 }
 
+/**
+ * Simply move in the given direction with given speed.
+ */
 class ConstantSpeed extends MovementLogic {
     constructor(speed) {
         super("ConstantSpeed")
@@ -92,6 +98,9 @@ class BounceHorizontally extends MovementLogic {
     }
 }
 
+/**
+ * Follow the given target with specified speed and turning speed.
+ */
 class FollowTarget extends MovementLogic {
     /**
      *
@@ -116,6 +125,9 @@ class FollowTarget extends MovementLogic {
     }
 }
 
+/**
+ * Keyboard control. Obviously is used only for Player.
+ */
 class KeyboardControl extends MovementLogic {
     /**
      *

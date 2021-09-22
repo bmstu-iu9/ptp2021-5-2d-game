@@ -21,7 +21,11 @@ export default class Clock extends StaticClass {
      */
     static timeElapsed = 0
 
-
+    /**
+     * Update Clock's internal properties.
+     *
+     * @param ts {Number} current system timestamp.
+     */
     static update(ts) {
         Clock.timeElapsed = ts - Clock.currentTimestamp
         Clock.currentTimestamp = ts

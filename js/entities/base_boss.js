@@ -25,6 +25,11 @@ class BaseBoss extends BaseEnemy {
         return new ExplosionEffect(this, 'explosion_boss', 1800, 1.5)
     }
 
+    /**
+     * Draw this boss's HP bar.
+     *
+     * @param ctx {CanvasRenderingContext2D} canvas context passed by Game.render()
+     */
     drawHpBar(ctx) {
         this.hpBarPos = this.body.pos.clone()
         this.hpBarPos.x += (this.body.width - this.fullBarWidth) / 2
